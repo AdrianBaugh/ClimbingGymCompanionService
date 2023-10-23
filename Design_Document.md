@@ -30,7 +30,7 @@ As a user at my local climbing gym, I want to log my climbs to monitor progress 
 
 This initial iteration will provide the minimum lovable product (MLP) including creating, retrieving, and updating a climb, as well as updating and retrieving the current routes in the gym.
 
-We will use API Gateway and Lambda to create ==XXX== endpoints (`GetClimb`, `CreateClimb`, `UpdateClimb`, `UpdateRoute`, and `GetRoute`) that will handle the creation, update, and retrieval of climbs and routes to satisfy our requirements.
+We will use API Gateway and Lambda to create ==XXX== endpoints (`GetClimb`, `CreateClimb`, `UpdateClimb`, `DeleteClimb`, ` DeleteRoute`,  `UpdateRoute`, and `GetRoute`) that will handle the creation, update, and retrieval of climbs and routes to satisfy our requirements.
 
 We will store climb and route data in different DynamoDB tables. 
 
