@@ -46,6 +46,7 @@ String routeId;
 String location;
 Enum type;
 String difficulty;
+LocalDateandTime dateLastUpdated;
 String color;
 Integer thumbsUpPercent;
 ```
@@ -109,9 +110,10 @@ String notes;
 ```
 routeId // Partition key, string
 location // String
+color // String
 type // String
 difficulty // String
-color // String
+dateTime // String (converted dateTime)
 thumbsUpPercent // Interger (number type)
 ```
 - Key Structure: `location:: + color`
@@ -131,7 +133,23 @@ notes // String
 
 ### 7.3 `RoutesByLocationIndex` GSI table
 
+```
+location // Partition key, String
+routeId // Sort key, String
+```
+
 ### 7.4 `RoutesByDifficultyIndex` GSI table
 
+```
+routeId // String
+difficulty // String
+```
 
 # 8. Page storyboard
+Example map of gym and route locations
+
+
+<img src="assets/IMG_4545.jpg" alt="gym map" width="50%" />
+
+
+
