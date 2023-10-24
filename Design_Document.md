@@ -2,7 +2,7 @@
 
 ## 1. Problem statement
 
-As a user at my local climbing gym, I want to log my climbs to monitor progress on different routes. I want to write optional notes about my climbs called beta. I want to view my climbing history and status achieved for those routes. Routes will be viewable by all users. Changes or updates, such as difficulty or route color, will be crowd sourced.
+As a user at my local climbing gym, I want to log my climbs to monitor progress on different routes. I want to write optional notes about my climbs. I want to view my climbing history and status achieved for those routes. Routes will be viewable by all users. Changes or updates, such as difficulty or route color, will be crowd-sourced. There will also be the ability to upload a view a picture of the route.
 
 ## 2. Top Questions to Resolve in Review
 1. Best way to add pictures of routes?
@@ -46,8 +46,10 @@ String routeId;
 String location;
 Enum type;
 String difficulty;
+LocalDateandTime dateLastUpdated;
 String color;
 Integer thumbsUpPercent;
+String pictureKey;
 ```
 
 ```
@@ -94,7 +96,7 @@ String notes;
 	- throws `UnauthorizedUserException` if attempted to be updated by an unauthorized user.
 #### 6.2.8. _Update Route Endpoint_
 - Accepts a `PUT` request to `/routes/:routeID`
-- Accepts data to update a route including route difficulty and route color. Returns the corresponding updated routeModel
+- Accepts data to update a route including route difficulty, route color, and a picture. Returns the corresponding updated routeModel
 	- If the given route ID is not found throw a `RouteNotFoundException`
 
 #### 6.2.9. _Delete Route Endpoint_
@@ -109,10 +111,12 @@ String notes;
 ```
 routeId // Partition key, string
 location // String
+color // String
 type // String
 difficulty // String
-color // String
+dateTime // String (converted dateTime)
 thumbsUpPercent // Interger (number type)
+pictureKey // String
 ```
 - Key Structure: `location:: + color`
 	- top rope/lead location = number
@@ -131,7 +135,23 @@ notes // String
 
 ### 7.3 `RoutesByLocationIndex` GSI table
 
+```
+location // Partition key, String
+routeId // Sort key, String
+```
+
 ### 7.4 `RoutesByDifficultyIndex` GSI table
 
+```
+routeId // String
+difficulty // String
+```
 
 # 8. Page storyboard
+Example map of gym and route locations
+
+
+<img src="assets/IMG_4545.jpg" alt="gym map" width="50%" />
+
+
+
