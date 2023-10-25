@@ -1,0 +1,79 @@
+@startuml
+
+class Climb {
+}
+class Route {
+}
+
+class ClimbModel {
+}
+class RouteModel {
+}
+
+class ModelConverter {
+}
+
+class GetClimbActivity {
+}
+class GetRouteActivity {
+}
+class CreateClimbActivity {
+}
+class UpdateClimbActivity {
+}
+class DeleteClimbActivity {
+}
+
+class ClimbDAO {
+}
+class RouteDAO {
+}
+
+enum RouteType<<enumeration>> {
+}
+enum ClimbStatus<<enumeration>> {
+}
+
+package DynamoDB <<Database>> {
+  () Routes <<table>>
+  () Climbs <<table>>
+}
+
+ClimbStatus - Climb : status
+Route - RouteType : type
+Climb o-- ModelConverter
+ModelConverter o-- ClimbModel
+Route o-- ModelConverter
+ModelConverter o-- RouteModel
+
+ClimbModel o-- GetClimbActivity
+ClimbModel o-- CreateClimbActivity
+ClimbModel o-- UpdateClimbActivity
+ClimbModel o-- DeleteClimbActivity
+
+RouteModel o-- GetRouteActivity
+RouteModel o-- CreateRouteActivity
+RouteModel o-- UpdateRouteActivity
+RouteModel o-- DeleteRouteActivity
+
+ClimbDAO <-- DynamoDB
+RouteDAO <-- DynamoDB
+
+GetClimbActivity <-- ClimbDAO
+CreateClimbActivity <-- ClimbDAO
+UpdateClimbActivity <-- ClimbDAO
+DeleteClimbActivity <-- ClimbDAO
+
+GetRouteActivity <-- RouteDAO
+CreateRouteActivity <-- RouteDAO
+UpdateRouteActivity <-- RouteDAO
+DeleteRouteActivity <-- RouteDAO
+
+newpage
+
+exception RouteNotFoundException <<exception>> {
+}
+exception ClimbNotFoundException <<exception>> {
+}
+
+@enduml

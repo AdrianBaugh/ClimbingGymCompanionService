@@ -36,6 +36,10 @@ We will store climb and route data in different DynamoDB tables. 
 
 ==ClimbingGymCompanionService== will also provide a web interface for users to manage their climbs. A main page providing a list view of all the available routes where they can click on a route for details or link off to pages to log/update metadata for a new climb or update a route.
 
+PlantUML Diagram:
+[PlantUML Source Code](UML%20Diagram.puml)
+
+
 ## 6. API
 
 ### 6.1. Public Models
@@ -62,6 +66,9 @@ String notes;
 ```
 
 ### 6.2. Endpoints
+
+example Sequence Diagram:
+[GetRoute Sequence Diagram Source Code](GetClimb-SD.puml)
 
 #### 6.2.1 *Get single Route Endpoint*
 - Accepts `GET` requests to `/routes/:routeId`
