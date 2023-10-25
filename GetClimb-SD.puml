@@ -1,0 +1,42 @@
+@startuml
+
+actor "Client" as client
+participant "API Gateway/Lambda" as apiGateway
+participant "GetRouteActivity" as getPlaylistActivity
+participant "RouteDao" as playlistDao
+database "DynamoDB" as dynamoDB
+
+title Get A Route
+
+client -> apiGateway : HTTP Request
+activate apiGateway
+
+apiGateway -> getRouteActivity : GetRouteRequest
+activate getRouteActivity
+
+getRouteActivity -> RouteDao : getRoute(id)
+activate RouteDao
+
+playlistDao -> dynamoDB : lookup by Route id
+activate dynamoDB
+
+alt if Route does not exist
+dynamoDB --> RouteDao : return with no item data
+RouteDao --> getRouteActivity: throw RouteNotFoundException
+getRouteActivity --> apiGateway: propagate RouteNotFoundException
+apiGateway --> client: return 400 response
+else else continue
+end
+
+dynamoDB --> RouteDao: return Route data
+deactivate dynamoDB
+
+RouteDao --> getRouteActivity : return Route object
+deactivate RouteDao
+
+getRouteActivity --> apiGateway : return getRouteResult
+deactivate getRouteActivity
+
+apiGateway --> client : return 200 response with GetRouteResult data
+deactivate apiGateway
+@enduml

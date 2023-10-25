@@ -67,6 +67,9 @@ String notes;
 
 ### 6.2. Endpoints
 
+example Sequence Diagram:
+[GetRoute Sequence Diagram Source Code](GetClimb-SD.puml)
+
 #### 6.2.1 *Get single Route Endpoint*
 - Accepts `GET` requests to `/routes/:routeId`
 - Accepts a route ID and returns a corresponding routeModel
