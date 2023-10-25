@@ -1,4 +1,4 @@
 package com.nashss.se.ClimbingGymCompanionService.dynamodb;
 
-public class routeDao {
+public class RouteDao {
 }

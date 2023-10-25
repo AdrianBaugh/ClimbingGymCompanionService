@@ -1,4 +1,4 @@
 package com.nashss.se.ClimbingGymCompanionService.dynamodb.pojos;
 
-public class route {
+public class Route {
 }
