@@ -8,4 +8,4 @@
  */
 
 rootProject.name = 'ClimbingGymCompanionService'
-include('app')
+include('ClimbingGymCompanionServiceLambda')
