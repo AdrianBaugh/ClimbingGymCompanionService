@@ -59,6 +59,8 @@ String pictureKey;
 ```
 //Climb Model
 String climbId;
+String routeId;
+String userId;
 Enum Status;
 LocalDateandTime dateTime;
 Boolean rating; (thumbsUp = true)
@@ -80,7 +82,7 @@ example Sequence Diagram:
 #### 6.2.3. Create Climb Endpoint*
 - Accepts a `POST` request to `/climbs/:climbId`
 - Takes the user ID from cognito
-- Accepts data to create a new climb with a provided user ID,  status, optional rating, optional notes and returns a corresponding climbModel with a climb ID assigned by the service.
+- Accepts data to create a new climb with a provided userID,  status, optional rating, optional notes and returns a corresponding climbModel with a climb ID assigned by the service.
 #### 6.2.4. *Get single Climb by user Endpoint*
 - Accepts a `GET` request to `/climbs/:climbId`
 - Takes the user ID from cognito
@@ -132,6 +134,7 @@ pictureKey // String
 
 ```
 climbId // Partition key, String
+userId // sort key, String
 routeId // String
 status // String
 dateTime // String (converted dateTime)
@@ -144,14 +147,12 @@ notes // String
 
 ```
 location // Partition key, String
-routeId // Sort key, String
 ```
 
 ### 7.4 `RoutesByDifficultyIndex` GSI table
 
 ```
-routeId // String
-difficulty // String
+difficulty // Partition key, String
 ```
 
 # 8. Page storyboard
