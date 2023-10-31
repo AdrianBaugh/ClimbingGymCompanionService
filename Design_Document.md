@@ -30,11 +30,11 @@ As a user at my local climbing gym, I want to log my climbs to monitor progress 
 
 This initial iteration will provide the minimum lovable product (MLP) including creating, retrieving, and updating a climb, as well as updating and retrieving the current routes in the gym.
 
-We will use API Gateway and Lambda to create ==XXX== endpoints (`GetClimb`, `CreateClimb`, `UpdateClimb`, `DeleteClimb`, ` DeleteRoute`,  `UpdateRoute`, and `GetRoute`) that will handle the creation, update, and retrieval of climbs and routes to satisfy our requirements.
+We will use API Gateway and Lambda to create 7 endpoints (`GetClimb`, `CreateClimb`, `UpdateClimb`, `DeleteClimb`, ` DeleteRoute`,  `UpdateRoute`, and `GetRoute`) that will handle the creation, update, and retrieval of climbs and routes to satisfy our requirements.
 
 We will store climb and route data in different DynamoDB tables. 
 
-==ClimbingGymCompanionService== will also provide a web interface for users to manage their climbs. A main page providing a list view of all the available routes where they can click on a route for details or link off to pages to log/update metadata for a new climb or update a route.
+ClimbingGymCompanionService will also provide a web interface for users to manage their climbs. A main page providing a list view of all the available routes where they can click on a route for details or link off to pages to log/update metadata for a new climb or update a route.
 
 PlantUML Class Diagram:
 [PlantUML Source Code](Diagram-UML-CD.puml)
@@ -156,8 +156,11 @@ difficulty // Partition key, String
 ```
 
 # 8. Page storyboard
-Example map of gym and route locations
 
+[PROJECT STORYBOARD WEB DESIGN](https://www.figma.com/file/GUXF5pask7AnghDyNPAs9i/Welcome-to-FigJam?type=whiteboard&node-id=0%3A1&t=6FJX0R2ncog8OF6b-1)
+
+
+Example map of gym and route locations:
 
 <img src="assets/IMG_4545.jpg" alt="gym map" width="50%" />
 
