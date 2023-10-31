@@ -15,6 +15,10 @@ plugins {
     id 'com.adarshr.test-logger' version '3.2.0'
 }
 
+group 'com.nashss.se.climbinggymcompanionservice'
+version '1.0.0'
+defaultTasks 'clean', 'build'
+
 repositories {
     // Use Maven Central for resolving dependencies.
     mavenCentral()
