@@ -1,7 +1,7 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
 Description: >
-  Music Playlist Service
+  Climbing Gym Companion Service
 
 Parameters:
 
@@ -200,32 +200,32 @@ Resources:
                 - logs:PutLogEvents
                 - cloudwatch:PutMetricData
               Resource: '*'
-        - PolicyName: 'AccessPlaylistsTable'
+        - PolicyName: 'AccessRoutesTable'
           PolicyDocument:
             Version: '2012-10-17'
             Statement:
             - Effect: Allow
               Action: dynamodb:*
-              Resource: !Sub "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/playlists"
+              Resource: !Sub "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/routes"
                 
-        - PolicyName: 'AccessAlbumTracksTable'
+        - PolicyName: 'AccessClimbsTable'
           PolicyDocument:
             Version: '2012-10-17'
             Statement:
             - Effect: Allow
               Action: dynamodb:*
-              Resource: !Sub "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/album_tracks"
+              Resource: !Sub "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/climbs"
 
   #-----------------------------------------------------
   # Lambda Functions Configuration
   #-----------------------------------------------------
 
-  GetPlaylistLambda:
+  CreateClimbLambda:
     Type: AWS::Serverless::Function
     Properties:
       Role: !GetAtt AccessRole.Arn
-      CodeUri: MusicPlaylistServiceLambda
-      Handler: com.nashss.se.musicplaylistservice.lambda.GetPlaylistLambda::handleRequest
+      CodeUri: ClimbingGymCompanionServiceLambda
+      Handler: com.nashss.se.climbinggymcompanionservice.lambda.CreateClimbLambda::handleRequest
       Runtime: java11
       Architectures:
         - x86_64
@@ -237,81 +237,15 @@ Resources:
         MusicPlaylistService:
           Type: Api
           Properties:
-            Path: /playlists/{id}
-            Method: get
-            Auth:
-              Authorizer: 'NONE'
-
-  SearchPlaylistsLambda:
-    Type: AWS::Serverless::Function
-    Properties:
-      Role: !GetAtt AccessRole.Arn
-      CodeUri: MusicPlaylistServiceLambda
-      Handler: com.nashss.se.musicplaylistservice.lambda.SearchPlaylistsLambda::handleRequest
-      Runtime: java11
-      Architectures:
-        - x86_64
-      MemorySize: 512
-      Environment:
-        Variables:
-          JAVA_TOOL_OPTIONS: -XX:+TieredCompilation -XX:TieredStopAtLevel=1
-      Events:
-        MusicPlaylistService:
-          Type: Api
-          Properties:
-            Path: /playlists/search
-            Method: get
-            Auth:
-              Authorizer: 'NONE'
-
-  GetPlaylistSongsLambda:
-    Type: AWS::Serverless::Function
-    Properties:
-      Role: !GetAtt AccessRole.Arn
-      CodeUri: MusicPlaylistServiceLambda
-      Handler: com.nashss.se.musicplaylistservice.lambda.GetPlaylistSongsLambda::handleRequest
-      Runtime: java11
-      Architectures:
-        - x86_64
-      MemorySize: 512
-      Environment:
-        Variables:
-          JAVA_TOOL_OPTIONS: -XX:+TieredCompilation -XX:TieredStopAtLevel=1
-      Events:
-        MusicPlaylistService:
-          Type: Api
-          Properties:
-            Path: /playlists/{id}/songs
-            Method: get
-            Auth:
-              Authorizer: 'NONE'
-
-  CreatePlaylistLambda:
-    Type: AWS::Serverless::Function
-    Properties:
-      Role: !GetAtt AccessRole.Arn
-      CodeUri: MusicPlaylistServiceLambda
-      Handler: com.nashss.se.musicplaylistservice.lambda.CreatePlaylistLambda::handleRequest
-      Runtime: java11
-      Architectures:
-        - x86_64
-      MemorySize: 512
-      Environment:
-        Variables:
-          JAVA_TOOL_OPTIONS: -XX:+TieredCompilation -XX:TieredStopAtLevel=1
-      Events:
-        MusicPlaylistService:
-          Type: Api
-          Properties:
-            Path: /playlists
+            Path: /climbs/
             Method: post
 
-  UpdatePlaylistLambda:
+  CreateRouteLambda:
     Type: AWS::Serverless::Function
     Properties:
       Role: !GetAtt AccessRole.Arn
-      CodeUri: MusicPlaylistServiceLambda
-      Handler: com.nashss.se.musicplaylistservice.lambda.UpdatePlaylistLambda::handleRequest
+      CodeUri: ClimbingGymCompanionServiceLambda
+      Handler: com.nashss.se.climbinggymcompanionservice.lambda.CreateRouteLambda::handleRequest
       Runtime: java11
       Architectures:
         - x86_64
@@ -323,15 +257,115 @@ Resources:
         MusicPlaylistService:
           Type: Api
           Properties:
-            Path: /playlists/{id}
+            Path: /routes/
+            Method: post
+
+  DeleteClimbLambda:
+    Type: AWS::Serverless::Function
+    Properties:
+      Role: !GetAtt AccessRole.Arn
+      CodeUri: ClimbingGymCompanionServiceLambda
+      Handler: com.nashss.se.climbinggymcompanionservice.lambda.DeleteClimbLambda::handleRequest
+      Runtime: java11
+      Architectures:
+        - x86_64
+      MemorySize: 512
+      Environment:
+        Variables:
+          JAVA_TOOL_OPTIONS: -XX:+TieredCompilation -XX:TieredStopAtLevel=1
+      Events:
+        RiverPetSittingService:
+          Type: Api
+          Properties:
+            Path: /climbs/{climbId}
+            Method: delete
+
+  DeleteRouteLambda:
+    Type: AWS::Serverless::Function
+    Properties:
+      Role: !GetAtt AccessRole.Arn
+      CodeUri: ClimbingGymCompanionServiceLambda
+      Handler: com.nashss.se.climbinggymcompanionservice.lambda.DeleteRouteLambda::handleRequest
+      Runtime: java11
+      Architectures:
+        - x86_64
+      MemorySize: 512
+      Environment:
+        Variables:
+          JAVA_TOOL_OPTIONS: -XX:+TieredCompilation -XX:TieredStopAtLevel=1
+      Events:
+        RiverPetSittingService:
+          Type: Api
+          Properties:
+            Path: /routes/{routeId}
+            Method: delete
+
+  GetClimbLambda:
+    Type: AWS::Serverless::Function
+    Properties:
+      Role: !GetAtt AccessRole.Arn
+      CodeUri: ClimbingGymCompanionServiceLambda
+      Handler: com.nashss.se.climbinggymcompanionservice.lambda.GetClimbLambda::handleRequest
+      Runtime: java11
+      Architectures:
+        - x86_64
+      MemorySize: 512
+      Environment:
+        Variables:
+          JAVA_TOOL_OPTIONS: -XX:+TieredCompilation -XX:TieredStopAtLevel=1
+      Events:
+        RiverPetSittingService:
+          Type: Api
+          Properties:
+            Path: /climbs/{climbId}
+            Method: get
+
+  GetRouteLambda:
+    Type: AWS::Serverless::Function
+    Properties:
+      Role: !GetAtt AccessRole.Arn
+      CodeUri: ClimbingGymCompanionServiceLambda
+      Handler: com.nashss.se.climbinggymcompanionservice.lambda.GetRouteLambda::handleRequest
+      Runtime: java11
+      Architectures:
+        - x86_64
+      MemorySize: 512
+      Environment:
+        Variables:
+          JAVA_TOOL_OPTIONS: -XX:+TieredCompilation -XX:TieredStopAtLevel=1
+      Events:
+        RiverPetSittingService:
+          Type: Api
+          Properties:
+            Path: /routes/{routeId}
+            Method: get
+
+  UpdateClimbLambda:
+    Type: AWS::Serverless::Function
+    Properties:
+      Role: !GetAtt AccessRole.Arn
+      CodeUri: ClimbingGymCompanionServiceLambda
+      Handler: com.nashss.se.climbinggymcompanionservice.lambda.UpdateClimbLambda::handleRequest
+      Runtime: java11
+      Architectures:
+        - x86_64
+      MemorySize: 512
+      Environment:
+        Variables:
+          JAVA_TOOL_OPTIONS: -XX:+TieredCompilation -XX:TieredStopAtLevel=1
+      Events:
+        RiverPetSittingService:
+          Type: Api
+          Properties:
+            Path: /climbs/{climbId}
             Method: put
 
-  AddSongToPlaylistLambda:
+  UpdateRouteLambda:
     Type: AWS::Serverless::Function
     Properties:
       Role: !GetAtt AccessRole.Arn
-      CodeUri: MusicPlaylistServiceLambda
-      Handler: com.nashss.se.musicplaylistservice.lambda.AddSongToPlaylistLambda::handleRequest
+      CodeUri: ClimbingGymCompanionServiceLambda
+      Handler: com.nashss.se.climbinggymcompanionservice.lambda.UpdateRouteLambda::handleRequest
       Runtime: java11
       Architectures:
         - x86_64
@@ -340,43 +374,60 @@ Resources:
         Variables:
           JAVA_TOOL_OPTIONS: -XX:+TieredCompilation -XX:TieredStopAtLevel=1
       Events:
-        MusicPlaylistService:
+        RiverPetSittingService:
           Type: Api
           Properties:
-            Path: /playlists/{id}/songs
-            Method: post
+            Path: /routes/{routeId}
+            Method: put
 
   #-----------------------------------------------------
   # DynamoDB Configuration
   #-----------------------------------------------------
   
-  PlaylistsTable:
+  RoutesTable:
     Type: AWS::DynamoDB::Table
     Properties:
       AttributeDefinitions:
-        - AttributeName: "id"
+        - AttributeName: "route_id"
+          AttributeType: "S"
+        - AttributeName: "location"
+          AttributeType: "S"
+        - AttributeName: "difficulty"
           AttributeType: "S"
       KeySchema:
-        - AttributeName: "id"
+        - AttributeName: "route_id"
           KeyType: "HASH"
       BillingMode: "PAY_PER_REQUEST"
-      TableName: "playlists"
+      TableName: "routes"
+      GlobalSecondaryIndexes:
+        - IndexName: "RoutesByLocationIndex"
+          KeySchema:
+            - AttributeName: "location"
+              KeyType: "HASH"
+          Projection:
+            ProjectionType: "ALL"
+        - IndexName: "RoutesByDifficultyIndex"
+          KeySchema:
+            - AttributeName: "difficulty"
+              KeyType: "HASH"
+          Projection:
+            ProjectionType: "ALL"
 
-  AlbumTracksTable:
+  ClimbsTable:
     Type: AWS::DynamoDB::Table
     Properties:
       AttributeDefinitions:
-        - AttributeName: "asin"
+        - AttributeName: "climb_id"
           AttributeType: "S"
-        - AttributeName: "track_number"
-          AttributeType: "N"
+        - AttributeName: "user_id"
+          AttributeType: "S"
       KeySchema:
-        - AttributeName: "asin"
+        - AttributeName: "climb_id"
           KeyType: "HASH"
-        - AttributeName: "track_number"
+        - AttributeName: "user_id"
           KeyType: "RANGE"
       BillingMode: "PAY_PER_REQUEST"
-      TableName: "album_tracks"
+      TableName: "climbs"
 
 #-----------------------------------------------------
 # The outputs defined below will be printed

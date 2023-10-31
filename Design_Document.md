@@ -36,8 +36,8 @@ We will store climb and route data in different DynamoDB tables. 
 
 ==ClimbingGymCompanionService== will also provide a web interface for users to manage their climbs. A main page providing a list view of all the available routes where they can click on a route for details or link off to pages to log/update metadata for a new climb or update a route.
 
-PlantUML Diagram:
-[PlantUML Source Code](UML%20Diagram.puml)
+PlantUML Class Diagram:
+[PlantUML Source Code](Diagram-UML-CD.puml)
 
 
 ## 6. API
@@ -59,6 +59,8 @@ String pictureKey;
 ```
 //Climb Model
 String climbId;
+String routeId;
+String userId;
 Enum Status;
 LocalDateandTime dateTime;
 Boolean rating; (thumbsUp = true)
@@ -68,7 +70,7 @@ String notes;
 ### 6.2. Endpoints
 
 example Sequence Diagram:
-[GetRoute Sequence Diagram Source Code](GetClimb-SD.puml)
+[GetRoute Sequence Diagram Source Code](Diagram-GetClimb-SD.puml)
 
 #### 6.2.1 *Get single Route Endpoint*
 - Accepts `GET` requests to `/routes/:routeId`
@@ -80,7 +82,7 @@ example Sequence Diagram:
 #### 6.2.3. Create Climb Endpoint*
 - Accepts a `POST` request to `/climbs/:climbId`
 - Takes the user ID from cognito
-- Accepts data to create a new climb with a provided user ID,  status, optional rating, optional notes and returns a corresponding climbModel with a climb ID assigned by the service.
+- Accepts data to create a new climb with a provided userID,  status, optional rating, optional notes and returns a corresponding climbModel with a climb ID assigned by the service.
 #### 6.2.4. *Get single Climb by user Endpoint*
 - Accepts a `GET` request to `/climbs/:climbId`
 - Takes the user ID from cognito
@@ -132,6 +134,7 @@ pictureKey // String
 
 ```
 climbId // Partition key, String
+userId // sort key, String
 routeId // String
 status // String
 dateTime // String (converted dateTime)
@@ -144,14 +147,12 @@ notes // String
 
 ```
 location // Partition key, String
-routeId // Sort key, String
 ```
 
 ### 7.4 `RoutesByDifficultyIndex` GSI table
 
 ```
-routeId // String
-difficulty // String
+difficulty // Partition key, String
 ```
 
 # 8. Page storyboard
