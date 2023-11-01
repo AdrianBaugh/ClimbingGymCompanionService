@@ -7,6 +7,10 @@ As a user at my local climbing gym, I want to log my climbs to monitor progress 
 ## 2. Top Questions to Resolve in Review
 1. Best way to add pictures of routes?
 2. How to handle bouldering routes which vary in number? maybe not in scope
+3. Should I do a batch write with a data.json file to populate ALL the route data at once or make a createRoute endpoint to add all the routes one by one in person?
+4. what happens when a route is updated?
+   5. is that route deleted? soft delete? updated and old data is overwritten? when a user wants to view an old climb and that route is no longer the same what do they see?
+
 ## 3. Use Cases
 
 1. As a user I want log a new climb, give it a status, rating, and optional notes
