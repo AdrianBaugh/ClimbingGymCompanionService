@@ -390,13 +390,17 @@ Resources:
       AttributeDefinitions:
         - AttributeName: "route_id"
           AttributeType: "S"
+        - AttributeName: "isActive"
+          AttributeType: "BOOL"
         - AttributeName: "location"
           AttributeType: "S"
         - AttributeName: "difficulty"
           AttributeType: "S"
       KeySchema:
-        - AttributeName: "route_id"
+        - AttributeName: "isActive"
           KeyType: "HASH"
+        - AttributeName: "route_id"
+          KeyType: "RANGE"
       BillingMode: "PAY_PER_REQUEST"
       TableName: "routes"
       GlobalSecondaryIndexes:
@@ -406,9 +410,9 @@ Resources:
               KeyType: "HASH"
           Projection:
             ProjectionType: "ALL"
-        - IndexName: "RoutesByDifficultyIndex"
+        - IndexName: "RoutesByIsActiveIndex"
           KeySchema:
-            - AttributeName: "difficulty"
+            - AttributeName: "isActive"
               KeyType: "HASH"
           Projection:
             ProjectionType: "ALL"
@@ -423,9 +427,9 @@ Resources:
           AttributeType: "S"
       KeySchema:
         - AttributeName: "climb_id"
-          KeyType: "HASH"
-        - AttributeName: "user_id"
           KeyType: "RANGE"
+        - AttributeName: "user_id"
+          KeyType: "HASH"
       BillingMode: "PAY_PER_REQUEST"
       TableName: "climbs"
 
