@@ -83,7 +83,7 @@ example Sequence Diagram:
 	- If the given route ID is not found throw a `RouteNotFoundException`
 #### 6.2.2 *Get All active Routes Endpoint*
 - Accepts `GET` requests to `/routes/:routeStatus` (status != ARCHIVED)
-- Returns all currently active routes as a list of routeModels
+- Returns all routes not currently archived as a list of routeModels
 #### 6.2.3. Create Climb Endpoint*
 - Accepts a `POST` request to `/climbs/:climbId`
 - Takes the user ID from cognito
@@ -94,7 +94,7 @@ example Sequence Diagram:
 - Accepts a user ID and climbID and returns a corresponding climbModel
 	- If the given climb ID is not found throw a `ClimbNotFoundException`
 #### 6.2.5. _Get All Climbs by user Endpoint_
-- Accepts a `GET` request to `/climbs/:`
+- Accepts a `GET` request to `/climbs`
 - Takes the user ID from cognito
 -  Returns all the user's climbs as a list of climbModels
 #### 6.2.6. _Delete Climb Endpoint_
