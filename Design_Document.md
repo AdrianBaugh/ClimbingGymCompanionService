@@ -50,7 +50,7 @@ PlantUML Class Diagram:
 
 ```
 // Route Model
-Boolean isActive;
+Enum routeStatus;
 String routeId;
 Enum location;
 Enum type;
@@ -82,7 +82,7 @@ example Sequence Diagram:
 - Accepts a route ID and returns a corresponding routeModel
 	- If the given route ID is not found throw a `RouteNotFoundException`
 #### 6.2.2 *Get All active Routes Endpoint*
-- Accepts `GET` requests to `/routes/:isActive`
+- Accepts `GET` requests to `/routes/:routeStatus` (status != ARCHIVED)
 - Returns all currently active routes as a list of routeModels
 #### 6.2.3. Create Climb Endpoint*
 - Accepts a `POST` request to `/climbs/:climbId`
@@ -123,8 +123,8 @@ example Sequence Diagram:
 ### 7.1 `routes`
 
 ```
-isActive // Partition key,Boolean
-routeId // Sort key, string
+routeId // Partition key, string
+routeStatus // String
 location // String
 color // String
 type // String
@@ -156,10 +156,10 @@ notes // String
 location // Partition key, String
 ```
 
-### 7.4 `RoutesByDifficultyIndex` GSI table
+### 7.4 `RoutesByStatusIndex` GSI table
 
 ```
-difficulty // Partition key, String
+routeStatus // Partition key, String
 ```
 
 # 8. Page storyboard
