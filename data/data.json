@@ -75,7 +75,7 @@
           "routeId": { "S": "4::Blue::2023-11-02" },
           "status": { "S": "Projecting" },
           "dateTime": { "S": "2023-11-02T18:25:43.511Z" },
-          "rating": { "B": false},
+          "rating": { "BOOL": false},
           "notes": { "S":  "not for short people"}
         }
       }
@@ -88,7 +88,7 @@
           "routeId": { "S": "2::Yellow::2023-11-02" },
           "status": { "S": "Completed" },
           "dateTime": { "S": "2023-11-02T18:35:05.111Z" },
-          "rating": { "B": true},
+          "rating": { "BOOL": true},
           "notes":  { "S":  "dynamic move at very middle of route, tough crimp holds at top"}
         }
       }
