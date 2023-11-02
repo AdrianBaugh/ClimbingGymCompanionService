@@ -4,7 +4,7 @@
       "PutRequest": {
         "Item": {
           "routeId": { "S": "1::Purple::2023-11-02" },
-          "isActive": { "BOOL": true},
+          "isActive": { "B": true},
           "location": { "S": "1" },
           "difficulty": { "S": "5.7" },
           "color": { "S": "Purple" },
@@ -17,7 +17,7 @@
       "PutRequest": {
         "Item": {
           "routeId": { "S": "2::Yellow::2023-11-02" },
-          "isActive": { "BOOL": true},
+          "isActive": { "B": true},
           "location": { "S": "2" },
           "difficulty": { "S": "5.12-" },
           "color": { "S": "Yellow" },
@@ -30,7 +30,7 @@
       "PutRequest": {
         "Item": {
           "routeId": { "S": "3::Red::2023-11-02" },
-          "isActive": { "BOOL": false},
+          "isActive": { "B": false},
           "location": { "S": "3" },
           "difficulty": { "S": "5.9" },
           "color": { "S": "Red" },
@@ -43,7 +43,7 @@
       "PutRequest": {
         "Item": {
           "routeId": { "S": "4::Blue::2023-11-02" },
-          "isActive": { "BOOL": true},
+          "isActive": { "B": true},
           "location": { "S": "4" },
           "difficulty": { "S": "5.10+" },
           "color": { "S": "Blue" },
@@ -56,7 +56,7 @@
       "PutRequest": {
         "Item": {
           "routeId": { "S": "Cave::Green::2023-11-02" },
-          "isActive": { "BOOL": false},
+          "isActive": { "B": false},
           "location": { "S": "Cave" },
           "difficulty": { "S": "V2-V3" },
           "color": { "S": "Green" },
@@ -75,7 +75,7 @@
           "routeId": { "S": "4::Blue::2023-11-02" },
           "status": { "S": "Projecting" },
           "dateTime": { "S": "2023-11-02T18:25:43.511Z" },
-          "rating": { "BOOL": false},
+          "rating": { "B": false},
           "notes": { "S":  "not for short people"}
         }
       }
@@ -88,7 +88,7 @@
           "routeId": { "S": "2::Yellow::2023-11-02" },
           "status": { "S": "Completed" },
           "dateTime": { "S": "2023-11-02T18:35:05.111Z" },
-          "rating": { "BOOL": true},
+          "rating": { "B": true},
           "notes":  { "S":  "dynamic move at very middle of route, tough crimp holds at top"}
         }
       }
