@@ -80,7 +80,7 @@
         "Item": {
           "climbId": { "S": "O8GDb" },
           "userId": { "S": "test2" },
-          "routeId": { "N": "2::Yellow::2023-11-02" },
+          "routeId": { "S": "2::Yellow::2023-11-02" },
           "status": { "S": "Completed" },
           "dateTime": { "S": "2023-11-02T18:35:05.111Z" },
           "rating": { "BOOL": true},
