@@ -390,12 +390,12 @@ Resources:
       AttributeDefinitions:
         - AttributeName: "route_id"
           AttributeType: "S"
-        - AttributeName: "isActive"
+        - AttributeName: "is_Active"
           AttributeType: "BOOL"
         - AttributeName: "location"
           AttributeType: "S"
       KeySchema:
-        - AttributeName: "isActive"
+        - AttributeName: "is_Active"
           KeyType: "HASH"
         - AttributeName: "route_id"
           KeyType: "RANGE"
@@ -410,7 +410,7 @@ Resources:
             ProjectionType: "ALL"
         - IndexName: "RoutesByIsActiveIndex"
           KeySchema:
-            - AttributeName: "isActive"
+            - AttributeName: "is_Active"
               KeyType: "HASH"
           Projection:
             ProjectionType: "ALL"
