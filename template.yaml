@@ -390,15 +390,13 @@ Resources:
       AttributeDefinitions:
         - AttributeName: "routeId"
           AttributeType: "S"
-        - AttributeName: "isActive"
-          AttributeType: "B"
+        - AttributeName: "routeStatus"
+          AttributeType: "S"
         - AttributeName: "location"
           AttributeType: "S"
       KeySchema:
-        - AttributeName: "isActive"
-          KeyType: "HASH"
         - AttributeName: "routeId"
-          KeyType: "RANGE"
+          KeyType: "HASH"
       BillingMode: "PAY_PER_REQUEST"
       TableName: "routes"
       GlobalSecondaryIndexes:
@@ -408,9 +406,9 @@ Resources:
               KeyType: "HASH"
           Projection:
             ProjectionType: "ALL"
-        - IndexName: "RoutesByIsActiveIndex"
+        - IndexName: "RoutesByStatusIndex"
           KeySchema:
-            - AttributeName: "isActive"
+            - AttributeName: "routeStatus"
               KeyType: "HASH"
           Projection:
             ProjectionType: "ALL"
