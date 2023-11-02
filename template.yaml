@@ -391,7 +391,7 @@ Resources:
         - AttributeName: "routeId"
           AttributeType: "S"
         - AttributeName: "isActive"
-          AttributeType: "BOOL"
+          AttributeType: "B"
         - AttributeName: "location"
           AttributeType: "S"
       KeySchema:
