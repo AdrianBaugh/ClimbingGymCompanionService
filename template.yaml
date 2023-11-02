@@ -234,7 +234,7 @@ Resources:
         Variables:
           JAVA_TOOL_OPTIONS: -XX:+TieredCompilation -XX:TieredStopAtLevel=1
       Events:
-        MusicPlaylistService:
+        ClimbingGymCompanionService:
           Type: Api
           Properties:
             Path: /climbs/
@@ -254,7 +254,7 @@ Resources:
         Variables:
           JAVA_TOOL_OPTIONS: -XX:+TieredCompilation -XX:TieredStopAtLevel=1
       Events:
-        MusicPlaylistService:
+        ClimbingGymCompanionService:
           Type: Api
           Properties:
             Path: /routes/
@@ -274,7 +274,7 @@ Resources:
         Variables:
           JAVA_TOOL_OPTIONS: -XX:+TieredCompilation -XX:TieredStopAtLevel=1
       Events:
-        RiverPetSittingService:
+        ClimbingGymCompanionService:
           Type: Api
           Properties:
             Path: /climbs/{climbId}
@@ -294,7 +294,7 @@ Resources:
         Variables:
           JAVA_TOOL_OPTIONS: -XX:+TieredCompilation -XX:TieredStopAtLevel=1
       Events:
-        RiverPetSittingService:
+        ClimbingGymCompanionService:
           Type: Api
           Properties:
             Path: /routes/{routeId}
@@ -314,7 +314,7 @@ Resources:
         Variables:
           JAVA_TOOL_OPTIONS: -XX:+TieredCompilation -XX:TieredStopAtLevel=1
       Events:
-        RiverPetSittingService:
+        ClimbingGymCompanionService:
           Type: Api
           Properties:
             Path: /climbs/{climbId}
@@ -334,7 +334,7 @@ Resources:
         Variables:
           JAVA_TOOL_OPTIONS: -XX:+TieredCompilation -XX:TieredStopAtLevel=1
       Events:
-        RiverPetSittingService:
+        ClimbingGymCompanionService:
           Type: Api
           Properties:
             Path: /routes/{routeId}
@@ -354,7 +354,7 @@ Resources:
         Variables:
           JAVA_TOOL_OPTIONS: -XX:+TieredCompilation -XX:TieredStopAtLevel=1
       Events:
-        RiverPetSittingService:
+        ClimbingGymCompanionService:
           Type: Api
           Properties:
             Path: /climbs/{climbId}
@@ -374,7 +374,7 @@ Resources:
         Variables:
           JAVA_TOOL_OPTIONS: -XX:+TieredCompilation -XX:TieredStopAtLevel=1
       Events:
-        RiverPetSittingService:
+        ClimbingGymCompanionService:
           Type: Api
           Properties:
             Path: /routes/{routeId}
