@@ -388,16 +388,16 @@ Resources:
     Type: AWS::DynamoDB::Table
     Properties:
       AttributeDefinitions:
-        - AttributeName: "route_id"
+        - AttributeName: "routeId"
           AttributeType: "S"
-        - AttributeName: "is_Active"
+        - AttributeName: "isActive"
           AttributeType: "BOOL"
         - AttributeName: "location"
           AttributeType: "S"
       KeySchema:
-        - AttributeName: "is_Active"
+        - AttributeName: "isActive"
           KeyType: "HASH"
-        - AttributeName: "route_id"
+        - AttributeName: "routeId"
           KeyType: "RANGE"
       BillingMode: "PAY_PER_REQUEST"
       TableName: "routes"
@@ -410,7 +410,7 @@ Resources:
             ProjectionType: "ALL"
         - IndexName: "RoutesByIsActiveIndex"
           KeySchema:
-            - AttributeName: "is_Active"
+            - AttributeName: "isActive"
               KeyType: "HASH"
           Projection:
             ProjectionType: "ALL"
@@ -419,14 +419,14 @@ Resources:
     Type: AWS::DynamoDB::Table
     Properties:
       AttributeDefinitions:
-        - AttributeName: "climb_id"
+        - AttributeName: "climbId"
           AttributeType: "S"
-        - AttributeName: "user_id"
+        - AttributeName: "userId"
           AttributeType: "S"
       KeySchema:
-        - AttributeName: "user_id"
+        - AttributeName: "userId"
           KeyType: "HASH"
-        - AttributeName: "climb_id"
+        - AttributeName: "climbId"
           KeyType: "RANGE"
       BillingMode: "PAY_PER_REQUEST"
       TableName: "climbs"
