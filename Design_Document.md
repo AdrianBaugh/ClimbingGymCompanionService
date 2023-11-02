@@ -5,11 +5,11 @@
 As a user at my local climbing gym, I want to log my climbs to monitor progress on different routes. I want to write optional notes about my climbs. I want to view my climbing history and status achieved for those routes. Routes will be viewable by all users. Changes or updates, such as difficulty or route color, will be crowd-sourced. There will also be the ability to upload a view a picture of the route.
 
 ## 2. Top Questions to Resolve in Review
-1. Best way to add pictures of routes?
+1. Best way to add pictures of routes to S3 bucket?
 2. How to handle bouldering routes which vary in number? maybe not in scope
 3. Should I do a batch write with a data.json file to populate ALL the route data at once or make a createRoute endpoint to add all the routes one by one in person?
 4. what happens when a route is updated?
-   5. is that route deleted? soft delete? updated and old data is overwritten? when a user wants to view an old climb and that route is no longer the same what do they see?
+	5. is that route deleted? soft delete? updated and old data is overwritten? when a user wants to view an old climb and that route is no longer the same what do they see?
 
 ## 3. Use Cases
 
@@ -34,7 +34,7 @@ As a user at my local climbing gym, I want to log my climbs to monitor progress 
 
 This initial iteration will provide the minimum lovable product (MLP) including creating, retrieving, and updating a climb, as well as updating and retrieving the current routes in the gym.
 
-We will use API Gateway and Lambda to create 7 endpoints (`GetClimb`, `CreateClimb`, `UpdateClimb`, `DeleteClimb`, ` DeleteRoute`,  `UpdateRoute`, and `GetRoute`) that will handle the creation, update, and retrieval of climbs and routes to satisfy our requirements.
+We will use API Gateway and Lambda to create 9 endpoints (`GetClimb`, `CreateClimb`, `UpdateClimb`, `DeleteClimb`, `DeleteRoute`, `CreateRoute`,  `UpdateRoute`, and `GetRoute`) that will handle the creation, update, and retrieval of climbs and routes to satisfy our requirements.
 
 We will store climb and route data in different DynamoDB tables. 
 
@@ -50,13 +50,14 @@ PlantUML Class Diagram:
 
 ```
 // Route Model
+Enum routeStatus;
 String routeId;
-String location;
+Enum location;
 Enum type;
 String difficulty;
-LocalDateandTime dateLastUpdated;
-String color;
-Integer thumbsUpPercent;
+Date dateCreated;
+Enum color;
+Integer rating; (thumbsUp percent to total ratings)
 String pictureKey;
 ```
 
@@ -66,7 +67,7 @@ String climbId;
 String routeId;
 String userId;
 Enum Status;
-LocalDateandTime dateTime;
+LocalDateandTime dateTimeClimbed;
 Boolean rating; (thumbsUp = true)
 String notes;
 ```
@@ -80,9 +81,9 @@ example Sequence Diagram:
 - Accepts `GET` requests to `/routes/:routeId`
 - Accepts a route ID and returns a corresponding routeModel
 	- If the given route ID is not found throw a `RouteNotFoundException`
-#### 6.2.2 *Get All Routes Endpoint*
-- Accepts `GET` requests to `/routes/:`
-- Returns all routes as a list of routeModels
+#### 6.2.2 *Get All active Routes Endpoint*
+- Accepts `GET` requests to `/routes/:routeStatus` (status != ARCHIVED)
+- Returns all currently active routes as a list of routeModels
 #### 6.2.3. Create Climb Endpoint*
 - Accepts a `POST` request to `/climbs/:climbId`
 - Takes the user ID from cognito
@@ -123,29 +124,31 @@ example Sequence Diagram:
 
 ```
 routeId // Partition key, string
+routeStatus // String
 location // String
 color // String
 type // String
 difficulty // String
-dateTime // String (converted dateTime)
-thumbsUpPercent // Interger (number type)
+dateCreated // String (converted dateTime)
+rating // Integer (number type)
 pictureKey // String
 ```
-- Key Structure: `location:: + color`
+- Sort Key Structure: `location:: + color:: + dateCreated`
 	- top rope/lead location = number
 	- bouldering location = wall location (slab, island, cave)
+
 ### 7.2 `climbs`
 
 ```
-climbId // Partition key, String
-userId // sort key, String
+userId // Partition key, String
+climbId // Sort key, String
 routeId // String
 status // String
-dateTime // String (converted dateTime)
+dateTimeClimbed // String (converted dateTime)
 rating // BOOL (thumbsUp = true)
 notes // String
 ```
-- Key Structure: `RandomStringUtils.randomAlphanumeric(MAX_ID_LENGTH);`
+- Sort Key Structure: `RandomStringUtils.randomAlphanumeric(MAX_ID_LENGTH):: + dateTime`
 
 ### 7.3 `RoutesByLocationIndex` GSI table
 
@@ -153,10 +156,10 @@ notes // String
 location // Partition key, String
 ```
 
-### 7.4 `RoutesByDifficultyIndex` GSI table
+### 7.4 `RoutesByStatusIndex` GSI table
 
 ```
-difficulty // Partition key, String
+routeStatus // Partition key, String
 ```
 
 # 8. Page storyboard
@@ -167,6 +170,7 @@ difficulty // Partition key, String
 Example map of gym and route locations:
 
 <img src="assets/IMG_4545.jpg" alt="gym map" width="50%" />
+
 
 
 
