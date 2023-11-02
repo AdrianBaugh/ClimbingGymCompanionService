@@ -52,12 +52,12 @@ PlantUML Class Diagram:
 // Route Model
 Boolean isActive;
 String routeId;
-String location;
+Enum location;
 Enum type;
 String difficulty;
 Date dateCreated;
-String color;
-Integer thumbsUpPercent;
+Enum color;
+Integer rating; (thumbsUp percent to total ratings)
 String pictureKey;
 ```
 
@@ -130,7 +130,7 @@ color // String
 type // String
 difficulty // String
 dateCreated // String (converted dateTime)
-thumbsUpPercent // Integer (number type)
+rating // Integer (number type)
 pictureKey // String
 ```
 - Sort Key Structure: `location:: + color:: + dateCreated`
@@ -144,7 +144,7 @@ userId // Partition key, String
 climbId // Sort key, String
 routeId // String
 status // String
-dateTime // String (converted dateTime)
+dateTimeClimbed // String (converted dateTime)
 rating // BOOL (thumbsUp = true)
 notes // String
 ```
