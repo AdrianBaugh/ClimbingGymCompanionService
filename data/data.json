@@ -1,0 +1,92 @@
+{
+  "routes": [
+    {
+      "PutRequest": {
+        "Item": {
+          "routeId": { "S": "1::Purple::2023-11-02" },
+          "location": { "S": "1" },
+          "difficulty": { "S": "5.7" },
+          "color": { "S": "Purple" },
+          "dateSet": { "S": "2023-11-02"},
+          "thumbsUpPercent": { "N": "95"}
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "routeId": { "S": "2::Yellow::2023-11-02" },
+          "location": { "S": "2" },
+          "difficulty": { "S": "5.12-" },
+          "color": { "S": "Yellow" },
+          "dateSet":  { "S": "2023-11-02"},
+          "thumbsUpPercent":  { "N": "95"}
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "routeId": { "S": "3::Red::2023-11-02" },
+          "location": { "S": "3" },
+          "difficulty": { "S": "5.9" },
+          "color": { "S": "Red" },
+          "dateSet":  { "S": "2023-11-02"},
+          "thumbsUpPercent":  { "N": "95"}
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "routeId": { "S": "4::Blue::2023-11-02" },
+          "location": { "S": "4" },
+          "difficulty": { "S": "5.10+" },
+          "color": { "S": "Blue" },
+          "dateSet":  { "S": "2023-11-02"},
+          "thumbsUpPercent":  { "N": "95"}
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "routeId": { "S": "Cave::Green::2023-11-02" },
+          "location": { "S": "Cave" },
+          "difficulty": { "S": "V2-V3" },
+          "color": { "S": "Green" },
+          "dateSet":  { "S": "2023-11-02"},
+          "thumbsUpPercent":  { "N": "95"}
+        }
+      }
+    }
+  ],
+  "climbs": [
+    {
+      "PutRequest": {
+        "Item": {
+          "climbId": { "S": "O7SFa" },
+          "userId": { "S": "test1" },
+          "routeId": { "N": "4::Blue::2023-11-02" },
+          "status": { "S": "Projecting" },
+          "dateTime": { "S": "2023-11-02T18:25:43.511Z" },
+          "rating": { "BOOL": false},
+          "notes": { "S":  "not for short people"}
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "climbId": { "S": "O8GDb" },
+          "userId": { "S": "test2" },
+          "routeId": { "N": "2::Yellow::2023-11-02" },
+          "status": { "S": "Completed" },
+          "dateTime": { "S": "2023-11-02T18:35:05.111Z" },
+          "rating": { "BOOL": true},
+          "notes":  { "S":  "dynamic move at very middle of route, tough crimp holds at top"}
+        }
+      }
+    }
+  ]
+}
