@@ -1,10 +1,6 @@
 package com.nashss.se.ClimbingGymCompanionService.dynamodb.pojos;
 
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBAttribute;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBHashKey;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBRangeKey;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTypeConverted;
+import com.amazonaws.services.dynamodbv2.datamodeling.*;
 import com.nashss.se.ClimbingGymCompanionService.converters.LocalDateTimeConverter;
 
 import java.time.LocalDateTime;
@@ -64,7 +60,8 @@ public class Climb {
         this.dateTimeClimbed = dateTimeClimbed;
     }
     @DynamoDBAttribute(attributeName = "thumbsUp")
-    public Boolean getThumbsUp() {
+    @DynamoDBTyped(DynamoDBMapperFieldModel.DynamoDBAttributeType.BOOL)
+    public Boolean isThumbsUp() {
         return thumbsUp;
     }
 
