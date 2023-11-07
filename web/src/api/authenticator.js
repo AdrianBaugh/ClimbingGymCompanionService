@@ -47,7 +47,7 @@ export default class Authenticator extends BindingClass {
                 domain: process.env.COGNITO_DOMAIN,
                 redirectSignIn: process.env.COGNITO_REDIRECT_SIGNIN,
                 redirectSignOut: process.env.COGNITO_REDIRECT_SIGNOUT,
-                region: 'us-east-1',
+                region: 'us-east-2',
                 scope: ['email', 'openid', 'phone', 'profile'],
                 responseType: 'code'
             }
