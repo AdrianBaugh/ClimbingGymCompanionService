@@ -66,9 +66,9 @@ String pictureKey;
 String climbId;
 String routeId;
 String userId;
-Enum Status;
+Enum climbStatus;
 LocalDateandTime dateTimeClimbed;
-Boolean rating; (thumbsUp = true)
+Boolean thumbsUp; (liked route = true)
 String notes;
 ```
 
@@ -143,7 +143,7 @@ pictureKey // String
 userId // Partition key, String
 climbId // Sort key, String
 routeId // String
-status // String
+climbStatus // String
 dateTimeClimbed // String (converted dateTime)
 rating // BOOL (thumbsUp = true)
 notes // String

@@ -379,6 +379,28 @@ Resources:
           Properties:
             Path: /routes/{routeId}
             Method: put
+# UNCOMMENT WHEN READY
+#  GetAllActiveRoutesLambda:
+#    Type: AWS::Serverless::Function
+#    Properties:
+#      Role: !GetAtt AccessRole.Arn
+#      CodeUri: ClimbingGymCompanionServiceLambda
+#      Handler: com.nashss.se.climbinggymcompanionservice.lambda.GetAllActiveRoutesLambda::handleRequest
+#      Runtime: java11
+#      Architectures:
+#        - x86_64
+#      MemorySize: 512
+#      Environment:
+#        Variables:
+#          JAVA_TOOL_OPTIONS: -XX:+TieredCompilation -XX:TieredStopAtLevel=1
+#      Events:
+#        RiverPetSittingService:
+#          Type: Api
+#          Properties:
+#            Path: /routes/:routeStatus
+#            Method: get
+#            Auth:
+#              Authorizer: 'NONE'
 
   #-----------------------------------------------------
   # DynamoDB Configuration
