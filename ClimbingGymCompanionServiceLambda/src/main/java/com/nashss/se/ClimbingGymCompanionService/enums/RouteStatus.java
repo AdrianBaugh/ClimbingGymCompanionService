@@ -1,6 +1,6 @@
 package com.nashss.se.ClimbingGymCompanionService.enums;
 
-public enum routeStatus {
+public enum RouteStatus {
     ACTIVE,
     ARCHIVED,
     CLOSED_MAINTENANCE,

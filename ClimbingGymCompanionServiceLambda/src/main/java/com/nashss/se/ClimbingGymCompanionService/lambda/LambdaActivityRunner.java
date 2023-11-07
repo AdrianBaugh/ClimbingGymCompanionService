@@ -2,6 +2,7 @@ package com.nashss.se.ClimbingGymCompanionService.lambda;
 
 import com.nashss.se.ClimbingGymCompanionService.dependency.DaggerServiceComponent;
 import com.nashss.se.ClimbingGymCompanionService.dependency.ServiceComponent;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

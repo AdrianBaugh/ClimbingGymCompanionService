@@ -1,6 +1,6 @@
 package com.nashss.se.ClimbingGymCompanionService.enums;
 
-public enum routeColor {
+public enum RouteColor {
     BLACK,
     WHITE,
     RED,

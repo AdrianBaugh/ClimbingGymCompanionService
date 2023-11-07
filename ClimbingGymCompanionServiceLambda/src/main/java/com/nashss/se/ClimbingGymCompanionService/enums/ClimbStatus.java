@@ -1,6 +1,6 @@
 package com.nashss.se.ClimbingGymCompanionService.enums;
 
-public enum climbStatus {
+public enum ClimbStatus {
     // first attempt completion start to finish
     COMPLETED_FLASHED,
     // completion start to finish

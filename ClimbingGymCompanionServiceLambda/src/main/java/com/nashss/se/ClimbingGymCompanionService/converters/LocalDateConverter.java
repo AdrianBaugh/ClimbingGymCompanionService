@@ -13,8 +13,8 @@ public class LocalDateConverter implements DynamoDBTypeConverter<String, LocalDa
     }
 
     @Override
-        public LocalDate unconvert(String dateRepresentation) {
-            return LocalDate.parse(dateRepresentation);
-        }
+    public LocalDate unconvert(String dateRepresentation) {
+        return LocalDate.parse(dateRepresentation);
+    }
 
 }

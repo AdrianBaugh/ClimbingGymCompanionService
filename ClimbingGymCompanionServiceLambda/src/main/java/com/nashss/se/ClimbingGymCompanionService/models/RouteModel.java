@@ -65,8 +65,12 @@ public class RouteModel {
 
     @Override
     public boolean equals(Object other) {
-        if (this == other) return true;
-        if (other == null || getClass() != other.getClass()) return false;
+        if (this == other) {
+            return true;
+        }
+        if (other == null || getClass() != other.getClass()) {
+            return false;
+        }
         RouteModel that = (RouteModel) other;
         return Objects.equals(routeId, that.routeId) && Objects.equals(routeStatus, that.routeStatus) &&
                 Objects.equals(location, that.location) && Objects.equals(color, that.color) &&
@@ -79,8 +83,10 @@ public class RouteModel {
     public int hashCode() {
         return Objects.hash(routeId, routeStatus, location, color, type, difficulty, dateCreated, rating, pictureKey);
     }
-
-    public static ClimbModel.Builder builder() {return new ClimbModel.Builder();}
+    //CHECKSTYLE:OFF:Builder
+    public static Builder builder() {
+        return new Builder();
+    }
 
     public static class Builder {
         private String routeId;
@@ -136,6 +142,11 @@ public class RouteModel {
         public Builder withPictureKey(String pictureKey) {
             this.pictureKey = pictureKey;
             return this;
+        }
+
+        public RouteModel build() {
+            return new RouteModel(routeId, routeStatus, location, color, type,
+                    difficulty, dateCreated, rating, pictureKey);
         }
     }
 }
