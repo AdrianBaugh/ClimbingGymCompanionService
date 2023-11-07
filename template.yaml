@@ -397,7 +397,7 @@ Resources:
         RiverPetSittingService:
           Type: Api
           Properties:
-            Path: /routes/:routeStatus
+            Path: /routes/{routeStatus}
             Method: get
             Auth:
               Authorizer: 'NONE'
