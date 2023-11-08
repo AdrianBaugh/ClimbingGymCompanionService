@@ -1,15 +1,17 @@
 package com.nashss.se.ClimbingGymCompanionService.dynamodb.pojos;
 
-import com.amazonaws.services.dynamodbv2.datamodeling.*;
 import com.nashss.se.ClimbingGymCompanionService.converters.LocalDateConverter;
 
 import java.time.LocalDate;
 import java.util.Objects;
 
+import com.amazonaws.services.dynamodbv2.datamodeling.*;
+
 @DynamoDBTable(tableName = "routes")
 public class Route {
     private String routeId;
     private String routeStatus;
+    private Boolean isArchived;
     private String location;
     private String color;
     private String type;
@@ -36,6 +38,15 @@ public class Route {
 
     public void setRouteStatus(String routeStatus) {
         this.routeStatus = routeStatus;
+    }
+    @DynamoDBAttribute(attributeName = "isArchived")
+    @DynamoDBTyped(DynamoDBMapperFieldModel.DynamoDBAttributeType.BOOL)
+    public Boolean getArchived() {
+        return isArchived;
+    }
+
+    public void setArchived(Boolean archived) {
+        isArchived = archived;
     }
 
     @DynamoDBAttribute(attributeName = "location")
@@ -107,12 +118,17 @@ public class Route {
         if (this == other) return true;
         if (other == null || getClass() != other.getClass()) return false;
         Route route = (Route) other;
-        return Objects.equals(routeId, route.routeId) && Objects.equals(routeStatus, route.routeStatus) && Objects.equals(location, route.location) && Objects.equals(color, route.color) && Objects.equals(type, route.type) && Objects.equals(difficulty, route.difficulty) && Objects.equals(dateCreated, route.dateCreated) && Objects.equals(rating, route.rating) && Objects.equals(pictureKey, route.pictureKey);
+        return Objects.equals(routeId, route.routeId) && Objects.equals(routeStatus, route.routeStatus) &&
+                Objects.equals(isArchived, route.isArchived) && Objects.equals(location, route.location) &&
+                Objects.equals(color, route.color) && Objects.equals(type, route.type) &&
+                Objects.equals(difficulty, route.difficulty) && Objects.equals(dateCreated, route.dateCreated) &&
+                Objects.equals(rating, route.rating) && Objects.equals(pictureKey, route.pictureKey);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(routeId, routeStatus, location, color, type, difficulty, dateCreated, rating, pictureKey);
+        return Objects.hash(routeId, routeStatus, isArchived, location,
+                color, type, difficulty, dateCreated, rating, pictureKey);
     }
 
     @Override
@@ -120,6 +136,7 @@ public class Route {
         return "Route{" +
                 "routeId='" + routeId + '\'' +
                 ", routeStatus='" + routeStatus + '\'' +
+                ", isArchived=" + isArchived +
                 ", location='" + location + '\'' +
                 ", color='" + color + '\'' +
                 ", type='" + type + '\'' +

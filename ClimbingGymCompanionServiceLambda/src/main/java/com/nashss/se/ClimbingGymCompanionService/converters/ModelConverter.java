@@ -15,6 +15,7 @@ public class ModelConverter {
         return RouteModel.builder()
                 .withRouteId(route.getRouteId())
                 .withRouteStatus(route.getRouteStatus())
+                .withIsArchived(route.getArchived())
                 .withLocation(route.getLocation())
                 .withColor(route.getColor())
                 .withType(route.getType())

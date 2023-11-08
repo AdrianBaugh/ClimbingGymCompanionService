@@ -5,12 +5,14 @@ import com.nashss.se.ClimbingGymCompanionService.activity.results.GetAllActiveRo
 
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class GetAllActiveRoutesLambda
         extends LambdaActivityRunner<GetAllActiveRoutesRequest, GetAllActiveRoutesResult>
         implements RequestHandler<AuthenticatedLambdaRequest<GetAllActiveRoutesRequest>, LambdaResponse> {
 
-
+    private final Logger log = LogManager.getLogger();
     /**
      * Handles a Lambda Function request.
      *
@@ -20,15 +22,17 @@ public class GetAllActiveRoutesLambda
      */
     @Override
     public LambdaResponse handleRequest(AuthenticatedLambdaRequest<GetAllActiveRoutesRequest> input, Context context) {
-        return super.runActivity(
-                () -> {
-                    GetAllActiveRoutesRequest unauthenticatedRequest = input.fromBody(GetAllActiveRoutesRequest.class);
-                    return input.fromUserClaims(claims ->
-                            GetAllActiveRoutesRequest.builder()
-                                    .withExcludedStatus(unauthenticatedRequest.getExcludedStatus())
-                                    .build());
+        //from path and query
+        log.info("Entered handleRequest from GetAllActiveRoutesLambda");
 
-                },
+        //delete after its working
+        System.out.println("************Entered LAMBDA getAllActiveRoutes()************** ");
+
+        return super.runActivity(
+                () -> input.fromPathAndQuery((path, query) ->
+                        GetAllActiveRoutesRequest.builder()
+                                .withExcludedStatus(query.get("routeStatus"))
+                                .build()),
                 (request, serviceComponent) ->
                         serviceComponent.provideGetAllActiveRoutesActivity().handleRequest(request)
         );

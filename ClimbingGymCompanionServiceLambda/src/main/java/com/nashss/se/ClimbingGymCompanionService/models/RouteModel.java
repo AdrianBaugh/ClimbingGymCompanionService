@@ -6,6 +6,7 @@ import java.util.Objects;
 public class RouteModel {
     private String routeId;
     private String routeStatus;
+    private Boolean isArchived;
     private String location;
     private String color;
     private String type;
@@ -14,10 +15,12 @@ public class RouteModel {
     private Integer rating;
     private String pictureKey;
 
-    public RouteModel(String routeId, String routeStatus, String location, String color, String type, String difficulty,
-                      LocalDate dateCreated, Integer rating, String pictureKey) {
+    public RouteModel(String routeId, String routeStatus, Boolean isArchived, String location,
+                      String color, String type, String difficulty, LocalDate dateCreated,
+                      Integer rating, String pictureKey) {
         this.routeId = routeId;
         this.routeStatus = routeStatus;
+        this.isArchived = isArchived;
         this.location = location;
         this.color = color;
         this.type = type;
@@ -33,6 +36,10 @@ public class RouteModel {
 
     public String getRouteStatus() {
         return routeStatus;
+    }
+
+    public Boolean getArchived() {
+        return isArchived;
     }
 
     public String getLocation() {
@@ -65,24 +72,22 @@ public class RouteModel {
 
     @Override
     public boolean equals(Object other) {
-        if (this == other) {
-            return true;
-        }
-        if (other == null || getClass() != other.getClass()) {
-            return false;
-        }
+        if (this == other) return true;
+        if (other == null || getClass() != other.getClass()) return false;
         RouteModel that = (RouteModel) other;
         return Objects.equals(routeId, that.routeId) && Objects.equals(routeStatus, that.routeStatus) &&
-                Objects.equals(location, that.location) && Objects.equals(color, that.color) &&
-                Objects.equals(type, that.type) && Objects.equals(difficulty, that.difficulty) &&
-                Objects.equals(dateCreated, that.dateCreated) && Objects.equals(rating, that.rating) &&
-                Objects.equals(pictureKey, that.pictureKey);
+                Objects.equals(isArchived, that.isArchived) && Objects.equals(location, that.location) &&
+                Objects.equals(color, that.color) && Objects.equals(type, that.type) &&
+                Objects.equals(difficulty, that.difficulty) && Objects.equals(dateCreated, that.dateCreated) &&
+                Objects.equals(rating, that.rating) && Objects.equals(pictureKey, that.pictureKey);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(routeId, routeStatus, location, color, type, difficulty, dateCreated, rating, pictureKey);
+        return Objects.hash(routeId, routeStatus, isArchived, location, color,
+                type, difficulty, dateCreated, rating, pictureKey);
     }
+
     //CHECKSTYLE:OFF:Builder
     public static Builder builder() {
         return new Builder();
@@ -91,6 +96,7 @@ public class RouteModel {
     public static class Builder {
         private String routeId;
         private String routeStatus;
+        private Boolean isArchived;
         private String location;
         private String color;
         private String type;
@@ -106,6 +112,11 @@ public class RouteModel {
 
         public Builder withRouteStatus(String routeStatus) {
             this.routeStatus = routeStatus;
+            return this;
+        }
+
+        public Builder withIsArchived(Boolean isArchived) {
+            this.isArchived = isArchived;
             return this;
         }
 
@@ -145,7 +156,7 @@ public class RouteModel {
         }
 
         public RouteModel build() {
-            return new RouteModel(routeId, routeStatus, location, color, type,
+            return new RouteModel(routeId, routeStatus, isArchived, location, color, type,
                     difficulty, dateCreated, rating, pictureKey);
         }
     }
