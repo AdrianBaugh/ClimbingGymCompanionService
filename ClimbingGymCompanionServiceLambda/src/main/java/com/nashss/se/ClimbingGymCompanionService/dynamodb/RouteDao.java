@@ -4,8 +4,8 @@ import com.nashss.se.ClimbingGymCompanionService.dynamodb.pojos.Route;
 import com.nashss.se.ClimbingGymCompanionService.metrics.MetricsPublisher;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBScanExpression;
-import com.amazonaws.services.dynamodbv2.datamodeling.PaginatedScanList;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBQueryExpression;
+import com.amazonaws.services.dynamodbv2.datamodeling.PaginatedQueryList;
 import com.amazonaws.services.dynamodbv2.model.AttributeValue;
 
 import java.util.ArrayList;
@@ -39,12 +39,13 @@ public class RouteDao {
         Map<String, AttributeValue> expressionAttributeValues = new HashMap<>();
         expressionAttributeValues.put(":statusValue", new AttributeValue().withS(excludedRouteStatus));
 
-        DynamoDBScanExpression scanExpression = new DynamoDBScanExpression()
+        DynamoDBQueryExpression<Route> queryExpression = new DynamoDBQueryExpression<Route>()
                 .withIndexName("RoutesByStatusIndex")
-                .withFilterExpression("routeStatus <> :statusValue")
+                .withConsistentRead(false)
+                .withKeyConditionExpression("routeStatus <> :statusValue")
                 .withExpressionAttributeValues(expressionAttributeValues);
 
-        PaginatedScanList<Route> routes = dynamoDbMapper.scan(Route.class, scanExpression);
+        PaginatedQueryList<Route> routes = dynamoDbMapper.query(Route.class, queryExpression);
 
         return new ArrayList<>(routes);
     }
