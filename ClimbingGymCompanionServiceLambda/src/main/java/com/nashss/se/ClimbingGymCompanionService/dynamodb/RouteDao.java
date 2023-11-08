@@ -40,6 +40,7 @@ public class RouteDao {
         expressionAttributeValues.put(":statusValue", new AttributeValue().withS(excludedRouteStatus));
 
         DynamoDBScanExpression scanExpression = new DynamoDBScanExpression()
+                .withIndexName("RoutesByStatusIndex")
                 .withFilterExpression("routeStatus <> :statusValue")
                 .withExpressionAttributeValues(expressionAttributeValues);
 

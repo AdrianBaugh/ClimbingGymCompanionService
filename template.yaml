@@ -225,7 +225,7 @@ Resources:
     Properties:
       Role: !GetAtt AccessRole.Arn
       CodeUri: ClimbingGymCompanionServiceLambda
-      Handler: com.nashss.se.climbinggymcompanionservice.lambda.CreateClimbLambda::handleRequest
+      Handler: com.nashss.se.ClimbingGymCompanionService.lambda.CreateClimbLambda::handleRequest
       Runtime: java11
       Architectures:
         - x86_64
@@ -237,7 +237,7 @@ Resources:
         ClimbingGymCompanionService:
           Type: Api
           Properties:
-            Path: /climbs/
+            Path: /climbs
             Method: post
 
   CreateRouteLambda:
@@ -245,7 +245,7 @@ Resources:
     Properties:
       Role: !GetAtt AccessRole.Arn
       CodeUri: ClimbingGymCompanionServiceLambda
-      Handler: com.nashss.se.climbinggymcompanionservice.lambda.CreateRouteLambda::handleRequest
+      Handler: com.nashss.se.ClimbingGymCompanionService.lambda.CreateRouteLambda::handleRequest
       Runtime: java11
       Architectures:
         - x86_64
@@ -257,7 +257,7 @@ Resources:
         ClimbingGymCompanionService:
           Type: Api
           Properties:
-            Path: /routes/
+            Path: /routes
             Method: post
 
   DeleteClimbLambda:
@@ -265,7 +265,7 @@ Resources:
     Properties:
       Role: !GetAtt AccessRole.Arn
       CodeUri: ClimbingGymCompanionServiceLambda
-      Handler: com.nashss.se.climbinggymcompanionservice.lambda.DeleteClimbLambda::handleRequest
+      Handler: com.nashss.se.ClimbingGymCompanionService.lambda.DeleteClimbLambda::handleRequest
       Runtime: java11
       Architectures:
         - x86_64
@@ -285,7 +285,7 @@ Resources:
     Properties:
       Role: !GetAtt AccessRole.Arn
       CodeUri: ClimbingGymCompanionServiceLambda
-      Handler: com.nashss.se.climbinggymcompanionservice.lambda.DeleteRouteLambda::handleRequest
+      Handler: com.nashss.se.ClimbingGymCompanionService.lambda.DeleteRouteLambda::handleRequest
       Runtime: java11
       Architectures:
         - x86_64
@@ -305,7 +305,7 @@ Resources:
     Properties:
       Role: !GetAtt AccessRole.Arn
       CodeUri: ClimbingGymCompanionServiceLambda
-      Handler: com.nashss.se.climbinggymcompanionservice.lambda.GetClimbLambda::handleRequest
+      Handler: com.nashss.se.ClimbingGymCompanionService.lambda.GetClimbLambda::handleRequest
       Runtime: java11
       Architectures:
         - x86_64
@@ -325,7 +325,7 @@ Resources:
     Properties:
       Role: !GetAtt AccessRole.Arn
       CodeUri: ClimbingGymCompanionServiceLambda
-      Handler: com.nashss.se.climbinggymcompanionservice.lambda.GetRouteLambda::handleRequest
+      Handler: com.nashss.se.ClimbingGymCompanionService.lambda.GetRouteLambda::handleRequest
       Runtime: java11
       Architectures:
         - x86_64
@@ -345,7 +345,7 @@ Resources:
     Properties:
       Role: !GetAtt AccessRole.Arn
       CodeUri: ClimbingGymCompanionServiceLambda
-      Handler: com.nashss.se.climbinggymcompanionservice.lambda.UpdateClimbLambda::handleRequest
+      Handler: com.nashss.se.ClimbingGymCompanionService.lambda.UpdateClimbLambda::handleRequest
       Runtime: java11
       Architectures:
         - x86_64
@@ -365,7 +365,7 @@ Resources:
     Properties:
       Role: !GetAtt AccessRole.Arn
       CodeUri: ClimbingGymCompanionServiceLambda
-      Handler: com.nashss.se.climbinggymcompanionservice.lambda.UpdateRouteLambda::handleRequest
+      Handler: com.nashss.se.ClimbingGymCompanionService.lambda.UpdateRouteLambda::handleRequest
       Runtime: java11
       Architectures:
         - x86_64
@@ -385,7 +385,7 @@ Resources:
     Properties:
       Role: !GetAtt AccessRole.Arn
       CodeUri: ClimbingGymCompanionServiceLambda
-      Handler: com.nashss.se.climbinggymcompanionservice.lambda.GetAllActiveRoutesLambda::handleRequest
+      Handler: com.nashss.se.ClimbingGymCompanionService.lambda.GetAllActiveRoutesLambda::handleRequest
       Runtime: java11
       Architectures:
         - x86_64
@@ -397,7 +397,7 @@ Resources:
         RiverPetSittingService:
           Type: Api
           Properties:
-            Path: /routes/{routeStatus}
+            Path: /routes
             Method: get
             Auth:
               Authorizer: 'NONE'
