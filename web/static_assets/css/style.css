@@ -2,7 +2,8 @@
     /* css variables: https://developer.mozilla.org/en-US/docs/Web/CSS/var */
     --primary-color: #5D5E5E;
     --secondary-color: #ffffff;
-    --tertiary-color: #F5881F;
+    --tertiary-color: #6A5ACD;
+    --quaternary-color: #CDC1F1;
     --error-color: #EE3A23;
 }
 
@@ -24,15 +25,17 @@
 }
 
 .button {
-  background-color: var(--tertiary-color);
-  border: none;
-  color: var(--secondary-color);
-  padding: 6px 8px 4px 8px;
-  text-align: center;
-  font-weight: bold;
-  text-decoration: none;
-  cursor: pointer;
-}
+    background-color: var(--tertiary-color);
+    border: none;
+    color: var(--secondary-color);
+    padding: 6px 8px 4px 8px;
+    text-align: center;
+    font-weight: bold;
+    text-decoration: none;
+    cursor: pointer;
+    border-radius: 8px; /* You can adjust the value to control the roundness */
+  }
+  
 
 .button-group {
     display: flex;
@@ -120,18 +123,40 @@ https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Lists_and_Counters/Using_CS
     display: none;
 }
 
-/* table styles */ 
+/* Basic table styling */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
 
 th, td {
-    padding: 15px;
+    padding: 10px;
     text-align: left;
+    border-bottom: 1px solid var(--secondary-color); /* Use secondary color for border */
 }
 
+/* Header row background color */
 th {
-    border-bottom: 1px solid var(--primary-color);
+    background-color: var(--primary-color); /* Use primary color for header background */
+    color: var(--secondary-color); /* Use secondary color for text color in header */
 }
 
-a {
-    color: var(--tertiary-color);
-    text-decoration: none;
+/* Odd and even row background colors (swapped) */
+tr:nth-child(even) {
+    background-color: var(--secondary-color); /* Use secondary color for even row background */
 }
+
+tr:nth-child(odd) {
+    background-color: var(--tertiary-color); /* Use tertiary color for odd row background */
+        color: var(--secondary-color); /* Use secondary color for text color on odd rows */
+}
+
+/* Hover effect on rows */
+tr:hover {
+    background-color: var(--quaternary-color); /* Use tertiary color for hover effect background */
+    color: var(--primary-color); /* Use secondary color for text color on hover */
+    cursor: pointer;
+}
+
+

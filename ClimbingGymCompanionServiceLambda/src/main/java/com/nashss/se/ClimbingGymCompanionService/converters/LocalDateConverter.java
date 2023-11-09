@@ -1,9 +1,9 @@
 package com.nashss.se.ClimbingGymCompanionService.converters;
 
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTypeConverter;
-
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTypeConverter;
 
 public class LocalDateConverter implements DynamoDBTypeConverter<String, LocalDate> {
 

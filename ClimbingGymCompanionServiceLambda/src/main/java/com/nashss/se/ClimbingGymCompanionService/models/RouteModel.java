@@ -38,7 +38,7 @@ public class RouteModel {
         return routeStatus;
     }
 
-    public String getArchived() {
+    public String getIsArchived() {
         return isArchived;
     }
 

@@ -1,12 +1,13 @@
 package com.nashss.se.ClimbingGymCompanionService.lambda;
 
+import java.util.Map;
+
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import java.util.Map;
 
 /**
  * An APIGateway response from a lambda function.
@@ -31,6 +32,7 @@ public class LambdaResponse extends APIGatewayProxyResponseEvent {
      * @return A new LambdaResponse
      */
     public static LambdaResponse success(Object payload) {
+        MAPPER.registerModule(new JavaTimeModule());
         log.info("success");
         try {
             return new LambdaResponse(200, MAPPER.writeValueAsString(payload));
@@ -56,7 +58,7 @@ public class LambdaResponse extends APIGatewayProxyResponseEvent {
     }
 
     /**
-     * Create a Internal Server Error response with a given message.
+     * Create an Internal Server Error response with a given message.
      * @param message A message describing the error
      * @return A new LambdaResponse
      */
@@ -67,7 +69,7 @@ public class LambdaResponse extends APIGatewayProxyResponseEvent {
     }
 
     /**
-     * Create a Internal Server Error response with a given exception message.
+     * Create an Internal Server Error response with a given exception message.
      * @param e The exception representing the error that occurred.
      *          The exception's message is used to create the response.
      * @return A new LambdaResponse

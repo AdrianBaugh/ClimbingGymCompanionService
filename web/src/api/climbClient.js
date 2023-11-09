@@ -103,7 +103,6 @@ export default class ClimbClient extends BindingClass {
 
             console.log("routeResponse: ", response);  
 
-                      // routeList must line up within the model
             return response.data.routeList;
         } catch (error) {
             this.handleError(error, errorCallback)
