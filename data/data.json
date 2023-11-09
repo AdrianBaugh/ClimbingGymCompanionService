@@ -4,8 +4,8 @@
       "PutRequest": {
         "Item": {
           "routeId": { "S": "1::Purple::2023-11-02" },
-          "routeStatus": { "S": "ACTIVE"},
-          "isArchived": { "BOOL":  false},
+          "routeStatus": { "S": "CLOSED_TOURNAMENT"},
+          "isArchived": { "S":  "FALSE"},
           "location": { "S": "1" },
           "difficulty": { "S": "5.7" },
           "color": { "S": "Purple" },
@@ -19,7 +19,7 @@
         "Item": {
           "routeId": { "S": "2::Yellow::2023-11-02" },
           "routeStatus": { "S": "ACTIVE"},
-          "isArchived": { "BOOL":  false},
+          "isArchived": { "S":  "FALSE"},
           "location": { "S": "2" },
           "difficulty": { "S": "5.12-" },
           "color": { "S": "Yellow" },
@@ -33,7 +33,7 @@
         "Item": {
           "routeId": { "S": "3::Red::2023-11-02" },
           "routeStatus": { "S": "ARCHIVED"},
-          "isArchived": { "BOOL":  true},
+          "isArchived": { "S":  "TRUE"},
           "location": { "S": "3" },
           "difficulty": { "S": "5.9" },
           "color": { "S": "Red" },
@@ -47,7 +47,7 @@
         "Item": {
           "routeId": { "S": "4::Blue::2023-11-02" },
           "routeStatus": { "S": "ACTIVE"},
-          "isArchived": { "BOOL":  false},
+          "isArchived": { "S":  "FALSE"},
           "location": { "S": "4" },
           "difficulty": { "S": "5.10+" },
           "color": { "S": "Blue" },
@@ -61,7 +61,7 @@
         "Item": {
           "routeId": { "S": "Cave::Green::2023-11-02" },
           "routeStatus": { "S": "ARCHIVED"},
-          "isArchived": { "BOOL":  true},
+          "isArchived": { "S":  "TRUE"},
           "location": { "S": "Cave" },
           "difficulty": { "S": "V2-V3" },
           "color": { "S": "Green" },

@@ -1,6 +1,8 @@
 package com.nashss.se.ClimbingGymCompanionService.dynamodb;
 
 import com.nashss.se.ClimbingGymCompanionService.dynamodb.pojos.Route;
+import com.nashss.se.ClimbingGymCompanionService.enums.ArchivedStatus;
+import com.nashss.se.ClimbingGymCompanionService.exceptions.ArchivedStatusNotFoundException;
 import com.nashss.se.ClimbingGymCompanionService.metrics.MetricsPublisher;
 
 import javax.inject.Inject;
@@ -13,6 +15,7 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBQueryExpression;
 import com.amazonaws.services.dynamodbv2.datamodeling.PaginatedQueryList;
 import com.amazonaws.services.dynamodbv2.model.AttributeValue;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -35,32 +38,24 @@ public class RouteDao {
 
     /**
      *
-     * @param routeStatus is the status we wish to not return
+     * @param isArchived is the archived status to return
      * @return list of nonArchived routes
      */
-    public List<Route> getAllActiveRoutes(String routeStatus) {
+    public List<Route> getAllActiveRoutes(String isArchived) {
         log.info("Entered RouteDao getAllActiveRoutes() ");
 
-        //delete after its working
-        System.out.println("************Entered RouteDao getAllActiveRoutes()************** ");
-        System.out.println("************status passed in from url query parameter: " + routeStatus + " ************** ");
+        if (isArchived == null || !isArchived.equals(ArchivedStatus.FALSE.name())){
+            throw new ArchivedStatusNotFoundException("Archived status: " + isArchived +
+                    " does not match criteria of TRUE or FALSE");
+        }
 
         Map<String, AttributeValue> expressionAttributeValues = new HashMap<>();
-        expressionAttributeValues.put(":statusValue", new AttributeValue().withS(routeStatus));
-
-//        expressionAttributeValues.put(":maintenanceStatusValue", new AttributeValue().withS(RouteStatus.CLOSED_MAINTENANCE.name()));
-//        expressionAttributeValues.put(":tournamentStatusValue", new AttributeValue().withS(RouteStatus.CLOSED_TOURNAMENT.name()));
-
-//        expressionAttributeValues.put(":isArchivedValue", new AttributeValue().withBOOL(true));
+        expressionAttributeValues.put(":archivedValue", new AttributeValue().withS(isArchived));
 
         DynamoDBQueryExpression<Route> queryExpression = new DynamoDBQueryExpression<Route>()
-                .withIndexName("RoutesByStatusIndex")
+                .withIndexName("RoutesByArchivedIndex")
                 .withConsistentRead(false)
-                .withKeyConditionExpression("routeStatus = :statusValue")
-//                .withKeyConditionExpression("routeStatus = :activeStatusValue and routeStatus = :maintenanceStatusValue and routeStatus = :tournamentStatusValue")
-
-                //isArchived does NOT equal true
-//                .withFilterExpression("isArchived = :isArchivedValue")
+                .withKeyConditionExpression("isArchived = :archivedValue")
                 .withExpressionAttributeValues(expressionAttributeValues);
 
         PaginatedQueryList<Route> routes = dynamoDbMapper.query(Route.class, queryExpression);

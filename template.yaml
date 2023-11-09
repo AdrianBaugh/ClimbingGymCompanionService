@@ -412,7 +412,7 @@ Resources:
       AttributeDefinitions:
         - AttributeName: "routeId"
           AttributeType: "S"
-        - AttributeName: "routeStatus"
+        - AttributeName: "isArchived"
           AttributeType: "S"
         - AttributeName: "location"
           AttributeType: "S"
@@ -428,9 +428,9 @@ Resources:
               KeyType: "HASH"
           Projection:
             ProjectionType: "ALL"
-        - IndexName: "RoutesByStatusIndex"
+        - IndexName: "RoutesByArchivedIndex"
           KeySchema:
-            - AttributeName: "routeStatus"
+            - AttributeName: "isArchived"
               KeyType: "HASH"
           Projection:
             ProjectionType: "ALL"

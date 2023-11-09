@@ -1,20 +1,20 @@
 package com.nashss.se.ClimbingGymCompanionService.activity.requests;
 
 public class GetAllActiveRoutesRequest {
-    private final String excludedStatus;
+    private final String isArchived;
 
-    public GetAllActiveRoutesRequest(String excludedStatus) {
-        this.excludedStatus = excludedStatus;
+    public GetAllActiveRoutesRequest(String isArchived) {
+        this.isArchived = isArchived;
     }
 
-    public String getExcludedStatus() {
-        return excludedStatus;
+    public String getIsArchived() {
+        return isArchived;
     }
 
     @Override
     public String toString() {
         return "GetAllActiveRoutesRequest{" +
-                "excludedStatus='" + excludedStatus + '\'' +
+                "isArchived='" + isArchived + '\'' +
                 '}';
     }
     //CHECKSTYLE:OFF:Builder
@@ -23,13 +23,13 @@ public class GetAllActiveRoutesRequest {
     }
 
     public static class Builder {
-        private String excludedStatus;
-        public Builder withExcludedStatus(String excludedStatus){
-            this.excludedStatus = excludedStatus;
+        private String isArchived;
+        public Builder withIsArchived(String isArchived){
+            this.isArchived = isArchived;
             return this;
         }
         public GetAllActiveRoutesRequest build() {
-            return new GetAllActiveRoutesRequest(excludedStatus);
+            return new GetAllActiveRoutesRequest(isArchived);
         }
     }
 }

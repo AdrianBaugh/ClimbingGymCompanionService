@@ -6,7 +6,7 @@ import java.util.Objects;
 public class RouteModel {
     private String routeId;
     private String routeStatus;
-    private Boolean isArchived;
+    private String isArchived;
     private String location;
     private String color;
     private String type;
@@ -15,7 +15,7 @@ public class RouteModel {
     private Integer rating;
     private String pictureKey;
 
-    public RouteModel(String routeId, String routeStatus, Boolean isArchived, String location,
+    public RouteModel(String routeId, String routeStatus, String isArchived, String location,
                       String color, String type, String difficulty, LocalDate dateCreated,
                       Integer rating, String pictureKey) {
         this.routeId = routeId;
@@ -38,7 +38,7 @@ public class RouteModel {
         return routeStatus;
     }
 
-    public Boolean getArchived() {
+    public String getArchived() {
         return isArchived;
     }
 
@@ -96,7 +96,7 @@ public class RouteModel {
     public static class Builder {
         private String routeId;
         private String routeStatus;
-        private Boolean isArchived;
+        private String isArchived;
         private String location;
         private String color;
         private String type;
@@ -115,7 +115,7 @@ public class RouteModel {
             return this;
         }
 
-        public Builder withIsArchived(Boolean isArchived) {
+        public Builder withIsArchived(String isArchived) {
             this.isArchived = isArchived;
             return this;
         }

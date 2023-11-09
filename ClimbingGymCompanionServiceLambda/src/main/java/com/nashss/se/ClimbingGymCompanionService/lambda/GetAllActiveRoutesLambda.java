@@ -31,7 +31,7 @@ public class GetAllActiveRoutesLambda
         return super.runActivity(
                 () -> input.fromPathAndQuery((path, query) ->
                         GetAllActiveRoutesRequest.builder()
-                                .withExcludedStatus(query.get("routeStatus"))
+                                .withIsArchived(query.get("isArchived"))
                                 .build()),
                 (request, serviceComponent) ->
                         serviceComponent.provideGetAllActiveRoutesActivity().handleRequest(request)

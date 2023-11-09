@@ -7,11 +7,11 @@ import com.nashss.se.ClimbingGymCompanionService.dynamodb.RouteDao;
 import com.nashss.se.ClimbingGymCompanionService.dynamodb.pojos.Route;
 import com.nashss.se.ClimbingGymCompanionService.models.RouteModel;
 
+import javax.inject.Inject;
+import java.util.List;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import java.util.List;
-import javax.inject.Inject;
 
 /**
  * Implementation of the GetAllActiveRoutesActivity for the ClimbingGymCompanionService API.
@@ -46,7 +46,7 @@ public class GetAllActiveRoutesActivity {
     public GetAllActiveRoutesResult handleRequest(final GetAllActiveRoutesRequest getAllActiveRoutesRequest) {
         log.info("Received GetAllActiveRoutesRequest {}", getAllActiveRoutesRequest);
 
-        List<Route> activeRoutes = routeDao.getAllActiveRoutes(getAllActiveRoutesRequest.getExcludedStatus());
+        List<Route> activeRoutes = routeDao.getAllActiveRoutes(getAllActiveRoutesRequest.getIsArchived());
         List<RouteModel> routeModels = new ModelConverter().toRouteModelList(activeRoutes);
 
         return GetAllActiveRoutesResult.builder()

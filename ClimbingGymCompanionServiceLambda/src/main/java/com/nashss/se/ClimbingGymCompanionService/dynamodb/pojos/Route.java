@@ -11,7 +11,7 @@ import com.amazonaws.services.dynamodbv2.datamodeling.*;
 public class Route {
     private String routeId;
     private String routeStatus;
-    private Boolean isArchived;
+    private String isArchived;
     private String location;
     private String color;
     private String type;
@@ -19,7 +19,7 @@ public class Route {
     private LocalDate dateCreated;
     private Integer rating;
     private String pictureKey;
-    private static final String GSI_INDEX_NAME = "RoutesByStatusIndex";
+    private static final String GSI_INDEX_NAME = "RoutesByArchivedIndex";
 
     @DynamoDBHashKey(attributeName = "routeId")
     public String getRouteId() {
@@ -31,7 +31,6 @@ public class Route {
     }
 
     @DynamoDBAttribute(attributeName = "routeStatus")
-    @DynamoDBIndexHashKey(globalSecondaryIndexName = GSI_INDEX_NAME)
     public String getRouteStatus() {
         return routeStatus;
     }
@@ -40,13 +39,13 @@ public class Route {
         this.routeStatus = routeStatus;
     }
     @DynamoDBAttribute(attributeName = "isArchived")
-    @DynamoDBTyped(DynamoDBMapperFieldModel.DynamoDBAttributeType.BOOL)
-    public Boolean getArchived() {
+    @DynamoDBIndexHashKey(globalSecondaryIndexName = GSI_INDEX_NAME)
+    public String getIsArchived() {
         return isArchived;
     }
 
-    public void setArchived(Boolean archived) {
-        isArchived = archived;
+    public void setIsArchived(String isArchived) {
+        this.isArchived = isArchived;
     }
 
     @DynamoDBAttribute(attributeName = "location")
