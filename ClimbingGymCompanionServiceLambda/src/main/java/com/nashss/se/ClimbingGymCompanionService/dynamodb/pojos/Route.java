@@ -3,6 +3,7 @@ package com.nashss.se.ClimbingGymCompanionService.dynamodb.pojos;
 import com.nashss.se.ClimbingGymCompanionService.converters.LocalDateConverter;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Objects;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.*;
@@ -19,6 +20,7 @@ public class Route {
     private LocalDate dateCreated;
     private Integer rating;
     private String pictureKey;
+    private List<String> notesList;
     private static final String GSI_INDEX_NAME = "RoutesByArchivedIndex";
 
     @DynamoDBHashKey(attributeName = "routeId")
@@ -112,6 +114,15 @@ public class Route {
         this.pictureKey = pictureKey;
     }
 
+    @DynamoDBAttribute(attributeName = "notesList")
+    public List<String> getNotesList() {
+        return notesList;
+    }
+
+    public void setNotesList(List<String> notesList) {
+        this.notesList = notesList;
+    }
+
     @Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -121,13 +132,14 @@ public class Route {
                 Objects.equals(isArchived, route.isArchived) && Objects.equals(location, route.location) &&
                 Objects.equals(color, route.color) && Objects.equals(type, route.type) &&
                 Objects.equals(difficulty, route.difficulty) && Objects.equals(dateCreated, route.dateCreated) &&
-                Objects.equals(rating, route.rating) && Objects.equals(pictureKey, route.pictureKey);
+                Objects.equals(rating, route.rating) && Objects.equals(pictureKey, route.pictureKey) &&
+                Objects.equals(notesList, route.notesList);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(routeId, routeStatus, isArchived, location,
-                color, type, difficulty, dateCreated, rating, pictureKey);
+        return Objects.hash(routeId, routeStatus, isArchived, location, color,
+                type, difficulty, dateCreated, rating, pictureKey, notesList);
     }
 
     @Override
@@ -135,7 +147,7 @@ public class Route {
         return "Route{" +
                 "routeId='" + routeId + '\'' +
                 ", routeStatus='" + routeStatus + '\'' +
-                ", isArchived=" + isArchived +
+                ", isArchived='" + isArchived + '\'' +
                 ", location='" + location + '\'' +
                 ", color='" + color + '\'' +
                 ", type='" + type + '\'' +
@@ -143,6 +155,7 @@ public class Route {
                 ", dateCreated=" + dateCreated +
                 ", rating=" + rating +
                 ", pictureKey='" + pictureKey + '\'' +
+                ", notesList=" + notesList +
                 '}';
     }
 }

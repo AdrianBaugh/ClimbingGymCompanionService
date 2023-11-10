@@ -39,7 +39,7 @@ public class RouteDaoTest {
         when(paginatedQueryList.toArray()).thenReturn(new Object[0]);
     }
     @Test
-    public void getallActiveRoutes_isNotArchived_returnsRoutes() {
+    public void getAllActiveRoutes_isNotArchived_returnsRoutes() {
         // GIVEN
         String isArchived = "FALSE";
 
@@ -55,7 +55,7 @@ public class RouteDaoTest {
     }
 
     @Test
-    public void getallActiveRoutes_isArchived_throwsException() {
+    public void getAllActiveRoutes_isArchived_throwsException() {
         // GIVEN
         String isArchived = "TRUE";
 

@@ -23,6 +23,7 @@ public class ModelConverter {
                 .withDateCreated(route.getDateCreated())
                 .withRating(route.getRating())
                 .withPictureKey(route.getPictureKey())
+                .withNotesList(route.getNotesList())
                 .build();
 
     }

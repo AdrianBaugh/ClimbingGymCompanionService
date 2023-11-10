@@ -46,13 +46,83 @@
       "PutRequest": {
         "Item": {
           "routeId": { "S": "4::Blue::2023-11-02" },
-          "routeStatus": { "S": "ACTIVE"},
-          "isArchived": { "S":  "FALSE"},
-          "dateCreated": {"S": "2023-11-04"},
+          "routeStatus": { "S": "ACTIVE" },
+          "isArchived": { "S": "FALSE" },
+          "dateCreated": { "S": "2023-11-04" },
           "location": { "S": "4" },
           "difficulty": { "S": "5.10+" },
           "color": { "S": "Blue" },
-          "thumbsUpPercent":  { "N": "95"}
+          "thumbsUpPercent":  { "N": "95" },
+          "notesList": {
+            "L": [
+              { "S": "note1" },
+              { "S": "note2" },
+              { "S": "note3" }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "routeId": { "S": "5::Red::2023-11-03" },
+          "routeStatus": { "S": "INACTIVE" },
+          "isArchived": { "S": "TRUE" },
+          "dateCreated": { "S": "2023-11-05" },
+          "location": { "S": "5" },
+          "difficulty": { "S": "5.11-" },
+          "color": { "S": "Red" },
+          "thumbsUpPercent":  { "N": "85" },
+          "notesList": {
+            "L": [
+              { "S": "note4" },
+              { "S": "note5" },
+              { "S": "note6" }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "routeId": { "S": "6::Green::2023-11-04" },
+          "routeStatus": { "S": "ACTIVE" },
+          "isArchived": { "S": "FALSE" },
+          "dateCreated": { "S": "2023-11-06" },
+          "location": { "S": "6" },
+          "difficulty": { "S": "5.9" },
+          "color": { "S": "Green" },
+          "thumbsUpPercent":  { "N": "92" },
+          "notesList": {
+            "L": [
+              { "S": "note7" },
+              { "S": "note8" },
+              { "S": "note9" }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "routeId": { "S": "7::Yellow::2023-11-05" },
+          "routeStatus": { "S": "ACTIVE" },
+          "isArchived": { "S": "FALSE" },
+          "dateCreated": { "S": "2023-11-07" },
+          "location": { "S": "7" },
+          "difficulty": { "S": "5.10-" },
+          "color": { "S": "Yellow" },
+          "thumbsUpPercent":  { "N": "88" },
+          "notesList": {
+            "L": [
+              { "S": "note10" },
+              { "S": "note11" },
+              { "S": "note12" }
+            ]
+          }
         }
       }
     },
