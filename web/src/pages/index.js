@@ -39,14 +39,14 @@ class Homepage extends BindingClass {
         if (routes == null) {
             return;
         }
-        let routeHtml = '<table><tr><th>Route Location</th><th>Current Status</th><th>Difficulty</th><th>Date Set</th><th>Rating</th></tr>';
+        let routeHtml = '<table><tr><th>Route Location</th><th>Difficulty</th><th>Current Status</th><th>Date Set</th><th>% ThumbsUP!</th></tr>';
     
         for (const route of routes) {
             routeHtml += `
-            <tr onclick="window.location='/viewRoute.html?id=${route.routeId}'">
+            <tr onclick="window.location='/viewRoute.html?routeId=${route.routeId}'">
                 <td>${route.location}</td>
-                <td>${route.routeStatus}</td>
                 <td>${route.difficulty}</td>
+                <td>${route.routeStatus}</td>
                 <td>${formatDateToMMDDYYYY(route.dateCreated)}</td>
                 <td>${route.rating !== null ? route.rating : 'Not yet Rated!'}</td>
             </tr>

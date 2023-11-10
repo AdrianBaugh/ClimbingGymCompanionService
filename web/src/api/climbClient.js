@@ -108,4 +108,23 @@ export default class ClimbClient extends BindingClass {
             this.handleError(error, errorCallback)
         }
     }
+
+    /*
+     * Gets the route for the given ID.
+     * @param id Unique identifier for a route
+     * @param errorCallback (Optional) A function to execute if the call fails.
+     * @returns The route's metadata.
+     */
+        async viewRoute(routeId, errorCallback) {
+            try {
+                console.log("Attempting to get info for routeId: ", routeId);  
+
+                const response = await this.axiosClient.get(`routes/${routeId}`);
+                console.log("routeResponse: ", response);  
+
+                return response.data.route;
+            } catch (error) {
+                this.handleError(error, errorCallback)
+            }
+        }
 }
