@@ -1,6 +1,6 @@
 package com.nashss.se.ClimbingGymCompanionService.enums;
 
-public enum routeLocation {
+public enum RouteLocation {
     SLAB_LEFT,
     SLAB_RIGHT,
     CAVE_SOUTH,

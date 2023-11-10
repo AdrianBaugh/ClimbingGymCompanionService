@@ -11,7 +11,9 @@ public class ClimbModel {
     private LocalDateTime dateTimeClimbed;
     private Boolean thumbsUp;
     private String notes;
+    /*
 
+     */
     public ClimbModel(String climbId, String userId, String routeId, String climbStatus, LocalDateTime dateTimeClimbed,
                       Boolean thumbsUp, String notes) {
         this.climbId = climbId;
@@ -54,7 +56,9 @@ public class ClimbModel {
     @Override
     public boolean equals(Object other) {
         if (this == other) return true;
-        if (other == null || getClass() != other.getClass()) return false;
+        if (other == null || getClass() != other.getClass()) {
+            return false;
+        }
         ClimbModel that = (ClimbModel) other;
         return Objects.equals(climbId, that.climbId) && Objects.equals(userId, that.userId) &&
                 Objects.equals(routeId, that.routeId) && Objects.equals(climbStatus, that.climbStatus) &&
@@ -66,8 +70,10 @@ public class ClimbModel {
     public int hashCode() {
         return Objects.hash(climbId, userId, routeId, climbStatus, dateTimeClimbed, thumbsUp, notes);
     }
-
-    public static Builder builder() {return new Builder();}
+    //CHECKSTYLE:OFF:Builder
+    public static Builder builder() {
+        return new Builder();
+    }
 
     public static class Builder {
         private String climbId;

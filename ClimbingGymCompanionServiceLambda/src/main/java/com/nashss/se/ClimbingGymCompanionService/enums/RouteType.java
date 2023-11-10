@@ -1,6 +1,6 @@
 package com.nashss.se.ClimbingGymCompanionService.enums;
 
-public enum routeType {
+public enum RouteType {
     BOULDER,
     TOP_ROPE,
     LEAD_CLIMB,

@@ -4,11 +4,12 @@
       "PutRequest": {
         "Item": {
           "routeId": { "S": "1::Purple::2023-11-02" },
-          "routeStatus": { "S": "ACTIVE"},
+          "routeStatus": { "S": "CLOSED_TOURNAMENT"},
+          "isArchived": { "S":  "FALSE"},
+          "dateCreated": {"S": "2023-11-01"},
           "location": { "S": "1" },
           "difficulty": { "S": "5.7" },
           "color": { "S": "Purple" },
-          "dateSet": { "S": "2023-11-02"},
           "thumbsUpPercent": { "N": "95"}
         }
       }
@@ -18,10 +19,11 @@
         "Item": {
           "routeId": { "S": "2::Yellow::2023-11-02" },
           "routeStatus": { "S": "ACTIVE"},
+          "isArchived": { "S":  "FALSE"},
+          "dateCreated": {"S": "2023-11-02"},
           "location": { "S": "2" },
           "difficulty": { "S": "5.12-" },
           "color": { "S": "Yellow" },
-          "dateSet":  { "S": "2023-11-02"},
           "thumbsUpPercent":  { "N": "95"}
         }
       }
@@ -31,10 +33,11 @@
         "Item": {
           "routeId": { "S": "3::Red::2023-11-02" },
           "routeStatus": { "S": "ARCHIVED"},
+          "isArchived": { "S":  "TRUE"},
+          "dateCreated": {"S": "2023-11-03"},
           "location": { "S": "3" },
           "difficulty": { "S": "5.9" },
           "color": { "S": "Red" },
-          "dateSet":  { "S": "2023-11-02"},
           "thumbsUpPercent":  { "N": "95"}
         }
       }
@@ -44,10 +47,11 @@
         "Item": {
           "routeId": { "S": "4::Blue::2023-11-02" },
           "routeStatus": { "S": "ACTIVE"},
+          "isArchived": { "S":  "FALSE"},
+          "dateCreated": {"S": "2023-11-04"},
           "location": { "S": "4" },
           "difficulty": { "S": "5.10+" },
           "color": { "S": "Blue" },
-          "dateSet":  { "S": "2023-11-02"},
           "thumbsUpPercent":  { "N": "95"}
         }
       }
@@ -57,10 +61,11 @@
         "Item": {
           "routeId": { "S": "Cave::Green::2023-11-02" },
           "routeStatus": { "S": "ARCHIVED"},
+          "isArchived": { "S":  "TRUE"},
+          "dateCreated": {"S": "2023-11-05"},
           "location": { "S": "Cave" },
           "difficulty": { "S": "V2-V3" },
           "color": { "S": "Green" },
-          "dateSet":  { "S": "2023-11-02"},
           "thumbsUpPercent":  { "N": "95"}
         }
       }

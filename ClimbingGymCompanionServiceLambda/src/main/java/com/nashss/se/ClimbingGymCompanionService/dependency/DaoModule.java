@@ -1,8 +1,10 @@
 package com.nashss.se.ClimbingGymCompanionService.dependency;
 
+import com.nashss.se.ClimbingGymCompanionService.dynamodb.DynamoDbClientProvider;
+
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
-import com.nashss.se.ClimbingGymCompanionService.dynamodb.DynamoDbClientProvider;
+
 import dagger.Module;
 import dagger.Provides;
 

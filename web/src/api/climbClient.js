@@ -88,4 +88,24 @@ export default class ClimbClient extends BindingClass {
             errorCallback(error);
         }
     }
+
+    /*
+    * Gets all the routes for the Active status.
+    * @param errorCallback (Optional) A function to execute if the call fails.
+    * @returns The route's metadata.
+    */
+    async viewAllActiveRoutes(errorCallback) {
+        try {
+            console.log("Attempting to get all active routes in climbClient.js");  
+
+            const archivedStatus = "FALSE"
+            const response = await this.axiosClient.get(`routes?isArchived=${archivedStatus}`);
+
+            console.log("routeResponse: ", response);  
+
+            return response.data.routeList;
+        } catch (error) {
+            this.handleError(error, errorCallback)
+        }
+    }
 }
