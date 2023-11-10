@@ -6,16 +6,13 @@ import com.nashss.se.ClimbingGymCompanionService.exceptions.ArchivedStatusNotFou
 import com.nashss.se.ClimbingGymCompanionService.metrics.MetricsPublisher;
 
 import javax.inject.Inject;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBQueryExpression;
-import com.amazonaws.services.dynamodbv2.datamodeling.PaginatedQueryList;
 import com.amazonaws.services.dynamodbv2.model.AttributeValue;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -58,8 +55,6 @@ public class RouteDao {
                 .withKeyConditionExpression("isArchived = :archivedValue")
                 .withExpressionAttributeValues(expressionAttributeValues);
 
-        PaginatedQueryList<Route> routes = dynamoDbMapper.query(Route.class, queryExpression);
-
-        return new ArrayList<>(routes);
+        return dynamoDbMapper.query(Route.class, queryExpression);
     }
 }
