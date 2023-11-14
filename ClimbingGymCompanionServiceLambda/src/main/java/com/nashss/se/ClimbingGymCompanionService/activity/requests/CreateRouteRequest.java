@@ -56,8 +56,8 @@ public class CreateRouteRequest {
     }
 
     //CHECKSTYLE:OFF:Builder
-    public static GetAllActiveRoutesRequest.Builder builder() {
-        return new GetAllActiveRoutesRequest.Builder();
+    public static Builder builder() {
+        return new Builder();
     }
 
     public static class Builder {

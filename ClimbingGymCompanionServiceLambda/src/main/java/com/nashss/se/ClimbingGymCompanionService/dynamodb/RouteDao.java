@@ -75,4 +75,15 @@ public class RouteDao {
         metricsPublisher.addCount(MetricsConstants.GETROUTE_ROUTENOTFOUND_COUNT, 0);
         return route;
     }
+
+    /**
+     * Saves a new route to the database
+     *
+     *  @param newRoute The route to save.
+     *  @return The Route object that was saved.
+     */
+    public Route saveRoute(Route newRoute) {
+        this.dynamoDbMapper.save(newRoute);
+        return newRoute;
+    }
 }

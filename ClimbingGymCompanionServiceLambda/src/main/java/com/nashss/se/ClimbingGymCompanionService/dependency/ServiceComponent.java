@@ -1,5 +1,6 @@
 package com.nashss.se.ClimbingGymCompanionService.dependency;
 
+import com.nashss.se.ClimbingGymCompanionService.activity.CreateRouteActivity;
 import com.nashss.se.ClimbingGymCompanionService.activity.GetAllActiveRoutesActivity;
 import com.nashss.se.ClimbingGymCompanionService.activity.GetRouteActivity;
 
@@ -22,4 +23,9 @@ public interface ServiceComponent {
 
      */
     GetRouteActivity provideGetRouteActivity();
+
+    /*
+
+     */
+    CreateRouteActivity provideCreateRouteActivity();
 }
