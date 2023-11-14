@@ -3,7 +3,7 @@ package com.nashss.se.ClimbingGymCompanionService.activity.requests;
 public class GetRouteRequest {
     private final String routeId;
 
-    public GetRouteRequest(String routeId) {
+    private GetRouteRequest(String routeId) {
         this.routeId = routeId;
     }
 

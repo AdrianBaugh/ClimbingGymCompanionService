@@ -3,7 +3,7 @@ package com.nashss.se.ClimbingGymCompanionService.activity.requests;
 public class GetAllActiveRoutesRequest {
     private final String isArchived;
 
-    public GetAllActiveRoutesRequest(String isArchived) {
+    private GetAllActiveRoutesRequest(String isArchived) {
         this.isArchived = isArchived;
     }
 
