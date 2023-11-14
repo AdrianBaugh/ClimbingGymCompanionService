@@ -1,8 +1,10 @@
 package com.nashss.se.ClimbingGymCompanionService.activity.requests;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 
+@JsonDeserialize(builder = CreateRouteRequest.Builder.class)
 public class CreateRouteRequest {
-
         private final String location;
         private final String color;
         private final String routeStatus;
@@ -60,6 +62,7 @@ public class CreateRouteRequest {
         return new Builder();
     }
 
+    @JsonPOJOBuilder
     public static class Builder {
         private String location;
         private String color;

@@ -17,11 +17,9 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class CreateRouteActivity {
-    // idea is that a gym admin account can add the routes initially and then the routes only need
-    // to be updated. Updates will most likely be done be the users themselves
-
     private final Logger log = LogManager.getLogger();
     private final RouteDao routeDao;
+
     /**
      * Instantiates a new CreateRouteActivity object.
      *
@@ -44,9 +42,6 @@ public class CreateRouteActivity {
      * @return CreateRouteResult a result object containing the API defined {@link RouteModel}
      */
     public CreateRouteResult handleRequest(final CreateRouteRequest createRouteRequest) {
-        System.out.println("************ CREATE ROUTE ACTIVITY STARTED ********");
-        System.out.println("************ CREATE ROUTE REQUEST: " + createRouteRequest.toString() +"********");
-
         log.info("received CreateRouteRequest {}", createRouteRequest);
 
         String location = createRouteRequest.getLocation();
@@ -69,7 +64,6 @@ public class CreateRouteActivity {
         routeDao.saveRoute(newRoute);
 
         RouteModel routeModel = new ModelConverter().toRouteModel(newRoute);
-        System.out.println("************ CREATE ROUTE ACTIVITY ENDED ********");
 
         return CreateRouteResult.builder()
                 .withRoute(routeModel)
