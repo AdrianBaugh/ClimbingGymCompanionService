@@ -57,6 +57,14 @@
     padding: 10px 20px;
 }
 
+.card .detail-header {
+    font-weight: bold;
+}
+
+.card span {
+    font-weight: normal; /* remove bold style for spans */
+}
+
 .error {
     color: var(--error-color);
     border: 1px solid var(--error-color);
@@ -92,7 +100,7 @@ table {
 
 th, td {
     padding: 10px;
-    text-align: left;
+    text-align: center;
     border-bottom: 1px solid var(--secondary-color); /* Use secondary color for border */
 }
 

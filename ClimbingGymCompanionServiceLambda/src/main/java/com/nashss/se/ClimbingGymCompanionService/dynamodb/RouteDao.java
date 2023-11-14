@@ -3,6 +3,8 @@ package com.nashss.se.ClimbingGymCompanionService.dynamodb;
 import com.nashss.se.ClimbingGymCompanionService.dynamodb.pojos.Route;
 import com.nashss.se.ClimbingGymCompanionService.enums.ArchivedStatus;
 import com.nashss.se.ClimbingGymCompanionService.exceptions.ArchivedStatusNotFoundException;
+import com.nashss.se.ClimbingGymCompanionService.exceptions.RouteNotFoundException;
+import com.nashss.se.ClimbingGymCompanionService.metrics.MetricsConstants;
 import com.nashss.se.ClimbingGymCompanionService.metrics.MetricsPublisher;
 
 import javax.inject.Inject;
@@ -56,5 +58,21 @@ public class RouteDao {
                 .withExpressionAttributeValues(expressionAttributeValues);
 
         return dynamoDbMapper.query(Route.class, queryExpression);
+    }
+
+    /**
+     * Retrieves a Route by its IDs.
+     *
+     * @param routeId The ID of the route to retrieve.
+     * @return The Route object if found, or throws exception if not found.
+     */
+    public Route getRouteById(String routeId) {
+        Route route = dynamoDbMapper.load(Route.class, routeId);
+        if (route == null) {
+            metricsPublisher.addCount(MetricsConstants.GETROUTE_ROUTENOTFOUND_COUNT, 1);
+            throw new RouteNotFoundException("Route not found");
+        }
+        metricsPublisher.addCount(MetricsConstants.GETROUTE_ROUTENOTFOUND_COUNT, 0);
+        return route;
     }
 }

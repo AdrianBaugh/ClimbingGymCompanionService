@@ -22,12 +22,7 @@ public class GetAllActiveRoutesLambda
      */
     @Override
     public LambdaResponse handleRequest(AuthenticatedLambdaRequest<GetAllActiveRoutesRequest> input, Context context) {
-        //from path and query
         log.info("Entered handleRequest from GetAllActiveRoutesLambda");
-
-        //delete after its working
-        System.out.println("************Entered LAMBDA getAllActiveRoutes()************** ");
-
         return super.runActivity(
                 () -> input.fromPathAndQuery((path, query) ->
                         GetAllActiveRoutesRequest.builder()

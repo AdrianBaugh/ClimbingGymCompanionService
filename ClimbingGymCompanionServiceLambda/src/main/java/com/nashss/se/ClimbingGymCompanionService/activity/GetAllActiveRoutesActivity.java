@@ -40,8 +40,8 @@ public class GetAllActiveRoutesActivity {
      * <p>
      * If no route does not exist, this should throw a RouteNotFoundException.
      *
-     * @param getAllActiveRoutesRequest request object containing the status to look up routes for
-     * @return GetAllActiveRoutesResult result object containing the reservation's list of API-defined RouteModel
+     * @param getAllActiveRoutesRequest request object containing the status to look up routes for.
+     * @return GetAllActiveRoutesResult result object containing the route's list of API-defined RouteModels.
      */
     public GetAllActiveRoutesResult handleRequest(final GetAllActiveRoutesRequest getAllActiveRoutesRequest) {
         log.info("Received GetAllActiveRoutesRequest {}", getAllActiveRoutesRequest);

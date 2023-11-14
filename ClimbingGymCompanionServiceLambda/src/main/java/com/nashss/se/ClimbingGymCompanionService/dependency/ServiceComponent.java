@@ -1,10 +1,11 @@
 package com.nashss.se.ClimbingGymCompanionService.dependency;
 
 import com.nashss.se.ClimbingGymCompanionService.activity.GetAllActiveRoutesActivity;
-
-import dagger.Component;
+import com.nashss.se.ClimbingGymCompanionService.activity.GetRouteActivity;
 
 import javax.inject.Singleton;
+
+import dagger.Component;
 
 /**
  * Dagger component for providing dependency injection in the ClimbingGymCompanionService.
@@ -16,4 +17,9 @@ public interface ServiceComponent {
 
      */
     GetAllActiveRoutesActivity provideGetAllActiveRoutesActivity();
+
+    /*
+
+     */
+    GetRouteActivity provideGetRouteActivity();
 }

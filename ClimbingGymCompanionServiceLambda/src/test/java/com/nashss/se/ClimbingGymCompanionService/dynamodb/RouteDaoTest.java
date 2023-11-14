@@ -2,6 +2,8 @@ package com.nashss.se.ClimbingGymCompanionService.dynamodb;
 
 import com.nashss.se.ClimbingGymCompanionService.dynamodb.pojos.Route;
 import com.nashss.se.ClimbingGymCompanionService.exceptions.ArchivedStatusNotFoundException;
+import com.nashss.se.ClimbingGymCompanionService.exceptions.RouteNotFoundException;
+import com.nashss.se.ClimbingGymCompanionService.metrics.MetricsConstants;
 import com.nashss.se.ClimbingGymCompanionService.metrics.MetricsPublisher;
 
 import java.util.List;
@@ -39,7 +41,7 @@ public class RouteDaoTest {
         when(paginatedQueryList.toArray()).thenReturn(new Object[0]);
     }
     @Test
-    public void getallActiveRoutes_isNotArchived_returnsRoutes() {
+    public void getAllActiveRoutes_isNotArchived_returnsRoutes() {
         // GIVEN
         String isArchived = "FALSE";
 
@@ -55,7 +57,7 @@ public class RouteDaoTest {
     }
 
     @Test
-    public void getallActiveRoutes_isArchived_throwsException() {
+    public void getAllActiveRoutes_isArchived_throwsException() {
         // GIVEN
         String isArchived = "TRUE";
 
@@ -65,5 +67,32 @@ public class RouteDaoTest {
 
         // THEN
         assertThrows(ArchivedStatusNotFoundException.class, () -> routeDao.getAllActiveRoutes(isArchived));
+    }
+
+    @Test
+    public void getRouteById_withPartitionKey_returnsRoute() {
+        // GIVEN
+        String routeId = "routeId";
+        when(dynamoDBMapper.load(Route.class, routeId)).thenReturn(new Route());
+
+        // WHEN
+        Route route = routeDao.getRouteById(routeId);
+
+        // THEN
+        assertNotNull(route);
+        verify(dynamoDBMapper).load(Route.class, routeId);
+        verify(metricsPublisher).addCount(eq(MetricsConstants.GETROUTE_ROUTENOTFOUND_COUNT), anyDouble());
+    }
+
+    @Test
+    public void getRouteById_RouteNotFound_throwsException() {
+        // GIVEN
+        String nonexistentRouteId = "NotReal";
+
+        when(dynamoDBMapper.load(Route.class, nonexistentRouteId)).thenReturn(null);
+
+        // WHEN + THEN
+        assertThrows(RouteNotFoundException.class, () -> routeDao.getRouteById(nonexistentRouteId));
+        verify(metricsPublisher).addCount(eq(MetricsConstants.GETROUTE_ROUTENOTFOUND_COUNT), anyDouble());
     }
 }

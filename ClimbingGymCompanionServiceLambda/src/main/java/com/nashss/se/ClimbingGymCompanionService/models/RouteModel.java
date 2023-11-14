@@ -1,6 +1,7 @@
 package com.nashss.se.ClimbingGymCompanionService.models;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Objects;
 
 public class RouteModel {
@@ -14,10 +15,11 @@ public class RouteModel {
     private LocalDate dateCreated;
     private Integer rating;
     private String pictureKey;
+    private List<String> notesList;
 
     public RouteModel(String routeId, String routeStatus, String isArchived, String location,
                       String color, String type, String difficulty, LocalDate dateCreated,
-                      Integer rating, String pictureKey) {
+                      Integer rating, String pictureKey, List<String> notesList) {
         this.routeId = routeId;
         this.routeStatus = routeStatus;
         this.isArchived = isArchived;
@@ -28,6 +30,7 @@ public class RouteModel {
         this.dateCreated = dateCreated;
         this.rating = rating;
         this.pictureKey = pictureKey;
+        this.notesList = notesList;
     }
 
     public String getRouteId() {
@@ -70,6 +73,10 @@ public class RouteModel {
         return pictureKey;
     }
 
+    public List<String> getNotesList() {
+        return notesList;
+    }
+
     @Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -79,13 +86,14 @@ public class RouteModel {
                 Objects.equals(isArchived, that.isArchived) && Objects.equals(location, that.location) &&
                 Objects.equals(color, that.color) && Objects.equals(type, that.type) &&
                 Objects.equals(difficulty, that.difficulty) && Objects.equals(dateCreated, that.dateCreated) &&
-                Objects.equals(rating, that.rating) && Objects.equals(pictureKey, that.pictureKey);
+                Objects.equals(rating, that.rating) && Objects.equals(pictureKey, that.pictureKey) &&
+                Objects.equals(notesList, that.notesList);
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(routeId, routeStatus, isArchived, location, color,
-                type, difficulty, dateCreated, rating, pictureKey);
+                type, difficulty, dateCreated, rating, pictureKey, notesList);
     }
 
     //CHECKSTYLE:OFF:Builder
@@ -104,6 +112,7 @@ public class RouteModel {
         private LocalDate dateCreated;
         private Integer rating;
         private String pictureKey;
+        private List<String> notesList;
 
         public Builder withRouteId(String routeId) {
             this.routeId = routeId;
@@ -155,9 +164,14 @@ public class RouteModel {
             return this;
         }
 
+        public Builder withNotesList(List<String> notesLit) {
+            this.notesList = notesLit;
+            return this;
+        }
+
         public RouteModel build() {
             return new RouteModel(routeId, routeStatus, isArchived, location, color, type,
-                    difficulty, dateCreated, rating, pictureKey);
+                    difficulty, dateCreated, rating, pictureKey, notesList);
         }
     }
 }
