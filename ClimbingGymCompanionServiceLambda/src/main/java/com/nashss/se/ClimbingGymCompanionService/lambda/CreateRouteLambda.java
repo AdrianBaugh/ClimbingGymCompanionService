@@ -12,6 +12,8 @@ public class CreateRouteLambda
 
     @Override
     public LambdaResponse handleRequest(LambdaRequest<CreateRouteRequest> input, Context context) {
+        System.out.println("************ CREATE ROUTE LAMBDA STARTED ********");
+
         return super.runActivity(
 //                () -> {
 //                    CreateRouteRequest unauthenticatedRequest = input.fromBody(CreateRouteRequest.class);

@@ -38,7 +38,11 @@ public class GetRouteActivityTest {
 
         when(routeDao.getRouteById(expectedRouteId)).thenReturn(route);
 
-        GetRouteRequest request = new GetRouteRequest(expectedRouteId);
+        GetRouteRequest request = GetRouteRequest.builder()
+                .withRouteId(expectedRouteId)
+                .build();
+
+
 
         //WHEN
         GetRouteResult result= getRouteActivity.handleRequest(request);

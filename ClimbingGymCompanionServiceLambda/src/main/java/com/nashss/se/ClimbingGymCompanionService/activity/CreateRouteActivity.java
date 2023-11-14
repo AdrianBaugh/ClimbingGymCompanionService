@@ -44,6 +44,9 @@ public class CreateRouteActivity {
      * @return CreateRouteResult a result object containing the API defined {@link RouteModel}
      */
     public CreateRouteResult handleRequest(final CreateRouteRequest createRouteRequest) {
+        System.out.println("************ CREATE ROUTE ACTIVITY STARTED ********");
+        System.out.println("************ CREATE ROUTE REQUEST: " + createRouteRequest.toString() +"********");
+
         log.info("received CreateRouteRequest {}", createRouteRequest);
 
         String location = createRouteRequest.getLocation();
@@ -66,6 +69,8 @@ public class CreateRouteActivity {
         routeDao.saveRoute(newRoute);
 
         RouteModel routeModel = new ModelConverter().toRouteModel(newRoute);
+        System.out.println("************ CREATE ROUTE ACTIVITY ENDED ********");
+
         return CreateRouteResult.builder()
                 .withRoute(routeModel)
                 .build();
