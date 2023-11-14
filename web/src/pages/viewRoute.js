@@ -69,6 +69,7 @@ class ViewRoute extends BindingClass {
         });
 
         function generateTableContent(notes, notesList) {
+            // add logic so that if notes is empty it displays a message to the user
             notesList.innerHTML = '';
 
             const tableHeaders = document.createElement('tr');

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <script type="text/javascript" src="assets/createRoute.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+</head>
+
+<body class="background">
+    <header class="header" id="header"></header>
+    <div class="card">
+        <label> Create route stuff will go here:</label> 
+    </div>
+
+    <div class="card">
+        <h2>Add a new Route!</h2>
+        
+            <div class="flex-item">
+              <img src="ROUTE_MAP_V3.jpg" alt="route map">
+            </div>
+        <form class="card-content" id="create-route-form">
+            <p class="hidden error" id="error-message"> </p>
+            <p class="form-field">
+                <label>Please enter the Route's info below:</label>
+                <input type="text" required class="validated-field" id="location" placeholder="ex. 25, North-Boulder-Right"
+                    autofocus>
+            </p>
+            <p>
+                <a href="#" class="button" id="create">Submit</a>
+            </p>
+        </form>
+    </div>
+</body>
+</html>
