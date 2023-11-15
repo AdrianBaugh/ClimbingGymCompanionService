@@ -8,7 +8,7 @@ import java.util.List;
 public class GetAllActiveRoutesResult {
     private final List<RouteModel> routeList;
 
-    public GetAllActiveRoutesResult(List<RouteModel> routeList) {
+    private GetAllActiveRoutesResult(List<RouteModel> routeList) {
         this.routeList = routeList;
     }
 
