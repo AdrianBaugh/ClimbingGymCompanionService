@@ -95,4 +95,17 @@ public class RouteDaoTest {
         assertThrows(RouteNotFoundException.class, () -> routeDao.getRouteById(nonexistentRouteId));
         verify(metricsPublisher).addCount(eq(MetricsConstants.GETROUTE_ROUTENOTFOUND_COUNT), anyDouble());
     }
+
+    @Test
+    public void saveReservation_callsMapperWithReservation() {
+        // GIVEN
+        Route route = new Route();
+
+        // WHEN
+        Route result = routeDao.saveRoute(route);
+
+        // THEN
+        verify(dynamoDBMapper).save(route);
+        assertEquals(route, result);
+    }
 }
