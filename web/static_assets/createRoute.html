@@ -19,6 +19,7 @@
             <div class="flex-item">
               <img src="ROUTE_MAP_V3.jpg" alt="route map">
             </div>
+            <hr></hr>
         <form class="card-content" id="create-route-form">
             <p class="hidden error" id="error-message"> </p>
             <p class="form-field">
@@ -35,10 +36,16 @@
                 <label>Please enter the difficulty:</label>
                 <input type="text" id="difficulty" placeholder="ex. v3-v4, 5.10+">
             </p>
-            <p>
-                <a href="#" class="button" id="create">Submit</a>
-            </p>
+            <p class="form-field">
+                <label>Optional: Upload a picture of the Route:</label>
+                <input type="file" accept="image/*" capture="camera" id="route-image" name="routeImage">
+            </p>   
         </form>
+            <hr></hr>
+            <div>
+                <a href="#" class="button" id="create">Submit</a>
+            </div>
+        
     </div>
 </body>
 </html>

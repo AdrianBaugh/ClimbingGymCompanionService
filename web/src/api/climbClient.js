@@ -139,15 +139,21 @@ export default class ClimbClient extends BindingClass {
     * @param errorCallback (Optional) A function to execute if the call fails.
     * @returns The playlist that has been created.
     */
-    async createRoute(location, color, routeStatus, type, difficulty, errorCallback) {
+    async createRoute(location, color, routeStatus, type, difficulty, routeImageFile, errorCallback) {
         try {
             const token = await this.getTokenOrThrow("You must be logged in to create a route!");
+            
+            // The S3 object key for the uploaded image
+            const pictureKey = `images/${location}-${Date.now()}-${routeImageFile.name}`;
+            
+            
             const response = await this.axiosClient.post(`routes`, {
                 location: location,
                 color: color,
                 routeStatus: routeStatus,
                 type: type,
-                difficulty: difficulty
+                difficulty: difficulty,
+                pictureKey: pictureKey
             }, {
                 headers: {
                     Authorization: `Bearer ${token}`
@@ -158,4 +164,34 @@ export default class ClimbClient extends BindingClass {
             this.handleError(error, errorCallback)
         }
     }
+
+    // async createRouteWithImage(location, color, routeStatus, type, difficulty, routeImageFile, errorCallback) {
+    //     try {
+    //       const token = await this.getTokenOrThrow("You must be logged in to create a route!");
+      
+    //       // Create a FormData object to handle the file and other form data
+    //       const formData = new FormData();
+    //       formData.append('location', location);
+    //       formData.append('color', color);
+    //       formData.append('routeStatus', routeStatus);
+    //       formData.append('type', type);
+    //       formData.append('difficulty', difficulty);
+    //       formData.append('routeImageFile', routeImageFile);
+      
+    //       // The S3 object key for the uploaded image
+    //       const pictureKey = `images/${location}-${Date.now()}-${routeImageFile.name}`;
+    //       formData.append('pictureKey', pictureKey);
+      
+    //       const response = await this.axiosClient.post(`routes`, formData, {
+    //         headers: {
+    //           Authorization: `Bearer ${token}`,
+    //           'Content-Type': 'multipart/form-data', // Set content type to multipart/form-data
+    //         },
+    //       });
+      
+    //       return response.data.route;
+    //     } catch (error) {
+    //       this.handleError(error, errorCallback);
+    //     }
+    //   }
 }
