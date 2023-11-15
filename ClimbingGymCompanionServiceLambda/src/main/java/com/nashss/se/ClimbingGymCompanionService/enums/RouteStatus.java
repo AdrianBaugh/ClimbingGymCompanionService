@@ -4,5 +4,5 @@ public enum RouteStatus {
     ACTIVE,
     ARCHIVED,
     CLOSED_MAINTENANCE,
-    CLOSED_TOURNAMENT
+    TOURNAMENT_ONLY
 }

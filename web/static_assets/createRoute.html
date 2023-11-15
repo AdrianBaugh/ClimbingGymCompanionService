@@ -22,9 +22,18 @@
         <form class="card-content" id="create-route-form">
             <p class="hidden error" id="error-message"> </p>
             <p class="form-field">
-                <label>Please enter the Route's info below:</label>
+                <label>Please enter the Route's location:</label>
                 <input type="text" required class="validated-field" id="location" placeholder="ex. 25, North-Boulder-Right"
                     autofocus>
+                    
+                <label for="colorDropdown">Color:</label>
+                <select id="colorDropdown"></select>
+                <label for="statusDropdown">Status:</label>
+                <select id="statusDropdown"></select>
+                <label for="typeDropdown">Type:</label>
+                <select id="typeDropdown"></select>
+                <label>Please enter the difficulty:</label>
+                <input type="text" id="difficulty" placeholder="ex. v3-v4, 5.10+">
             </p>
             <p>
                 <a href="#" class="button" id="create">Submit</a>

@@ -115,16 +115,47 @@ export default class ClimbClient extends BindingClass {
      * @param errorCallback (Optional) A function to execute if the call fails.
      * @returns The route's metadata.
      */
-        async viewRoute(routeId, errorCallback) {
-            try {
-                console.log("Attempting to get info for routeId: ", routeId);  
+    async viewRoute(routeId, errorCallback) {
+        try {
+            console.log("Attempting to get info for routeId: ", routeId);  
 
-                const response = await this.axiosClient.get(`routes/${routeId}`);
-                console.log("routeResponse: ", response);  
+            const response = await this.axiosClient.get(`routes/${routeId}`);
+            console.log("routeResponse: ", response);  
 
-                return response.data.route;
-            } catch (error) {
-                this.handleError(error, errorCallback)
-            }
+            return response.data.route;
+        } catch (error) {
+            this.handleError(error, errorCallback)
         }
+    }
+
+    /**
+    * Create a new route by the current user.
+    * @param location Metadata associated with a route.
+    * @param color Metadata associated with a route.
+    * @param routeStatus Metadata associated with a route.
+    * @param type Metadata to associated with a route.
+    * @param difficulty Metadata to associated with a route.
+
+    * @param errorCallback (Optional) A function to execute if the call fails.
+    * @returns The playlist that has been created.
+    */
+    async createRoute(location, color, routeStatus, type, difficulty, errorCallback) {
+        try {
+            const token = await this.getTokenOrThrow("You must be logged in to create a route!");
+            const response = await this.axiosClient.post(`routes`, {
+                location: location,
+                color: color,
+                routeStatus: routeStatus,
+                type: type,
+                difficulty: difficulty
+            }, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+            return response.data.route;
+        } catch (error) {
+            this.handleError(error, errorCallback)
+        }
+    }
 }
