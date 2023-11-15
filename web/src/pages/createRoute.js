@@ -12,10 +12,9 @@ class CreateRoute extends BindingClass {
         super();
         this.bindClassMethods(['mount', 'submit', 'redirectToViewRoute', 'colorsDropdown', 'statusDropdown', 'typeDropdown'], this);
         this.dataStore = new DataStore();
-        //this.dataStore.addChangeListener(this.addRouteToPage);
         this.dataStore.addChangeListener(this.redirectToViewRoute);
         this.header = new Header(this.dataStore);
-        console.log("ViewRoute constructor");
+        console.log("CreateRoute constructor");
     }
 
     /**
@@ -105,6 +104,7 @@ class CreateRoute extends BindingClass {
     }
     
     async submit(evt) {
+        console.log('Submit button clicked');
         evt.preventDefault();
     
         const errorMessageDisplay = document.getElementById('error-message');
@@ -146,8 +146,8 @@ class CreateRoute extends BindingClass {
  * Main method to run when the page contents have loaded.
  */
 const main = async () => {
-    const viewRoute = new CreateRoute();
-    viewRoute.mount();
+    const createRoute = new CreateRoute();
+    createRoute.mount();
 };
 
 window.addEventListener('DOMContentLoaded', main);

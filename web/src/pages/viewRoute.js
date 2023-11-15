@@ -11,16 +11,16 @@ import { formatDateToMMDDYYYY } from '../util/dateUtils';
 class ViewRoute extends BindingClass {
     constructor() {
         super();
-        this.bindClassMethods(['clientLoaded', 'mount', 'addRouteToPage'], this);
+        this.bindClassMethods(['clientLoaded', 'mount', 'addRouteToPage', 'statusDropdown', 'submit', 'redirectToViewRoute'], this);
         this.dataStore = new DataStore();
         this.dataStore.addChangeListener(this.addRouteToPage);
-
+        this.dataStore.addChangeListener(this.redirectToViewRoute);
         this.header = new Header(this.dataStore);
         console.log("ViewRoute constructor");
     }
 
     /**
-     * Once the client is loaded, get the pet metadata.
+     * Once the client is loaded, get the route metadata.
      */
     async clientLoaded() {
         const urlParams = new URLSearchParams(window.location.search);
@@ -34,10 +34,31 @@ class ViewRoute extends BindingClass {
      * Add the header to the page and load the ClimbClient.
      */
     mount() {
+        document.getElementById('updateStatus').addEventListener('click', this.submit);
 
         this.header.addHeaderToPage();
         this.client = new ClimbClient();
+        this.statusDropdown();
         this.clientLoaded();
+
+        const openModalButton = document.getElementById('openModalBtn');
+        const closeModalButton = document.getElementById('closeModalBtn');
+        const modal = document.getElementById('myModal');
+    
+        openModalButton.addEventListener('click', () => {
+            modal.style.display = 'block';
+        });
+    
+        closeModalButton.addEventListener('click', () => {
+            modal.style.display = 'none';
+        });
+    
+        // Close the modal if the user clicks outside of it
+        window.addEventListener('click', (event) => {
+            if (event.target === modal) {
+                modal.style.display = 'none';
+            }
+        });
     }
 
     /**
@@ -83,6 +104,76 @@ class ViewRoute extends BindingClass {
             });
         }
     }
+
+        // Function to populate the status dropdown
+    statusDropdown() {
+        const statusDropdown = document.getElementById('statusDropdown');
+    
+        statusDropdown.innerHTML = '';
+    
+        const statuses = ['ARCHIVED', 'TOURNAMENT_ONLY', 'CLOSED_MAINTENANCE', 'ACTIVE' ];
+
+        const placeholderOption = document.createElement('option');
+        placeholderOption.value = '';
+        placeholderOption.textContent = 'Select a status'; // Placeholder text
+        placeholderOption.disabled = true;
+        placeholderOption.selected = true; // Optional: Select this by default
+        statusDropdown.appendChild(placeholderOption);
+    
+        statuses.forEach(status => {
+        const option = document.createElement('option');
+        option.value = status;
+        option.textContent = status;
+        statusDropdown.appendChild(option);
+        });
+    }
+
+    redirectToViewRoute() {
+        const route = this.dataStore.get('route');
+        if (route != null) {
+            const currentUrl = new URL(window.location.href);
+            if (!currentUrl.searchParams.has('routeId')) {
+                console.log("Redirecting to viewRoute.html");
+                window.location.href = `/viewRoute.html?routeId=${route.routeId}`;
+                
+
+            }
+        }
+    }
+    
+
+    async submit(evt) {
+        console.log('Submit button clicked');
+        evt.preventDefault();
+    
+        const errorMessageDisplay = document.getElementById('error-message');
+        errorMessageDisplay.innerText = '';
+        errorMessageDisplay.classList.add('hidden');
+    
+        const updateButton = document.getElementById('updateStatus');
+        const origButtonText = updateButton.innerText;
+        updateButton.innerText = 'Loading. . .';
+    
+        const routeStatus = document.getElementById('statusDropdown').value;
+
+        const route = this.dataStore.get('route');
+        const updatedRoute = await this.client.updateRoute(route.routeId, routeStatus, (error) => {
+            updateButton.innerText = origButtonText;
+            errorMessageDisplay.innerText = `Error: ${error.message}`;
+            errorMessageDisplay.classList.remove('hidden');
+        });
+    
+        this.dataStore.set('route', updatedRoute);
+    
+        this.redirectToViewRoute();
+        
+        const modal = document.getElementById('myModal')
+        setTimeout(() => {
+            modal.style.display = 'none';
+        }, 3000);
+
+    }
+    
 }
 
 /**
