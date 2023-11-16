@@ -7,16 +7,16 @@ import com.nashss.se.ClimbingGymCompanionService.exceptions.RouteNotFoundExcepti
 import com.nashss.se.ClimbingGymCompanionService.metrics.MetricsConstants;
 import com.nashss.se.ClimbingGymCompanionService.metrics.MetricsPublisher;
 
-import javax.inject.Inject;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBQueryExpression;
 import com.amazonaws.services.dynamodbv2.model.AttributeValue;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import javax.inject.Inject;
 
 public class RouteDao {
     private final DynamoDBMapper dynamoDbMapper;
@@ -43,7 +43,7 @@ public class RouteDao {
     public List<Route> getAllActiveRoutes(String isArchived) {
         log.info("Entered RouteDao getAllActiveRoutes() ");
 
-        if (isArchived == null || !isArchived.equals(ArchivedStatus.FALSE.name())){
+        if (isArchived == null || !isArchived.equals(ArchivedStatus.FALSE.name())) {
             throw new ArchivedStatusNotFoundException("Archived status: " + isArchived +
                     " does not match criteria of TRUE or FALSE");
         }
@@ -77,7 +77,7 @@ public class RouteDao {
     }
 
     /**
-     * Saves a new route to the database
+     * Saves a new route to the database.
      *
      *  @param newRoute The route to save.
      *  @return The Route object that was saved.

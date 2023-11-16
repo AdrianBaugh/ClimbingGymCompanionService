@@ -11,7 +11,7 @@ public class CreateClimbLambda
         implements RequestHandler<AuthenticatedLambdaRequest<CreateClimbRequest>, LambdaResponse> {
 
     /**
-     * CreateClimbLambda handle request method
+     * CreateClimbLambda handle request method.
      * @param input The Lambda Function input
      * @param context The Lambda execution environment context object.
      * @return

@@ -11,8 +11,16 @@ public class ClimbModel {
     private LocalDateTime dateTimeClimbed;
     private Boolean thumbsUp;
     private String notes;
-    /*
 
+    /**
+     *
+     * @param climbId the climb id
+     * @param userId the user id
+     * @param routeId the routeID
+     * @param climbStatus the climbStatus
+     * @param dateTimeClimbed the dateTimeClimbed
+     * @param thumbsUp the thumbsUp true or false
+     * @param notes the notes
      */
     public ClimbModel(String climbId, String userId, String routeId, String climbStatus, LocalDateTime dateTimeClimbed,
                       Boolean thumbsUp, String notes) {
@@ -55,7 +63,9 @@ public class ClimbModel {
 
     @Override
     public boolean equals(Object other) {
-        if (this == other) return true;
+        if (this == other) {
+            return true;
+        }
         if (other == null || getClass() != other.getClass()) {
             return false;
         }

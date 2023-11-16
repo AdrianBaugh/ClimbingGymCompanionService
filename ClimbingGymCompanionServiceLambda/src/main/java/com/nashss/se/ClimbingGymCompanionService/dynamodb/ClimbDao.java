@@ -3,11 +3,11 @@ package com.nashss.se.ClimbingGymCompanionService.dynamodb;
 import com.nashss.se.ClimbingGymCompanionService.dynamodb.pojos.Climb;
 import com.nashss.se.ClimbingGymCompanionService.metrics.MetricsPublisher;
 
-import javax.inject.Inject;
-
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import javax.inject.Inject;
 
 public class ClimbDao {
     private final DynamoDBMapper dynamoDbMapper;
@@ -15,7 +15,7 @@ public class ClimbDao {
     private final Logger log = LogManager.getLogger();
 
     /**
-     * Instantiates a ClimbDao object
+     * Instantiates a ClimbDao object.
      * @param dynamoDbMapper   the {@link DynamoDBMapper} used to interact with the pets table
      * @param metricsPublisher the {@link MetricsPublisher} used to record metrics.
      */
@@ -26,7 +26,7 @@ public class ClimbDao {
     }
 
     /**
-     * Saves a new climb to the database
+     * Saves a new climb to the database.
      *
      *  @param climb The climb to save.
      *  @return The climb object that was saved.

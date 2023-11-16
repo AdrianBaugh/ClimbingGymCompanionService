@@ -13,9 +13,9 @@ import com.nashss.se.ClimbingGymCompanionService.utils.IdUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import javax.inject.Inject;
 import java.time.LocalDateTime;
 import java.util.List;
+import javax.inject.Inject;
 
 public class CreateClimbActivity {
     private final Logger log = LogManager.getLogger();
@@ -60,7 +60,7 @@ public class CreateClimbActivity {
         newClimb.setDateTimeClimbed(dateTime);
         newClimb.setThumbsUp(createClimbRequest.getThumbsUp());
 
-        if (notes != null){
+        if (notes != null) {
             updateRouteNotes(notes, userId);
         }
         newClimb.setNotes(notes);

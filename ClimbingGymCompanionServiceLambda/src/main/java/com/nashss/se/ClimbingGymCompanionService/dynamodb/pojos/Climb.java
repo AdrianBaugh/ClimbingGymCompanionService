@@ -1,7 +1,14 @@
 package com.nashss.se.ClimbingGymCompanionService.dynamodb.pojos;
 
-import com.amazonaws.services.dynamodbv2.datamodeling.*;
 import com.nashss.se.ClimbingGymCompanionService.converters.LocalDateTimeConverter;
+
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBAttribute;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBHashKey;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapperFieldModel;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBRangeKey;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTypeConverted;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTyped;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -9,7 +16,7 @@ import java.util.Objects;
 /**
  * Represents a climb in the climbs table.
  */
-@DynamoDBTable(tableName= "climbs" )
+@DynamoDBTable(tableName = "climbs")
 public class Climb {
     private String climbId;
     private String userId;
@@ -79,10 +86,20 @@ public class Climb {
 
     @Override
     public boolean equals(Object other) {
-        if (this == other) return true;
-        if (other == null || getClass() != other.getClass()) return false;
+        if (this == other) {
+            return true;
+        }
+        if (other == null || getClass() != other.getClass()) {
+            return false;
+        }
         Climb climb = (Climb) other;
-        return Objects.equals(climbId, climb.climbId) && Objects.equals(userId, climb.userId) && Objects.equals(routeId, climb.routeId) && Objects.equals(climbStatus, climb.climbStatus) && Objects.equals(dateTimeClimbed, climb.dateTimeClimbed) && Objects.equals(thumbsUp, climb.thumbsUp) && Objects.equals(notes, climb.notes);
+        return Objects.equals(climbId, climb.climbId) &&
+                Objects.equals(userId, climb.userId) &&
+                Objects.equals(routeId, climb.routeId) &&
+                Objects.equals(climbStatus, climb.climbStatus) &&
+                Objects.equals(dateTimeClimbed, climb.dateTimeClimbed) &&
+                Objects.equals(thumbsUp, climb.thumbsUp) &&
+                Objects.equals(notes, climb.notes);
     }
 
     @Override

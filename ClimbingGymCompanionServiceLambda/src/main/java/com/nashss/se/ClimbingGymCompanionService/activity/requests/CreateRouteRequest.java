@@ -5,14 +5,15 @@ import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 
 @JsonDeserialize(builder = CreateRouteRequest.Builder.class)
 public class CreateRouteRequest {
-        private final String location;
-        private final String color;
-        private final String routeStatus;
-        private final String type;
-        private final String difficulty;
-        private final String pictureKey;
+    private final String location;
+    private final String color;
+    private final String routeStatus;
+    private final String type;
+    private final String difficulty;
+    private final String pictureKey;
 
-    private CreateRouteRequest(String location, String color, String routeStatus, String type, String difficulty, String pictureKey) {
+    private CreateRouteRequest(String location, String color, String routeStatus,
+                               String type, String difficulty, String pictureKey) {
         this.location = location;
         this.color = color;
         this.routeStatus = routeStatus;

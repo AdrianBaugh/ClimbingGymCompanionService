@@ -2,14 +2,19 @@ package com.nashss.se.ClimbingGymCompanionService.dynamodb.pojos;
 
 import com.nashss.se.ClimbingGymCompanionService.converters.LocalDateConverter;
 
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBAttribute;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBHashKey;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBIndexHashKey;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTypeConverted;
+
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 
-import com.amazonaws.services.dynamodbv2.datamodeling.*;
-
 @DynamoDBTable(tableName = "routes")
 public class Route {
+    private static final String GSI_INDEX_NAME = "RoutesByArchivedIndex";
     private String routeId;
     private String routeStatus;
     private String isArchived;
@@ -21,7 +26,6 @@ public class Route {
     private Integer rating;
     private String pictureKey;
     private List<String> notesList;
-    private static final String GSI_INDEX_NAME = "RoutesByArchivedIndex";
 
     @DynamoDBHashKey(attributeName = "routeId")
     public String getRouteId() {
@@ -125,8 +129,12 @@ public class Route {
 
     @Override
     public boolean equals(Object other) {
-        if (this == other) return true;
-        if (other == null || getClass() != other.getClass()) return false;
+        if (this == other) {
+            return true;
+        }
+        if (other == null || getClass() != other.getClass()) {
+            return false;
+        }
         Route route = (Route) other;
         return Objects.equals(routeId, route.routeId) && Objects.equals(routeStatus, route.routeStatus) &&
                 Objects.equals(isArchived, route.isArchived) && Objects.equals(location, route.location) &&

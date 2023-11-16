@@ -10,7 +10,7 @@ public class CreateRouteLambda
         extends LambdaActivityRunner<CreateRouteRequest, CreateRouteResult>
         implements RequestHandler<LambdaRequest<CreateRouteRequest>, LambdaResponse> {
     /**
-     * CreateRouteLambda handle request method
+     * CreateRouteLambda handle request method.
      * @param input The Lambda Function input
      * @param context The Lambda execution environment context object.
      * @return
