@@ -4,28 +4,34 @@ import com.nashss.se.ClimbingGymCompanionService.activity.requests.CreateClimbRe
 import com.nashss.se.ClimbingGymCompanionService.activity.results.CreateClimbResult;
 import com.nashss.se.ClimbingGymCompanionService.converters.ModelConverter;
 import com.nashss.se.ClimbingGymCompanionService.dynamodb.ClimbDao;
+import com.nashss.se.ClimbingGymCompanionService.dynamodb.RouteDao;
 import com.nashss.se.ClimbingGymCompanionService.dynamodb.pojos.Climb;
+import com.nashss.se.ClimbingGymCompanionService.dynamodb.pojos.Route;
 import com.nashss.se.ClimbingGymCompanionService.models.ClimbModel;
 import com.nashss.se.ClimbingGymCompanionService.utils.IdUtils;
-
-import javax.inject.Inject;
-import java.time.LocalDateTime;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import javax.inject.Inject;
+import java.time.LocalDateTime;
+import java.util.List;
+
 public class CreateClimbActivity {
     private final Logger log = LogManager.getLogger();
     private final ClimbDao climbDao;
+    private final RouteDao routeDao;
 
     /**
      * Instantiates a new CreateClimbActivity object.
      *
      * @param climbDao to access the climbs table.
+     * @param routeDao to access routes table.
      */
     @Inject
-    public CreateClimbActivity(ClimbDao climbDao) {
+    public CreateClimbActivity(ClimbDao climbDao, RouteDao routeDao) {
         this.climbDao = climbDao;
+        this.routeDao = routeDao;
     }
 
     /**
@@ -43,15 +49,21 @@ public class CreateClimbActivity {
         log.info("received createClimbRequest {}", createClimbRequest);
 
         LocalDateTime dateTime = LocalDateTime.now();
+        String userId = createClimbRequest.getUserId();
+        String notes = createClimbRequest.getNotes();
 
         Climb newClimb = new Climb();
         newClimb.setClimbId(IdUtils.generateClimbId(dateTime));
-        newClimb.setUserId(createClimbRequest.getUserId());
+        newClimb.setUserId(userId);
         newClimb.setRouteId(createClimbRequest.getRouteId());
         newClimb.setClimbStatus(createClimbRequest.getClimbStatus());
         newClimb.setDateTimeClimbed(dateTime);
         newClimb.setThumbsUp(createClimbRequest.getThumbsUp());
-        newClimb.setNotes(createClimbRequest.getNotes());
+
+        if (notes != null){
+            updateRouteNotes(notes, userId);
+        }
+        newClimb.setNotes(notes);
 
         climbDao.saveClimb(newClimb);
 
@@ -60,5 +72,21 @@ public class CreateClimbActivity {
         return CreateClimbResult.builder()
                 .withClimb(climbModel)
                 .build();
+    }
+
+    /**
+     * Helper to update the notes list for particular route that was climbed.
+     * @param newNote the newNote
+     * @param routeId the route to add the newNote to.
+     */
+    private void updateRouteNotes(String newNote, String routeId) {
+        Route route = routeDao.getRouteById(routeId);
+
+        List<String> notes = route.getNotesList();
+        notes.add(newNote);
+
+        route.setNotesList(notes);
+
+        routeDao.saveRoute(route);
     }
 }
