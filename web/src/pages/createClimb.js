@@ -12,7 +12,6 @@ class CreateClimb extends BindingClass {
         super();
         this.bindClassMethods(['clientLoaded', 'mount', 'submit', 'redirectToViewClimb', 'routeDropdown', 'statusDropdown', 'typeDropdown'], this);
         this.dataStore = new DataStore();
-        // this.dataStore.addChangeListener(this.redirectToViewClimb);
         this.dataStore.addChangeListener(this.routeDropdown);
         this.header = new Header(this.dataStore);
         console.log("CreateClimb constructor");
