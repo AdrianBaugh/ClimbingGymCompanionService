@@ -19,19 +19,19 @@ public class CreateClimbLambda
     @Override
     public LambdaResponse handleRequest(AuthenticatedLambdaRequest<CreateClimbRequest> input, Context context) {
         return super.runActivity(
-                () -> {
-                    CreateClimbRequest unauthenticatedRequest = input.fromBody(CreateClimbRequest.class);
-                    return input.fromUserClaims(claims ->
-                            CreateClimbRequest.builder()
-                                    .withUserId(claims.get("email"))
-                                    .withRouteId(unauthenticatedRequest.getRouteId())
-                                    .withClimbStatus(unauthenticatedRequest.getClimbStatus())
-                                    .withThumbsUp(unauthenticatedRequest.getThumbsUp())
-                                    .withNotes(unauthenticatedRequest.getNotes())
-                                    .build());
-                },
-                (request, serviceComponent) ->
-                        serviceComponent.provideCreateClimbActivity().handleRequest(request)
+            () -> {
+                CreateClimbRequest unauthenticatedRequest = input.fromBody(CreateClimbRequest.class);
+                return input.fromUserClaims(claims ->
+                        CreateClimbRequest.builder()
+                                .withUserId(claims.get("email"))
+                                .withRouteId(unauthenticatedRequest.getRouteId())
+                                .withClimbStatus(unauthenticatedRequest.getClimbStatus())
+                                .withThumbsUp(unauthenticatedRequest.getThumbsUp())
+                                .withNotes(unauthenticatedRequest.getNotes())
+                                .build());
+            },
+            (request, serviceComponent) ->
+                    serviceComponent.provideCreateClimbActivity().handleRequest(request)
         );
     }
 }

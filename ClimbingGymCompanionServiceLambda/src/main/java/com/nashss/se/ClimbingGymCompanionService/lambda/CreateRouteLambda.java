@@ -18,9 +18,9 @@ public class CreateRouteLambda
     @Override
     public LambdaResponse handleRequest(LambdaRequest<CreateRouteRequest> input, Context context) {
         return super.runActivity(
-                () -> input.fromBody(CreateRouteRequest.class),
-                (request, serviceComponent) ->
-                        serviceComponent.provideCreateRouteActivity().handleRequest(request)
+            () -> input.fromBody(CreateRouteRequest.class),
+            (request, serviceComponent) ->
+                    serviceComponent.provideCreateRouteActivity().handleRequest(request)
         );
     }
 }

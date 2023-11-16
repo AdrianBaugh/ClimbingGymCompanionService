@@ -18,12 +18,12 @@ public class GetRouteLambda
     public LambdaResponse handleRequest(LambdaRequest<GetRouteRequest> input, Context context) {
         log.info("handleRequest from Get route LAMBDA");
         return super.runActivity(
-                () -> input.fromPath(path ->
-                        GetRouteRequest.builder()
-                                .withRouteId(path.get("routeId"))
-                                .build()),
-                (request, serviceComponent) ->
-                        serviceComponent.provideGetRouteActivity().handleRequest(request)
+            () -> input.fromPath(path ->
+                    GetRouteRequest.builder()
+                            .withRouteId(path.get("routeId"))
+                            .build()),
+            (request, serviceComponent) ->
+                    serviceComponent.provideGetRouteActivity().handleRequest(request)
         );
     }
 }
