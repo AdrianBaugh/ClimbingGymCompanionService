@@ -23,10 +23,23 @@
     <p class="detail-header">Color: <span id="color">loading...</span></p>
     <p class="detail-header">Type: <span id="type">loading...</span></p>
     <p class="detail-header">Rating: <span id="rating">loading...</span></p>
-    <p class="detail-header">Date route was set/updated: <span id="date-created">loading...</span></p>
-</div>
+    <p class="detail-header">Date route was set: <span id="date-created">loading...</span></p>
 
-    
+
+<button class="button" id="openModalBtn">Update Route Status</button>
+<div id="myModal" class="modal">
+    <div class="modal-content">
+        <span class="close" id="closeModalBtn">&times;</span>
+               
+        <select id="statusDropdown"></select>
+        <h4>Tip: Has this route been removed? set it to Archived. </h4>
+        <div>
+            <p class="hidden error" id="error-message"> </p>
+            <a href="#" class="button" id="updateStatus">Submit</a>
+        </div>
+    </div>
+</div>
+</div>
     <div class="card">
         <label> WARNING SPOLIERS!</label> 
 

@@ -137,7 +137,7 @@ export default class ClimbClient extends BindingClass {
     * @param difficulty Metadata to associated with a route.
 
     * @param errorCallback (Optional) A function to execute if the call fails.
-    * @returns The playlist that has been created.
+    * @returns The route that has been created.
     */
     async createRoute(location, color, routeStatus, type, difficulty, routeImageFile, errorCallback) {
         try {
@@ -194,4 +194,28 @@ export default class ClimbClient extends BindingClass {
     //       this.handleError(error, errorCallback);
     //     }
     //   }
+
+    /**
+    * Update a new route by the current user.
+    * @param routeId Metadata associated with a route.
+    * @param routeStatus Metadata associated with a route.
+    * @param errorCallback (Optional) A function to execute if the call fails.
+    * @returns The route that has been updated.
+    */
+     async updateRoute(routeId, routeStatus, errorCallback) {
+        try {
+            const token = await this.getTokenOrThrow("You must be logged in to update a route!");
+                       
+            const response = await this.axiosClient.put(`routes/${routeId}`, {
+                routeStatus: routeStatus
+            }, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+            return response.data.route;
+        } catch (error) {
+            this.handleError(error, errorCallback)
+        }
+    }
 }
