@@ -1,9 +1,6 @@
 package com.nashss.se.ClimbingGymCompanionService.dependency;
 
-import com.nashss.se.ClimbingGymCompanionService.activity.CreateRouteActivity;
-import com.nashss.se.ClimbingGymCompanionService.activity.GetAllActiveRoutesActivity;
-import com.nashss.se.ClimbingGymCompanionService.activity.GetRouteActivity;
-import com.nashss.se.ClimbingGymCompanionService.activity.UpdateRouteActivity;
+import com.nashss.se.ClimbingGymCompanionService.activity.*;
 
 import javax.inject.Singleton;
 
@@ -34,4 +31,10 @@ public interface ServiceComponent {
 
      */
     UpdateRouteActivity provideUpdateRouteActivity();
+
+    /*
+
+     */
+    CreateClimbActivity provideCreateClimbActivity();
 }
+
