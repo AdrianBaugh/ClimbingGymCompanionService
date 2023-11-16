@@ -25,6 +25,7 @@ public class CreateClimbLambda
                         CreateClimbRequest.builder()
                                 .withUserId(claims.get("email"))
                                 .withRouteId(unauthenticatedRequest.getRouteId())
+                                .withType(unauthenticatedRequest.getType())
                                 .withClimbStatus(unauthenticatedRequest.getClimbStatus())
                                 .withThumbsUp(unauthenticatedRequest.getThumbsUp())
                                 .withNotes(unauthenticatedRequest.getNotes())

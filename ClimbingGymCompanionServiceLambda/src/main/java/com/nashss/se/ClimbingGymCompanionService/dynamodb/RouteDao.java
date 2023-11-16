@@ -70,7 +70,7 @@ public class RouteDao {
         Route route = dynamoDbMapper.load(Route.class, routeId);
         if (route == null) {
             metricsPublisher.addCount(MetricsConstants.GETROUTE_ROUTENOTFOUND_COUNT, 1);
-            throw new RouteNotFoundException("Route not found");
+            throw new RouteNotFoundException("Route not found for routeId" + routeId);
         }
         metricsPublisher.addCount(MetricsConstants.GETROUTE_ROUTENOTFOUND_COUNT, 0);
         return route;

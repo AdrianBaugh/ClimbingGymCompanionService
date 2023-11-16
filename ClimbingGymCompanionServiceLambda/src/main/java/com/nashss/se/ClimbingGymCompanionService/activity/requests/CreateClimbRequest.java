@@ -6,13 +6,15 @@ import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 @JsonDeserialize(builder = CreateClimbRequest.Builder.class)
 public class CreateClimbRequest {
     private final String userId;
+    private final String type;
     private final String routeId;
     private final String climbStatus;
     private final Boolean thumbsUp;
     private final String notes;
 
-    private CreateClimbRequest(String userId, String routeId, String climbStatus, Boolean thumbsUp, String notes) {
+    public CreateClimbRequest(String userId, String type, String routeId, String climbStatus, Boolean thumbsUp, String notes) {
         this.userId = userId;
+        this.type = type;
         this.routeId = routeId;
         this.climbStatus = climbStatus;
         this.thumbsUp = thumbsUp;
@@ -21,6 +23,10 @@ public class CreateClimbRequest {
 
     public String getUserId() {
         return userId;
+    }
+
+    public String getType() {
+        return type;
     }
 
     public String getRouteId() {
@@ -43,6 +49,7 @@ public class CreateClimbRequest {
     public String toString() {
         return "CreateClimbRequest{" +
                 "userId='" + userId + '\'' +
+                ", type='" + type + '\'' +
                 ", routeId='" + routeId + '\'' +
                 ", climbStatus='" + climbStatus + '\'' +
                 ", thumbsUp=" + thumbsUp +
@@ -58,6 +65,7 @@ public class CreateClimbRequest {
     @JsonPOJOBuilder
     public static class Builder {
         private String userId;
+        private String type;
         private String routeId;
         private String climbStatus;
         private Boolean thumbsUp;
@@ -65,6 +73,11 @@ public class CreateClimbRequest {
 
         public Builder withUserId(String userId) {
             this.userId = userId;
+            return this;
+        }
+
+        public Builder withType(String type) {
+            this.type = type;
             return this;
         }
 
@@ -89,7 +102,7 @@ public class CreateClimbRequest {
         }
 
         public CreateClimbRequest build() {
-            return new CreateClimbRequest(userId, routeId, climbStatus, thumbsUp, notes);
+            return new CreateClimbRequest(userId, type, routeId, climbStatus, thumbsUp, notes);
         }
     }
 }

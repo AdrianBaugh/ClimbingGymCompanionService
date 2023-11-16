@@ -21,6 +21,7 @@ public class Climb {
     private String climbId;
     private String userId;
     private String routeId;
+    private String type;
     private String climbStatus;
     private LocalDateTime dateTimeClimbed;
     private Boolean thumbsUp;
@@ -49,6 +50,16 @@ public class Climb {
     public void setRouteId(String routeId) {
         this.routeId = routeId;
     }
+
+    @DynamoDBAttribute(attributeName = "type")
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
     @DynamoDBAttribute(attributeName = "climbStatus")
     public String getClimbStatus() {
         return climbStatus;
@@ -96,6 +107,7 @@ public class Climb {
         return Objects.equals(climbId, climb.climbId) &&
                 Objects.equals(userId, climb.userId) &&
                 Objects.equals(routeId, climb.routeId) &&
+                Objects.equals(type, climb.type) &&
                 Objects.equals(climbStatus, climb.climbStatus) &&
                 Objects.equals(dateTimeClimbed, climb.dateTimeClimbed) &&
                 Objects.equals(thumbsUp, climb.thumbsUp) &&
@@ -104,7 +116,7 @@ public class Climb {
 
     @Override
     public int hashCode() {
-        return Objects.hash(climbId, userId, routeId, climbStatus, dateTimeClimbed, thumbsUp, notes);
+        return Objects.hash(climbId, userId, routeId, type, climbStatus, dateTimeClimbed, thumbsUp, notes);
     }
 
     @Override
@@ -113,6 +125,7 @@ public class Climb {
                 "climbId='" + climbId + '\'' +
                 ", userId='" + userId + '\'' +
                 ", routeId='" + routeId + '\'' +
+                ", type='" + type + '\'' +
                 ", climbStatus='" + climbStatus + '\'' +
                 ", dateTimeClimbed=" + dateTimeClimbed +
                 ", thumbsUp=" + thumbsUp +

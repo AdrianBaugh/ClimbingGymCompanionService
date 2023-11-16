@@ -49,19 +49,20 @@ public class CreateClimbActivity {
         log.info("received createClimbRequest {}", createClimbRequest);
 
         LocalDateTime dateTime = LocalDateTime.now();
-        String userId = createClimbRequest.getUserId();
+        String routeId = createClimbRequest.getRouteId();
         String notes = createClimbRequest.getNotes();
 
         Climb newClimb = new Climb();
         newClimb.setClimbId(IdUtils.generateClimbId(dateTime));
-        newClimb.setUserId(userId);
-        newClimb.setRouteId(createClimbRequest.getRouteId());
+        newClimb.setUserId(createClimbRequest.getUserId());
+        newClimb.setType(createClimbRequest.getType());
+        newClimb.setRouteId(routeId);
         newClimb.setClimbStatus(createClimbRequest.getClimbStatus());
         newClimb.setDateTimeClimbed(dateTime);
         newClimb.setThumbsUp(createClimbRequest.getThumbsUp());
 
         if (notes != null) {
-            updateRouteNotes(notes, userId);
+            updateRouteNotes(notes, routeId);
         }
         newClimb.setNotes(notes);
 

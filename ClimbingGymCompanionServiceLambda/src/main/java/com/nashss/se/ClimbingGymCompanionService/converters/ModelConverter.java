@@ -57,6 +57,7 @@ public class ModelConverter {
         return ClimbModel.builder()
                 .withClimbId(climb.getClimbId())
                 .withUserId(climb.getUserId())
+                .withType(climb.getType())
                 .withRouteId(climb.getRouteId())
                 .withClimbStatus(climb.getClimbStatus())
                 .withDateTimeClimbed(climb.getDateTimeClimbed())
