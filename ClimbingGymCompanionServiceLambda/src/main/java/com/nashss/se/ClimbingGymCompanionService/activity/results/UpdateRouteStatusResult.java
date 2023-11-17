@@ -2,10 +2,10 @@ package com.nashss.se.ClimbingGymCompanionService.activity.results;
 
 import com.nashss.se.ClimbingGymCompanionService.models.RouteModel;
 
-public class UpdateRouteResult {
+public class UpdateRouteStatusResult {
     private final RouteModel route;
 
-    private UpdateRouteResult(RouteModel route) {
+    private UpdateRouteStatusResult(RouteModel route) {
         this.route = route;
     }
 
@@ -15,7 +15,7 @@ public class UpdateRouteResult {
 
     @Override
     public String toString() {
-        return "UpdateRouteResult{" +
+        return "UpdateRouteStatusResult{" +
                 "route=" + route +
                 '}';
     }
@@ -32,6 +32,6 @@ public class UpdateRouteResult {
             return this;
         }
 
-        public UpdateRouteResult build() { return new UpdateRouteResult(route);}
+        public UpdateRouteStatusResult build() { return new UpdateRouteStatusResult(route);}
     }
 }

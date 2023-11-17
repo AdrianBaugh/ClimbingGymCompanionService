@@ -1,7 +1,7 @@
 package com.nashss.se.ClimbingGymCompanionService.activity;
 
-import com.nashss.se.ClimbingGymCompanionService.activity.requests.UpdateRouteRequest;
-import com.nashss.se.ClimbingGymCompanionService.activity.results.UpdateRouteResult;
+import com.nashss.se.ClimbingGymCompanionService.activity.requests.UpdateRouteStatusRequest;
+import com.nashss.se.ClimbingGymCompanionService.activity.results.UpdateRouteStatusResult;
 import com.nashss.se.ClimbingGymCompanionService.converters.ModelConverter;
 import com.nashss.se.ClimbingGymCompanionService.dynamodb.RouteDao;
 import com.nashss.se.ClimbingGymCompanionService.dynamodb.pojos.Route;
@@ -16,7 +16,7 @@ import org.apache.logging.log4j.Logger;
 import java.util.Objects;
 import javax.inject.Inject;
 
-public class UpdateRouteActivity {
+public class UpdateRouteStatusActivity {
     private final Logger log = LogManager.getLogger();
     private final RouteDao routeDao;
     private final MetricsPublisher metricsPublisher;
@@ -27,7 +27,7 @@ public class UpdateRouteActivity {
      * @param metricsPublisher for metrics
      */
     @Inject
-    public UpdateRouteActivity(RouteDao routeDao, MetricsPublisher metricsPublisher) {
+    public UpdateRouteStatusActivity(RouteDao routeDao, MetricsPublisher metricsPublisher) {
         this.routeDao = routeDao;
         this.metricsPublisher = metricsPublisher;
     }
@@ -39,16 +39,16 @@ public class UpdateRouteActivity {
      * It then returns the updated route with a constructed routeId.
      * <p>
      *
-     * @param updateRouteRequest request an object containing the route metadata
+     * @param updateRouteStatusRequest request an object containing the route metadata
      *                              associated with it
-     * @return UpdateRouteResult a result object containing the API defined {@link RouteModel}
+     * @return UpdateRouteStatusResult a result object containing the API defined {@link RouteModel}
      */
-    public UpdateRouteResult handleRequest(final UpdateRouteRequest updateRouteRequest) {
-        log.info("Received the Update RouteRequest {}", updateRouteRequest);
+    public UpdateRouteStatusResult handleRequest(final UpdateRouteStatusRequest updateRouteStatusRequest) {
+        log.info("Received the Update RouteRequest {}", updateRouteStatusRequest);
 
-        Route route = routeDao.getRouteById(updateRouteRequest.getRouteId());
+        Route route = routeDao.getRouteById(updateRouteStatusRequest.getRouteId());
 
-        String newStatus = updateRouteRequest.getRouteStatus();
+        String newStatus = updateRouteStatusRequest.getRouteStatus();
         route.setRouteStatus(newStatus);
         if (Objects.equals(newStatus, RouteStatus.ARCHIVED.name())) {
             route.setIsArchived(ArchivedStatus.TRUE.name());
@@ -56,7 +56,7 @@ public class UpdateRouteActivity {
 
         route = routeDao.saveRoute(route);
 
-        return UpdateRouteResult.builder()
+        return UpdateRouteStatusResult.builder()
                 .withRoute(new ModelConverter().toRouteModel(route))
                 .build();
     }

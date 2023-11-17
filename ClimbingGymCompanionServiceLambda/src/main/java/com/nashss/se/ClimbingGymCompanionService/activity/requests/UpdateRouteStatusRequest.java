@@ -3,12 +3,12 @@ package com.nashss.se.ClimbingGymCompanionService.activity.requests;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 
-@JsonDeserialize(builder = UpdateRouteRequest.Builder.class)
-public class UpdateRouteRequest {
+@JsonDeserialize(builder = UpdateRouteStatusRequest.Builder.class)
+public class UpdateRouteStatusRequest {
     private final String routeId;
     private final String routeStatus;
 
-    private UpdateRouteRequest(String routeId, String routeStatus) {
+    private UpdateRouteStatusRequest(String routeId, String routeStatus) {
         this.routeId = routeId;
         this.routeStatus = routeStatus;
     }
@@ -23,7 +23,7 @@ public class UpdateRouteRequest {
 
     @Override
     public String toString() {
-        return "UpdateRouteRequest{" +
+        return "UpdateRouteStatusRequest{" +
                 "routeId='" + routeId + '\'' +
                 ", routeStatus='" + routeStatus + '\'' +
                 '}';
@@ -47,8 +47,8 @@ public class UpdateRouteRequest {
             return this;
         }
 
-        public UpdateRouteRequest build() {
-            return new UpdateRouteRequest(routeId, routeStatus);
+        public UpdateRouteStatusRequest build() {
+            return new UpdateRouteStatusRequest(routeId, routeStatus);
         }
 
     }

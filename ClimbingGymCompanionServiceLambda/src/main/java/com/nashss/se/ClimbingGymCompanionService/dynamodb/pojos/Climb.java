@@ -4,6 +4,7 @@ import com.nashss.se.ClimbingGymCompanionService.converters.LocalDateTimeConvert
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBAttribute;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBHashKey;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBIndexHashKey;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapperFieldModel;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBRangeKey;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
@@ -18,6 +19,8 @@ import java.util.Objects;
  */
 @DynamoDBTable(tableName = "climbs")
 public class Climb {
+    private static final String GSI_INDEX_USER_ID = "ClimbsByUserIdIndex";
+    private static final String GSI_INDEX_ROUTE_ID = "ClimbsByRouteIdIndex";
     private String climbId;
     private String userId;
     private String routeId;
@@ -35,6 +38,7 @@ public class Climb {
         this.climbId = climbId;
     }
     @DynamoDBHashKey(attributeName = "userId")
+    @DynamoDBIndexHashKey(globalSecondaryIndexName = GSI_INDEX_USER_ID)
     public String getUserId() {
         return userId;
     }
@@ -43,6 +47,7 @@ public class Climb {
         this.userId = userId;
     }
     @DynamoDBAttribute(attributeName = "routeId")
+    @DynamoDBIndexHashKey(globalSecondaryIndexName = GSI_INDEX_ROUTE_ID)
     public String getRouteId() {
         return routeId;
     }
