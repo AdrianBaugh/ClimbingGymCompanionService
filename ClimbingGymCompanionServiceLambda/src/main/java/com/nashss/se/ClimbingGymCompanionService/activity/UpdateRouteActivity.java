@@ -10,18 +10,22 @@ import com.nashss.se.ClimbingGymCompanionService.enums.RouteStatus;
 import com.nashss.se.ClimbingGymCompanionService.metrics.MetricsPublisher;
 import com.nashss.se.ClimbingGymCompanionService.models.RouteModel;
 
-import javax.inject.Inject;
-
-import java.util.Objects;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import java.util.Objects;
+import javax.inject.Inject;
 
 public class UpdateRouteActivity {
     private final Logger log = LogManager.getLogger();
     private final RouteDao routeDao;
     private final MetricsPublisher metricsPublisher;
 
+    /**
+     * Update route activity.
+     * @param routeDao the routeDao to access the database
+     * @param metricsPublisher for metrics
+     */
     @Inject
     public UpdateRouteActivity(RouteDao routeDao, MetricsPublisher metricsPublisher) {
         this.routeDao = routeDao;

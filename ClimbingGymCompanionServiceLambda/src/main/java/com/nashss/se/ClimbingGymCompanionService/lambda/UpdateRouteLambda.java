@@ -18,16 +18,16 @@ public class UpdateRouteLambda
     public LambdaResponse handleRequest(AuthenticatedLambdaRequest<UpdateRouteRequest> input, Context context) {
         log.info("Entered HandleRequest from update route Lambda");
         return super.runActivity(
-                () -> {
-                    UpdateRouteRequest unAuthenticatedRequest = input.fromBody(UpdateRouteRequest.class);
-                    return input.fromPath(path ->
-                            UpdateRouteRequest.builder()
-                                    .withRouteId(path.get("routeId"))
-                                    .withRouteStatus(unAuthenticatedRequest.getRouteStatus())
-                                    .build());
-                },
-                (request, serviceComponent) ->
-                        serviceComponent.provideUpdateRouteActivity().handleRequest(request)
+            () -> {
+                UpdateRouteRequest unAuthenticatedRequest = input.fromBody(UpdateRouteRequest.class);
+                return input.fromPath(path ->
+                        UpdateRouteRequest.builder()
+                                .withRouteId(path.get("routeId"))
+                                .withRouteStatus(unAuthenticatedRequest.getRouteStatus())
+                                .build());
+            },
+            (request, serviceComponent) ->
+                    serviceComponent.provideUpdateRouteActivity().handleRequest(request)
         );
     }
 }

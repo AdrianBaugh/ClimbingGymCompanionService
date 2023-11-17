@@ -17,6 +17,20 @@ public class RouteModel {
     private String pictureKey;
     private List<String> notesList;
 
+    /**
+     *
+     * @param routeId the routeId
+     * @param routeStatus the routeStatus
+     * @param isArchived the Archived status
+     * @param location the location
+     * @param color the color
+     * @param type the type
+     * @param difficulty the difficulty
+     * @param dateCreated the date the route was created
+     * @param rating the rating
+     * @param pictureKey the pictureKey
+     * @param notesList the list of notes
+     */
     public RouteModel(String routeId, String routeStatus, String isArchived, String location,
                       String color, String type, String difficulty, LocalDate dateCreated,
                       Integer rating, String pictureKey, List<String> notesList) {
@@ -79,8 +93,12 @@ public class RouteModel {
 
     @Override
     public boolean equals(Object other) {
-        if (this == other) return true;
-        if (other == null || getClass() != other.getClass()) return false;
+        if (this == other) {
+            return true;
+        }
+        if (other == null || getClass() != other.getClass()) {
+            return false;
+        }
         RouteModel that = (RouteModel) other;
         return Objects.equals(routeId, that.routeId) && Objects.equals(routeStatus, that.routeStatus) &&
                 Objects.equals(isArchived, that.isArchived) && Objects.equals(location, that.location) &&

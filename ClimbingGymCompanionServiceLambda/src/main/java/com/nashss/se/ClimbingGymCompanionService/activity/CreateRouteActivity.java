@@ -9,12 +9,12 @@ import com.nashss.se.ClimbingGymCompanionService.enums.ArchivedStatus;
 import com.nashss.se.ClimbingGymCompanionService.models.RouteModel;
 import com.nashss.se.ClimbingGymCompanionService.utils.IdUtils;
 
-import javax.inject.Inject;
-import java.time.LocalDate;
-import java.util.ArrayList;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import java.time.LocalDate;
+import java.util.ArrayList;
+import javax.inject.Inject;
 
 public class CreateRouteActivity {
     private final Logger log = LogManager.getLogger();

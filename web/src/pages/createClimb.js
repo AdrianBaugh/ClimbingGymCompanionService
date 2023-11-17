@@ -2,22 +2,28 @@ import ClimbClient from "../api/climbClient";
 import Header from "../components/header";
 import BindingClass from "../util/bindingClass";
 import DataStore from "../util/DataStore";
-
+import { formatDateToMMDDYYYY } from '../util/dateUtils';
 
 /**
- * Logic needed for the create route page of the website.
+ * Logic needed for the create climb page of the website.
  */
-class CreateRoute extends BindingClass {
+class CreateClimb extends BindingClass {
     constructor() {
         super();
-        this.bindClassMethods(['clientLoaded', 'mount', 'submit', 'redirectToViewRoute', 'colorsDropdown', 'statusDropdown', 'typeDropdown'], this);
+        this.bindClassMethods(['clientLoaded', 'mount', 'submit', 'redirectToViewClimb', 'routeDropdown', 'statusDropdown', 'typeDropdown'], this);
         this.dataStore = new DataStore();
-        this.dataStore.addChangeListener(this.redirectToViewRoute);
+        this.dataStore.addChangeListener(this.routeDropdown);
         this.header = new Header(this.dataStore);
-        console.log("CreateRoute constructor");
+        console.log("CreateClimb constructor");
     }
 
+    /**
+    * Once the client is loaded, get the route list metadata.
+    */
     async clientLoaded() {
+        const routes = await this.client.viewAllActiveRoutes();
+        this.dataStore.set('routes', routes);
+
         if (await this.client.authenticator.isUserLoggedIn()) {
             console.log('User is logged in');
         } else {
@@ -35,7 +41,6 @@ class CreateRoute extends BindingClass {
                 document.getElementById('loginBtn').appendChild(loginButton);
         }
     }
-    
 
     /**
      * Add the header to the page and load the ClimbClient.
@@ -45,37 +50,44 @@ class CreateRoute extends BindingClass {
 
         this.header.addHeaderToPage();
         this.client = new ClimbClient();
-        this.colorsDropdown(); 
+        this.routeDropdown();
         this.statusDropdown();
         this.typeDropdown();
         this.clientLoaded();
     }
 
-    // Function to populate the colors dropdown
-    colorsDropdown() {
-        const colorsDropdown = document.getElementById('colorDropdown');
+    /**
+     * populate the routes list with active routes
+     */
+
+    routeDropdown() {
+        const routes = this.dataStore.get('routes');
     
-        // Clear existing options
-        colorsDropdown.innerHTML = '';
+        if (routes == null) {
+            return;
+        }
     
-        // Define the colors array
-        const colors = ['BLACK', 'WHITE', 'RED', 'BLUE', 'GREEN', 'PINK', 'YELLOW', 'PURPLE', 'ORANGE', 'BROWN'];
+        const dropdown = document.getElementById('routeDropdown');
+    
+        dropdown.innerHTML = '';
     
         const placeholderOption = document.createElement('option');
         placeholderOption.value = '';
-        placeholderOption.textContent = 'Select a color'; // Placeholder text
+        placeholderOption.textContent = 'Select a route'; // Placeholder text
         placeholderOption.disabled = true;
-        placeholderOption.selected = true; // Optional: Select this by default
-        colorsDropdown.appendChild(placeholderOption);
-        
-        // Add options based on the colors array
-        colors.forEach(color => {
-        const option = document.createElement('option');
-        option.value = color;
-        option.textContent = color;
-        colorsDropdown.appendChild(option);
+        placeholderOption.selected = true; 
+        dropdown.appendChild(placeholderOption);
+    
+        routes.forEach(route => {
+            if (route.routeStatus === "ACTIVE") {
+                const option = document.createElement('option');
+                option.value = route.routeId;
+                option.textContent = route.location;  // Display route location or another relevant property
+                dropdown.appendChild(option);
+            }
         });
     }
+    
 
     // Function to populate the status dropdown
     statusDropdown() {
@@ -83,7 +95,7 @@ class CreateRoute extends BindingClass {
     
         statusDropdown.innerHTML = '';
     
-        const statuses = ['ACTIVE', 'TOURNAMENT_ONLY', ];
+        const statuses = ['COMPLETED_FLASHED', 'COMPLETED_SENT', 'COMPLETED_IN_STAGES', 'PROJECTING', 'WANT_TO_CLIMB', 'TOO_DIFFICULT' ];
 
         const placeholderOption = document.createElement('option');
         placeholderOption.value = '';
@@ -122,42 +134,57 @@ class CreateRoute extends BindingClass {
         typeDropdown.appendChild(option);
         });
     }
-    
+
     async submit(evt) {
         console.log('Submit button clicked');
         evt.preventDefault();
     
         const errorMessageDisplay = document.getElementById('error-message');
-        errorMessageDisplay.innerText = ``;
+        errorMessageDisplay.innerText = '';
         errorMessageDisplay.classList.add('hidden');
     
         const createButton = document.getElementById('create');
         const origButtonText = createButton.innerText;
         createButton.innerText = 'Loading. . .';
     
-        const location = document.getElementById('location').value;
-        const color = document.getElementById('colorDropdown').value;
-        const routeStatus = document.getElementById('statusDropdown').value;
+        const route = document.getElementById('routeDropdown').value;
+        const climbStatus = document.getElementById('statusDropdown').value;
         const type = document.getElementById('typeDropdown').value;
-        const difficulty = document.getElementById('difficulty').value;
-
-        //image
-        const routeImageFile = document.getElementById('route-image').files[0];
-
+        const notes = document.getElementById('notes').value;
     
-        const route = await this.client.createRoute(location, color, routeStatus, type, difficulty, routeImageFile, (error) => {
-        createButton.innerText = origButtonText;
-        errorMessageDisplay.innerText = `Error: ${error.message}`;
-        errorMessageDisplay.classList.remove('hidden');
-        });
-        this.dataStore.set('route', route);
+        // Get the value of the selected thumbs option
+        const thumbsUpRadioButton = document.getElementById('thumbsUp');
+        const thumbsDownRadioButton = document.getElementById('thumbsDown');
+        
+        let thumbsValue = null;
+    
+        if (thumbsUpRadioButton.checked) {
+            thumbsValue = true;
+        } else if (thumbsDownRadioButton.checked) {
+            thumbsValue = false;
+        }
+    
+        try {
+            const climb = await this.client.createClimb(route, climbStatus, thumbsValue, type, notes);
+            this.dataStore.set('climb', climb);
+            console.log('Climb data before redirect:', climb);
+
+            // Redirect after setting climb data
+            this.redirectToViewClimb();
+        } catch (error) {
+            createButton.innerText = origButtonText;
+            errorMessageDisplay.innerText = `Error: ${error.message}`;
+            errorMessageDisplay.classList.remove('hidden');
+        }
     }
+    
   
-    redirectToViewRoute() {
-        const route = this.dataStore.get('route');
-        if (route != null) {
-            console.log("Redirecting to viewRoute.html");
-            window.location.href = `/viewRoute.html?routeId=${route.routeId}`;
+    redirectToViewClimb() {
+        const climb = this.dataStore.get('climb');
+        console.log('Climb data:', climb);
+        if (climb != null) {
+            console.log("Redirecting to viewClimb.html");
+            window.location.href = `/viewClimb.html?climbId=${climb.climbId}`;
         }
     }
 }
@@ -166,8 +193,8 @@ class CreateRoute extends BindingClass {
  * Main method to run when the page contents have loaded.
  */
 const main = async () => {
-    const createRoute = new CreateRoute();
-    createRoute.mount();
+    const createClimb = new CreateClimb();
+    createClimb.mount();
 };
 
 window.addEventListener('DOMContentLoaded', main);

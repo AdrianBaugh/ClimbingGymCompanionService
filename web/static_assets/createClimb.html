@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <script type="text/javascript" src="assets/createClimb.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+</head>
+
+<body class="background">
+    <header class="header" id="header"></header>
+    <div class="card">
+        <label> Create Climb stuff will go here:</label> 
+
+        <div id="loginModal" class="modal">
+            <div class="modal-content">
+                <p>You must be logged in to record a climb!</p>
+            <div id="loginBtn"></div>
+            <hr></hr>
+            <a href="index.html" class="button">Go Home</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <h2>Record a new Climb!</h2>
+        
+            <div class="flex-item">
+              <img src="ROUTE_MAP_V3.jpg" alt="route map">
+            </div>
+            <hr></hr>
+        <form class="card-content" id="create-route-form">
+            <p class="hidden error" id="error-message"> </p>
+            <p class="form-field">
+                    
+                <label for="routeDropdown">Route:</label>
+                <select id="routeDropdown" required class="validated-field"></select>
+
+                <label for="typeDropdown">Type of route:</label>
+                <select id="typeDropdown"></select>
+
+                <label for="statusDropdown">Activity to Record:</label>
+                <select id="statusDropdown"></select>
+
+                <label>How would you rate this route?:</label>
+                <label>
+                    <input type="radio" name="thumbs" value="thumbsUp" id="thumbsUp"> Thumbs Up
+                  </label>
+                  <label>
+                    <input type="radio" name="thumbs" value="thumbsDown" id="thumbsDown"> Thumbs Down
+                  </label>
+                  
+
+                <label>OPTIONL: Please enter any climb beta you have:</label>
+                <input type="text" id="notes" placeholder="ex. Big dynamic move at the start...">
+            </p>
+          
+        </form>
+            <hr></hr>
+            <div>
+                <a href="#" class="button" id="create">Submit</a>
+            </div>
+        
+    </div>
+</body>
+</html>

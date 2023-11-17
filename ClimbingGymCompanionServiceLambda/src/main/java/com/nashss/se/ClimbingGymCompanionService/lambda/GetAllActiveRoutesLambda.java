@@ -24,12 +24,12 @@ public class GetAllActiveRoutesLambda
     public LambdaResponse handleRequest(AuthenticatedLambdaRequest<GetAllActiveRoutesRequest> input, Context context) {
         log.info("Entered handleRequest from GetAllActiveRoutesLambda");
         return super.runActivity(
-                () -> input.fromQuery(query ->
-                        GetAllActiveRoutesRequest.builder()
-                                .withIsArchived(query.get("isArchived"))
-                                .build()),
-                (request, serviceComponent) ->
-                        serviceComponent.provideGetAllActiveRoutesActivity().handleRequest(request)
+            () -> input.fromQuery(query ->
+                    GetAllActiveRoutesRequest.builder()
+                            .withIsArchived(query.get("isArchived"))
+                            .build()),
+            (request, serviceComponent) ->
+                    serviceComponent.provideGetAllActiveRoutesActivity().handleRequest(request)
         );
     }
 }

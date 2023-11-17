@@ -218,4 +218,34 @@ export default class ClimbClient extends BindingClass {
             this.handleError(error, errorCallback)
         }
     }
+
+    /**
+     * 
+     * @param routeId 
+     * @param climbStatus 
+     * @param thumbsUp 
+     * @param notes 
+     * @param errorCallback 
+     * @returns 
+     */
+    async createClimb(routeId, climbStatus, thumbsUp, type, notes, errorCallback) {
+        try {
+            const token = await this.getTokenOrThrow("You must be logged in to add a new climb!");        
+            
+            const response = await this.axiosClient.post(`climbs`, {
+                routeId: routeId,
+                climbStatus: climbStatus,
+                thumbsUp: thumbsUp,
+                type: type,
+                notes: notes
+            }, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+            return response.data.climb;
+        } catch (error) {
+            this.handleError(error, errorCallback)
+        }
+    }
 }

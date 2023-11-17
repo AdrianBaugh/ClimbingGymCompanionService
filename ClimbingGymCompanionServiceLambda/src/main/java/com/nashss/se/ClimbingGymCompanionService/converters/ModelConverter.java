@@ -1,6 +1,8 @@
 package com.nashss.se.ClimbingGymCompanionService.converters;
 
+import com.nashss.se.ClimbingGymCompanionService.dynamodb.pojos.Climb;
 import com.nashss.se.ClimbingGymCompanionService.dynamodb.pojos.Route;
+import com.nashss.se.ClimbingGymCompanionService.models.ClimbModel;
 import com.nashss.se.ClimbingGymCompanionService.models.RouteModel;
 
 import java.util.List;
@@ -11,6 +13,12 @@ import java.util.stream.Collectors;
  */
 public class ModelConverter {
 
+    /**
+     * Converts a Routes to a Route Models.
+     *
+     * @param route The route to convert to Route Model.
+     * @return The converted Route Model.
+     */
     public RouteModel toRouteModel(Route route) {
         return RouteModel.builder()
                 .withRouteId(route.getRouteId())
@@ -37,5 +45,24 @@ public class ModelConverter {
         return activeRoutes.stream()
                 .map(route -> toRouteModel(route))
                 .collect(Collectors.toList());
+    }
+
+    /**
+     * Converts a list of Routes to a list of Route Models.
+     *
+     * @param climb The climb to convert to climb Models.
+     * @return The converted climb Model.
+     */
+    public ClimbModel toClimbModel(Climb climb) {
+        return ClimbModel.builder()
+                .withClimbId(climb.getClimbId())
+                .withUserId(climb.getUserId())
+                .withType(climb.getType())
+                .withRouteId(climb.getRouteId())
+                .withClimbStatus(climb.getClimbStatus())
+                .withDateTimeClimbed(climb.getDateTimeClimbed())
+                .withThumbsUp(climb.isThumbsUp())
+                .withNotes(climb.getNotes())
+                .build();
     }
 }

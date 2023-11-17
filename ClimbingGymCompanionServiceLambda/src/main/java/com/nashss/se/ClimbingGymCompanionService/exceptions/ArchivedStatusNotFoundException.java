@@ -3,7 +3,7 @@ package com.nashss.se.ClimbingGymCompanionService.exceptions;
 /**
  * Exception to throw when a given climb ID is not found in the database.
  */
-public class ArchivedStatusNotFoundException extends RuntimeException{
+public class ArchivedStatusNotFoundException extends RuntimeException {
     private static final long serialVersionUID = -8707423639973404137L;
     /**
      * Exception with no message or cause.
