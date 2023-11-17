@@ -2,7 +2,7 @@ import ClimbClient from "../api/climbClient";
 import Header from "../components/header";
 import BindingClass from "../util/bindingClass";
 import DataStore from "../util/DataStore";
-import { formatDateToMMDDYYYY } from '../util/dateUtils';
+
 
 /**
  * Logic needed for the create route page of the website.
@@ -10,12 +10,32 @@ import { formatDateToMMDDYYYY } from '../util/dateUtils';
 class CreateRoute extends BindingClass {
     constructor() {
         super();
-        this.bindClassMethods(['mount', 'submit', 'redirectToViewRoute', 'colorsDropdown', 'statusDropdown', 'typeDropdown'], this);
+        this.bindClassMethods(['clientLoaded', 'mount', 'submit', 'redirectToViewRoute', 'colorsDropdown', 'statusDropdown', 'typeDropdown'], this);
         this.dataStore = new DataStore();
         this.dataStore.addChangeListener(this.redirectToViewRoute);
         this.header = new Header(this.dataStore);
         console.log("CreateRoute constructor");
     }
+
+    async clientLoaded() {
+        if (await this.client.authenticator.isUserLoggedIn()) {
+            console.log('User is logged in');
+        } else {
+            console.log('/////////User is not logged in////////');
+    
+            document.getElementById("loginModal").style.display = "flex";
+    
+            const loginButton = document.createElement('div');
+            loginButton.textContent = 'Login';
+            loginButton.classList.add('button'); 
+    
+            loginButton.addEventListener('click', async () => {
+                await this.client.login();
+            });
+                document.getElementById('loginBtn').appendChild(loginButton);
+        }
+    }
+    
 
     /**
      * Add the header to the page and load the ClimbClient.

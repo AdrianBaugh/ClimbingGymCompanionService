@@ -23,6 +23,23 @@ class CreateClimb extends BindingClass {
     async clientLoaded() {
         const routes = await this.client.viewAllActiveRoutes();
         this.dataStore.set('routes', routes);
+
+        if (await this.client.authenticator.isUserLoggedIn()) {
+            console.log('User is logged in');
+        } else {
+            console.log('/////////User is not logged in////////');
+    
+            document.getElementById("loginModal").style.display = "flex";
+    
+            const loginButton = document.createElement('div');
+            loginButton.textContent = 'Login';
+            loginButton.classList.add('button'); 
+    
+            loginButton.addEventListener('click', async () => {
+                await this.client.login();
+            });
+                document.getElementById('loginBtn').appendChild(loginButton);
+        }
     }
 
     /**
