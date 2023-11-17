@@ -12,7 +12,8 @@ public class CreateClimbRequest {
     private final Boolean thumbsUp;
     private final String notes;
 
-    public CreateClimbRequest(String userId, String type, String routeId, String climbStatus, Boolean thumbsUp, String notes) {
+    private CreateClimbRequest(String userId, String type, String routeId,
+                              String climbStatus, Boolean thumbsUp, String notes) {
         this.userId = userId;
         this.type = type;
         this.routeId = routeId;
