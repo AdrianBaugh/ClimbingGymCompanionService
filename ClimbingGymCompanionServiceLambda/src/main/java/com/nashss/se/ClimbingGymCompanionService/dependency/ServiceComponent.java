@@ -3,6 +3,7 @@ package com.nashss.se.ClimbingGymCompanionService.dependency;
 import com.nashss.se.ClimbingGymCompanionService.activity.CreateClimbActivity;
 import com.nashss.se.ClimbingGymCompanionService.activity.CreateRouteActivity;
 import com.nashss.se.ClimbingGymCompanionService.activity.GetAllActiveRoutesActivity;
+import com.nashss.se.ClimbingGymCompanionService.activity.GetClimbActivity;
 import com.nashss.se.ClimbingGymCompanionService.activity.GetRouteActivity;
 import com.nashss.se.ClimbingGymCompanionService.activity.UpdateRouteStatusActivity;
 
@@ -30,20 +31,26 @@ public interface ServiceComponent {
 
     /**
      *
+     * @return GetClimbActivity
+     */
+    GetClimbActivity provideGetClimbActivity();
+
+    /**
+     *
      * @return CreateRouteActivity
      */
     CreateRouteActivity provideCreateRouteActivity();
 
     /**
      *
-     * @return UpdateRouteStatusActivity
-     */
-    UpdateRouteStatusActivity provideUpdateRouteActivity();
-
-    /**
-     *
      * @return CreateClimbActivity
      */
     CreateClimbActivity provideCreateClimbActivity();
+
+    /**
+     *
+     * @return UpdateRouteStatusActivity
+     */
+    UpdateRouteStatusActivity provideUpdateRouteActivity();
 }
 

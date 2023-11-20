@@ -150,7 +150,7 @@ class CreateClimb extends BindingClass {
         const route = document.getElementById('routeDropdown').value;
         if (route === '' ) {
             createButton.innerText = origButtonText;
-            errorMessageDisplay.innerText = 'Error: Please select a route.';
+            errorMessageDisplay.innerText = 'Please select a route.';
             errorMessageDisplay.classList.remove('hidden');
             return;
         }

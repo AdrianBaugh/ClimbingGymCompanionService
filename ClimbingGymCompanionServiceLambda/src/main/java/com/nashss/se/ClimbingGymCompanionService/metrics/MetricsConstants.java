@@ -4,7 +4,7 @@ package com.nashss.se.ClimbingGymCompanionService.metrics;
  * Constant values for use with metrics.
  */
 public class MetricsConstants {
-    public static final String GETCLIMB_PLAYLISTNOTFOUND_COUNT =
+    public static final String GETCLIMB_CLIMBNOTFOUND_COUNT =
             "GetClimb.ClimbNotFoundException.Count";
     public static final String GETROUTE_ROUTENOTFOUND_COUNT =
             "GetRoute.RouteNotFoundException.Count";
