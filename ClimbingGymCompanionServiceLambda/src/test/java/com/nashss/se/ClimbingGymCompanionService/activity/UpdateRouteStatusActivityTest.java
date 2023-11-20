@@ -1,7 +1,7 @@
 package com.nashss.se.ClimbingGymCompanionService.activity;
 
-import com.nashss.se.ClimbingGymCompanionService.activity.requests.UpdateRouteRequest;
-import com.nashss.se.ClimbingGymCompanionService.activity.results.UpdateRouteResult;
+import com.nashss.se.ClimbingGymCompanionService.activity.requests.UpdateRouteStatusRequest;
+import com.nashss.se.ClimbingGymCompanionService.activity.results.UpdateRouteStatusResult;
 import com.nashss.se.ClimbingGymCompanionService.dynamodb.RouteDao;
 import com.nashss.se.ClimbingGymCompanionService.dynamodb.pojos.Route;
 import com.nashss.se.ClimbingGymCompanionService.enums.RouteStatus;
@@ -15,18 +15,18 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.openMocks;
 
-public class UpdateRouteActivityTest {
+public class UpdateRouteStatusActivityTest {
     @Mock
     private RouteDao routeDao;
     @Mock
     private MetricsPublisher metricsPublisher;
 
-    private UpdateRouteActivity updateRouteActivity;
+    private UpdateRouteStatusActivity updateRouteStatusActivity;
 
     @BeforeEach
     public void setUp() {
         openMocks(this);
-        updateRouteActivity = new UpdateRouteActivity(routeDao, metricsPublisher);
+        updateRouteStatusActivity = new UpdateRouteStatusActivity(routeDao, metricsPublisher);
     }
 
     @Test
@@ -35,7 +35,7 @@ public class UpdateRouteActivityTest {
         // GIVEN
         String routeId = "expectedId";
 
-        UpdateRouteRequest request = UpdateRouteRequest.builder()
+        UpdateRouteStatusRequest request = UpdateRouteStatusRequest.builder()
                 .withRouteId(routeId)
                 .withRouteStatus(RouteStatus.ARCHIVED.name())
                 .build();
@@ -48,7 +48,7 @@ public class UpdateRouteActivityTest {
         when(routeDao.saveRoute(orginalRoute)).thenReturn(orginalRoute);
 
         // WHEN
-        UpdateRouteResult result = updateRouteActivity.handleRequest(request);
+        UpdateRouteStatusResult result = updateRouteStatusActivity.handleRequest(request);
 
         // THEN
         assertEquals(RouteStatus.ARCHIVED.name(), result.getRoute().getRouteStatus());

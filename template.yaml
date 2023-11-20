@@ -360,12 +360,12 @@ Resources:
             Path: /climbs/{climbId}
             Method: put
 
-  UpdateRouteLambda:
+  UpdateRouteStatusLambda:
     Type: AWS::Serverless::Function
     Properties:
       Role: !GetAtt AccessRole.Arn
       CodeUri: ClimbingGymCompanionServiceLambda
-      Handler: com.nashss.se.ClimbingGymCompanionService.lambda.UpdateRouteLambda::handleRequest
+      Handler: com.nashss.se.ClimbingGymCompanionService.lambda.UpdateRouteStatusLambda::handleRequest
       Runtime: java11
       Architectures:
         - x86_64
@@ -398,6 +398,48 @@ Resources:
           Type: Api
           Properties:
             Path: /routes
+            Method: get
+            Auth:
+              Authorizer: 'NONE'
+
+  GetAllClimbsByUserIdLambda:
+    Type: AWS::Serverless::Function
+    Properties:
+      Role: !GetAtt AccessRole.Arn
+      CodeUri: ClimbingGymCompanionServiceLambda
+      Handler: com.nashss.se.ClimbingGymCompanionService.lambda.GetAllClimbsByUserIdLambda::handleRequest
+      Runtime: java11
+      Architectures:
+        - x86_64
+      MemorySize: 512
+      Environment:
+        Variables:
+          JAVA_TOOL_OPTIONS: -XX:+TieredCompilation -XX:TieredStopAtLevel=1
+      Events:
+        ClimbingGymCompanionService:
+          Type: Api
+          Properties:
+            Path: /climbsByUser
+            Method: get
+
+  GetAllClimbsByRouteIdLambda:
+    Type: AWS::Serverless::Function
+    Properties:
+      Role: !GetAtt AccessRole.Arn
+      CodeUri: ClimbingGymCompanionServiceLambda
+      Handler: com.nashss.se.ClimbingGymCompanionService.lambda.GetAllClimbsByRouteIdLambda::handleRequest
+      Runtime: java11
+      Architectures:
+        - x86_64
+      MemorySize: 512
+      Environment:
+        Variables:
+          JAVA_TOOL_OPTIONS: -XX:+TieredCompilation -XX:TieredStopAtLevel=1
+      Events:
+        ClimbingGymCompanionService:
+          Type: Api
+          Properties:
+            Path: /climbsByRoute
             Method: get
             Auth:
               Authorizer: 'NONE'
@@ -443,6 +485,8 @@ Resources:
           AttributeType: "S"
         - AttributeName: "userId"
           AttributeType: "S"
+        - AttributeName: "routeId"
+          AttributeType: "S"
       KeySchema:
         - AttributeName: "userId"
           KeyType: "HASH"
@@ -450,6 +494,19 @@ Resources:
           KeyType: "RANGE"
       BillingMode: "PAY_PER_REQUEST"
       TableName: "climbs"
+      GlobalSecondaryIndexes:
+        - IndexName: "ClimbsByRouteIdIndex"
+          KeySchema:
+            - AttributeName: "routeId"
+              KeyType: "HASH"
+          Projection:
+            ProjectionType: "ALL"
+        - IndexName: "ClimbsByUserIdIndex"
+          KeySchema:
+            - AttributeName: "userId"
+              KeyType: "HASH"
+          Projection:
+            ProjectionType: "ALL"
 
 #-----------------------------------------------------
 # The outputs defined below will be printed

@@ -1,27 +1,27 @@
 package com.nashss.se.ClimbingGymCompanionService.lambda;
 
-import com.nashss.se.ClimbingGymCompanionService.activity.requests.UpdateRouteRequest;
-import com.nashss.se.ClimbingGymCompanionService.activity.results.UpdateRouteResult;
+import com.nashss.se.ClimbingGymCompanionService.activity.requests.UpdateRouteStatusRequest;
+import com.nashss.se.ClimbingGymCompanionService.activity.results.UpdateRouteStatusResult;
 
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-public class UpdateRouteLambda
-        extends LambdaActivityRunner<UpdateRouteRequest, UpdateRouteResult>
-        implements RequestHandler<AuthenticatedLambdaRequest<UpdateRouteRequest>, LambdaResponse> {
+public class UpdateRouteStatusLambda
+        extends LambdaActivityRunner<UpdateRouteStatusRequest, UpdateRouteStatusResult>
+        implements RequestHandler<AuthenticatedLambdaRequest<UpdateRouteStatusRequest>, LambdaResponse> {
 
     private final Logger log = LogManager.getLogger();
 
     @Override
-    public LambdaResponse handleRequest(AuthenticatedLambdaRequest<UpdateRouteRequest> input, Context context) {
+    public LambdaResponse handleRequest(AuthenticatedLambdaRequest<UpdateRouteStatusRequest> input, Context context) {
         log.info("Entered HandleRequest from update route Lambda");
         return super.runActivity(
             () -> {
-                UpdateRouteRequest unAuthenticatedRequest = input.fromBody(UpdateRouteRequest.class);
+                UpdateRouteStatusRequest unAuthenticatedRequest = input.fromBody(UpdateRouteStatusRequest.class);
                 return input.fromPath(path ->
-                        UpdateRouteRequest.builder()
+                        UpdateRouteStatusRequest.builder()
                                 .withRouteId(path.get("routeId"))
                                 .withRouteStatus(unAuthenticatedRequest.getRouteStatus())
                                 .build());
