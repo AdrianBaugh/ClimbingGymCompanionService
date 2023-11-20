@@ -136,14 +136,14 @@ class CreateRoute extends BindingClass {
         createButton.innerText = 'Loading. . .';
     
         const location = document.getElementById('location').value;
-        const color = document.getElementById('colorDropdown').value;
-        const routeStatus = document.getElementById('statusDropdown').value;
-        const type = document.getElementById('typeDropdown').value;
-        const difficulty = document.getElementById('difficulty').value;
-
-        //image
-        const routeImageFile = document.getElementById('route-image').files[0];
-
+        const color = document.getElementById('colorDropdown').value || null;
+        const routeStatus = document.getElementById('statusDropdown').value || null;
+        const type = document.getElementById('typeDropdown').value || null;
+        const difficulty = document.getElementById('difficulty').value || null;
+    
+        // image
+        const routeImageInput = document.getElementById('route-image');
+        const routeImageFile = routeImageInput.files.length > 0 ? routeImageInput.files[0] : null;
     
         const route = await this.client.createRoute(location, color, routeStatus, type, difficulty, routeImageFile, (error) => {
         createButton.innerText = origButtonText;
