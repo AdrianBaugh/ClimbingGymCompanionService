@@ -142,10 +142,12 @@ export default class ClimbClient extends BindingClass {
     async createRoute(location, color, routeStatus, type, difficulty, routeImageFile, errorCallback) {
         try {
             const token = await this.getTokenOrThrow("You must be logged in to create a route!");
-            
+
+            const pictureKey = null;
+            if (routeImageFile != null) {
             // The S3 object key for the uploaded image
-            const pictureKey = `images/${location}-${Date.now()}-${routeImageFile.name}`;
-            
+                pictureKey = `images/${location}-${Date.now()}-${routeImageFile.name}`;
+            }
             
             const response = await this.axiosClient.post(`routes`, {
                 location: location,

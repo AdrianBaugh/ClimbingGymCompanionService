@@ -148,9 +148,16 @@ class CreateClimb extends BindingClass {
         createButton.innerText = 'Loading. . .';
     
         const route = document.getElementById('routeDropdown').value;
-        const climbStatus = document.getElementById('statusDropdown').value;
-        const type = document.getElementById('typeDropdown').value;
-        const notes = document.getElementById('notes').value;
+        if (route === '' ) {
+            createButton.innerText = origButtonText;
+            errorMessageDisplay.innerText = 'Error: Please select a route.';
+            errorMessageDisplay.classList.remove('hidden');
+            return;
+        }
+
+        const climbStatus = document.getElementById('statusDropdown').value || null;
+        const type = document.getElementById('typeDropdown').value || null;
+        const notes = document.getElementById('notes').value || null;
     
         // Get the value of the selected thumbs option
         const thumbsUpRadioButton = document.getElementById('thumbsUp');
