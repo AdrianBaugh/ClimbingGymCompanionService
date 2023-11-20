@@ -35,7 +35,7 @@ public class GetClimbActivity {
      * If no route does not exist, this should throw a RouteNotFoundException.
      *
      * @param getClimbRequest request object containing the status to look up routes for
-     * @return GetRouteResult result object containing the route API-defined RouteModel
+     * @return GetClimbResult result object containing the route API-defined ClimbModel
      */
     public GetClimbResult handleRequest(final GetClimbRequest getClimbRequest) {
         log.info("Received GetClimbRequest {}", getClimbRequest);
