@@ -128,6 +128,31 @@ export default class ClimbClient extends BindingClass {
         }
     }
 
+    /** 
+     * Gets the climb for the given ID.
+     * @param id Unique identifier for a climb
+     * @param errorCallback (Optional) A function to execute if the call fails.
+     * @returns The climb's metadata.
+     */
+        async viewClimb(climbId, errorCallback) {
+            try {
+                console.log("Attempting to get info for climbId: ", climbId);  
+                const token = await this.getTokenOrThrow("You must be logged in to view your climbs!");
+
+                const response = await this.axiosClient.get(`climbs/${climbId}`, {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                });  
+                console.log("climbResponse: ", response);
+    
+                return response.data.climb;
+            } catch (error) {
+                this.handleError(error, errorCallback)
+            }
+        }
+    
+
     /**
     * Create a new route by the current user.
     * @param location Metadata associated with a route.

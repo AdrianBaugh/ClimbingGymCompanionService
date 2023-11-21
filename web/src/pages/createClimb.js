@@ -2,7 +2,6 @@ import ClimbClient from "../api/climbClient";
 import Header from "../components/header";
 import BindingClass from "../util/bindingClass";
 import DataStore from "../util/DataStore";
-import { formatDateToMMDDYYYY } from '../util/dateUtils';
 
 /**
  * Logic needed for the create climb page of the website.
@@ -190,8 +189,8 @@ class CreateClimb extends BindingClass {
         const climb = this.dataStore.get('climb');
         console.log('Climb data:', climb);
         if (climb != null) {
-            console.log("Redirecting to viewClimb.html");
-            window.location.href = `/viewClimb.html?climbId=${climb.climbId}`;
+            console.log("Redirecting to viewClimbs.html");
+            window.location.href = `/viewClimbs.html?climbId=${climb.climbId}`;
         }
     }
 }

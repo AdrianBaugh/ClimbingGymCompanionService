@@ -2,7 +2,7 @@ import ClimbClient from "../api/climbClient";
 import Header from "../components/header";
 import BindingClass from "../util/bindingClass";
 import DataStore from "../util/DataStore";
-import { formatDateToMMDDYYYY } from '../util/dateUtils';
+import { formatDate } from '../util/dateUtils';
 
 
 /**
@@ -76,7 +76,7 @@ class ViewRoute extends BindingClass {
         document.getElementById('difficulty').innerText = route.difficulty;
         document.getElementById('color').innerText = route.color;
         document.getElementById('rating').innerText = route.rating !== null ? route.rating : 'Not yet Rated!';
-        document.getElementById('date-created').innerText = formatDateToMMDDYYYY(route.dateCreated);
+        document.getElementById('date-created').innerText = formatDate(route.dateCreated);
     
         const toggleButton = document.getElementById('toggleButton');
         const notesList = document.getElementById('notesList');
