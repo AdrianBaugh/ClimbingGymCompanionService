@@ -23,7 +23,8 @@ public class GetUsersClimbHistoryLambda
      * @return The Lambda Function output
      */
     @Override
-    public LambdaResponse handleRequest(AuthenticatedLambdaRequest<GetUsersClimbHistoryRequest> input, Context context) {
+    public LambdaResponse handleRequest(AuthenticatedLambdaRequest<GetUsersClimbHistoryRequest> input,
+                                        Context context) {
         log.info("Entered handleRequest from GetUsersClimbHistoryLambda");
         return super.runActivity(
             () -> input.fromUserClaims(claims ->
