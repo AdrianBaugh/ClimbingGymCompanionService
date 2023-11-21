@@ -1,6 +1,8 @@
 package com.nashss.se.ClimbingGymCompanionService.dynamodb;
 
 import com.nashss.se.ClimbingGymCompanionService.dynamodb.pojos.Climb;
+import com.nashss.se.ClimbingGymCompanionService.exceptions.ClimbNotFoundException;
+import com.nashss.se.ClimbingGymCompanionService.metrics.MetricsConstants;
 import com.nashss.se.ClimbingGymCompanionService.metrics.MetricsPublisher;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
@@ -34,6 +36,23 @@ public class ClimbDao {
     public Climb saveClimb(Climb climb) {
         this.dynamoDbMapper.save(climb);
         log.info("Climb: {}, saved to the database", climb);
+        return climb;
+    }
+
+    /**
+     * Retrieves a Climb by its IDs.
+     *
+     * @param climbId The ID of the climb to retrieve.
+     * @return The Climb object if found, or throws exception if not found.
+     */
+    public Climb getClimbById(String climbId, String userId) {
+        Climb climb = dynamoDbMapper.load(Climb.class, userId, climbId);
+        if (climb == null) {
+            metricsPublisher.addCount(MetricsConstants.GETCLIMB_CLIMBNOTFOUND_COUNT, 1);
+            throw new ClimbNotFoundException(String.format(
+                    "Climb not found for climbId, %s for user: %s", climbId, userId));
+        }
+        metricsPublisher.addCount(MetricsConstants.GETCLIMB_CLIMBNOTFOUND_COUNT, 0);
         return climb;
     }
 }

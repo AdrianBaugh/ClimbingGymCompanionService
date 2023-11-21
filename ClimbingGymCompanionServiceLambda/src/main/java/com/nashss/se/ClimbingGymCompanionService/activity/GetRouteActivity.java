@@ -13,15 +13,15 @@ import org.apache.logging.log4j.Logger;
 import javax.inject.Inject;
 
 /**
-      * Implementation of the GetRouteActivity for the ClimbingGymCompanionService API.
-      * This API allows the customer to get info on a single route from the gym.
-      */
+  * Implementation of the GetRouteActivity for the ClimbingGymCompanionService API.
+  * This API allows the customer to get info on a single route from the gym.
+  */
 public class GetRouteActivity {
     private final Logger log = LogManager.getLogger();
     private final RouteDao routeDao;
 
     /**
-     * Instantiates a new GetAllActiveRoutesActivity object.
+     * Instantiates a new GetRouteActivity object.
      * @param routeDao RouteDao to access the routes table.
      */
     @Inject
@@ -38,7 +38,7 @@ public class GetRouteActivity {
      * @return GetRouteResult result object containing the route API-defined RouteModel
      */
     public GetRouteResult handleRequest(final GetRouteRequest getRouteRequest) {
-        log.info("Received GetAllActiveRoutesRequest {}", getRouteRequest);
+        log.info("Received GetRouteRequest {}", getRouteRequest);
 
         Route route = routeDao.getRouteById(getRouteRequest.getRouteId());
         RouteModel routeModel = new ModelConverter().toRouteModel(route);

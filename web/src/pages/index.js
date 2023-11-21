@@ -2,7 +2,7 @@ import ClimbClient from '../api/climbClient';
 import Header from '../components/header';
 import BindingClass from "../util/bindingClass";
 import DataStore from '../util/DataStore';
-import { formatDateToMMDDYYYY } from '../util/dateUtils';
+import { formatDate } from '../util/dateUtils';
 
 
 
@@ -47,7 +47,7 @@ class Homepage extends BindingClass {
                 <td>${route.location}</td>
                 <td>${route.difficulty}</td>
                 <td>${route.routeStatus}</td>
-                <td>${formatDateToMMDDYYYY(route.dateCreated)}</td>
+                <td>${formatDate(route.dateCreated)}</td>
                 <td>${route.rating !== null ? route.rating : 'Not yet Rated!'}</td>
             </tr>
             `;

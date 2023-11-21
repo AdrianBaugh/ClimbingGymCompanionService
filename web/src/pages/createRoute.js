@@ -23,7 +23,7 @@ class CreateRoute extends BindingClass {
         } else {
             console.log('/////////User is not logged in////////');
     
-            document.getElementById("loginModal").style.display = "flex";
+            document.getElementById("loginModal").style.display = "block";
     
             const loginButton = document.createElement('div');
             loginButton.textContent = 'Login';
@@ -136,7 +136,19 @@ class CreateRoute extends BindingClass {
         createButton.innerText = 'Loading. . .';
     
         const location = document.getElementById('location').value;
-        const color = document.getElementById('colorDropdown').value || null;
+        if (location === '' ) {
+            createButton.innerText = origButtonText;
+            errorMessageDisplay.innerText = 'Please enter a route.';
+            errorMessageDisplay.classList.remove('hidden');
+            return;
+        }
+        const color = document.getElementById('colorDropdown').value;
+        if (color === '' ) {
+            createButton.innerText = origButtonText;
+            errorMessageDisplay.innerText = 'Please select a route color.';
+            errorMessageDisplay.classList.remove('hidden');
+            return;
+        }
         const routeStatus = document.getElementById('statusDropdown').value || null;
         const type = document.getElementById('typeDropdown').value || null;
         const difficulty = document.getElementById('difficulty').value || null;

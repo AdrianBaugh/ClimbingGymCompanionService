@@ -26,6 +26,7 @@ module.exports = {
     createRoute: path.resolve(__dirname, 'src', 'pages', 'createRoute.js'),
     createClimb: path.resolve(__dirname, 'src', 'pages', 'createClimb.js'),
     viewRoute: path.resolve(__dirname, 'src', 'pages', 'viewRoute.js'),
+    viewClimbs: path.resolve(__dirname, 'src', 'pages', 'viewClimbs.js'),
     home: path.resolve(__dirname, 'src', 'pages', 'index.js'),
 
   },
