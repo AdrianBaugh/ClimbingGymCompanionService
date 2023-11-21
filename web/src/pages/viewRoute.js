@@ -157,7 +157,7 @@ class ViewRoute extends BindingClass {
         const routeStatus = document.getElementById('statusDropdown').value;
 
         const route = this.dataStore.get('route');
-        const updatedRoute = await this.client.updateRoute(route.routeId, routeStatus, (error) => {
+        const updatedRoute = await this.client.updateRouteStatus(route.routeId, routeStatus, (error) => {
             updateButton.innerText = origButtonText;
             errorMessageDisplay.innerText = `Error: ${error.message}`;
             errorMessageDisplay.classList.remove('hidden');

@@ -4,10 +4,10 @@ import com.nashss.se.ClimbingGymCompanionService.models.ClimbModel;
 
 import java.util.List;
 
-public class GetAllUsersClimbsResult {
+public class GetUsersClimbHistoryResult {
     private final List<ClimbModel> climbList;
 
-    private GetAllUsersClimbsResult(List<ClimbModel> climbList) {
+    private GetUsersClimbHistoryResult(List<ClimbModel> climbList) {
         this.climbList = climbList;
     }
 
@@ -17,7 +17,7 @@ public class GetAllUsersClimbsResult {
 
     @Override
     public String toString() {
-        return "GetAllUsersClimbsResult{" +
+        return "GetUsersClimbHistoryResult{" +
                 "climbList=" + climbList +
                 '}';
     }
@@ -33,7 +33,7 @@ public class GetAllUsersClimbsResult {
             return this;
         }
 
-        public GetAllUsersClimbsResult build() { return new GetAllUsersClimbsResult(climbList); }
+        public GetUsersClimbHistoryResult build() { return new GetUsersClimbHistoryResult(climbList); }
     }
 
 }

@@ -134,23 +134,46 @@ export default class ClimbClient extends BindingClass {
      * @param errorCallback (Optional) A function to execute if the call fails.
      * @returns The climb's metadata.
      */
-        async viewClimb(climbId, errorCallback) {
-            try {
-                console.log("Attempting to get info for climbId: ", climbId);  
-                const token = await this.getTokenOrThrow("You must be logged in to view your climbs!");
+    async viewClimb(climbId, errorCallback) {
+        try {
+            console.log("Attempting to get info for climbId: ", climbId);  
+            const token = await this.getTokenOrThrow("You must be logged in to view your climbs!");
 
-                const response = await this.axiosClient.get(`climbs/${climbId}`, {
-                    headers: {
-                        Authorization: `Bearer ${token}`
-                    }
-                });  
-                console.log("climbResponse: ", response);
-    
-                return response.data.climb;
-            } catch (error) {
-                this.handleError(error, errorCallback)
-            }
+            const response = await this.axiosClient.get(`climbs/${climbId}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });  
+            console.log("climbResponse: ", response);
+
+            return response.data.climb;
+        } catch (error) {
+            this.handleError(error, errorCallback)
         }
+    }
+
+    /*
+     * Gets the climb history for the current user.
+     * @param errorCallback (Optional) A function to execute if the call fails.
+     * @returns The climbs's metadata.
+     */
+    async viewUsersClimbHistory(errorCallback) {
+        try {
+            console.log("Attempting to get the climb history");  
+            const token = await this.getTokenOrThrow("You must be logged in to view your climbs!");
+
+            const response = await this.axiosClient.get(`climbsByUser`, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });  
+            console.log("climbsByUserResponse: ", response);  
+
+            return response.data.climbList;
+        } catch (error) {
+            this.handleError(error, errorCallback)
+        }
+    }
     
 
     /**
@@ -229,7 +252,7 @@ export default class ClimbClient extends BindingClass {
     * @param errorCallback (Optional) A function to execute if the call fails.
     * @returns The route that has been updated.
     */
-     async updateRoute(routeId, routeStatus, errorCallback) {
+     async updateRouteStatus(routeId, routeStatus, errorCallback) {
         try {
             const token = await this.getTokenOrThrow("You must be logged in to update a route!");
                        

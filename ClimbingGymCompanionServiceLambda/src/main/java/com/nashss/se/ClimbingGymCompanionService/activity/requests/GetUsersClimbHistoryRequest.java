@@ -1,10 +1,10 @@
 package com.nashss.se.ClimbingGymCompanionService.activity.requests;
 
-public class GetAllUsersClimbsRequest {
+public class GetUsersClimbHistoryRequest {
 
     private final String userId;
 
-    private GetAllUsersClimbsRequest(String userId) {
+    private GetUsersClimbHistoryRequest(String userId) {
         this.userId = userId;
     }
 
@@ -14,7 +14,7 @@ public class GetAllUsersClimbsRequest {
 
     @Override
     public String toString() {
-        return "GetAllUsersClimbsRequest{" +
+        return "GetUsersClimbHistoryRequest{" +
                 "userId='" + userId + '\'' +
                 '}';
     }
@@ -31,7 +31,7 @@ public class GetAllUsersClimbsRequest {
             this.userId = userId;
             return this;
         }
-        public GetAllUsersClimbsRequest build() { return new GetAllUsersClimbsRequest(userId);
+        public GetUsersClimbHistoryRequest build() { return new GetUsersClimbHistoryRequest(userId);
         }
     }
 }

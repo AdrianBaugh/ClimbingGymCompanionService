@@ -1,7 +1,7 @@
 package com.nashss.se.ClimbingGymCompanionService.lambda;
 
-import com.nashss.se.ClimbingGymCompanionService.activity.requests.GetAllUsersClimbsRequest;
-import com.nashss.se.ClimbingGymCompanionService.activity.results.GetAllUsersClimbsResult;
+import com.nashss.se.ClimbingGymCompanionService.activity.requests.GetUsersClimbHistoryRequest;
+import com.nashss.se.ClimbingGymCompanionService.activity.results.GetUsersClimbHistoryResult;
 
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
@@ -9,9 +9,9 @@ import com.amazonaws.services.lambda.runtime.RequestHandler;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-public class GetAllUsersClimbsLambda
-        extends LambdaActivityRunner<GetAllUsersClimbsRequest, GetAllUsersClimbsResult>
-        implements RequestHandler<AuthenticatedLambdaRequest<GetAllUsersClimbsRequest>, LambdaResponse> {
+public class GetUsersClimbHistoryLambda
+        extends LambdaActivityRunner<GetUsersClimbHistoryRequest, GetUsersClimbHistoryResult>
+        implements RequestHandler<AuthenticatedLambdaRequest<GetUsersClimbHistoryRequest>, LambdaResponse> {
 
     private final Logger log = LogManager.getLogger();
 
@@ -23,11 +23,11 @@ public class GetAllUsersClimbsLambda
      * @return The Lambda Function output
      */
     @Override
-    public LambdaResponse handleRequest(AuthenticatedLambdaRequest<GetAllUsersClimbsRequest> input, Context context) {
-        log.info("Entered handleRequest from GetAllUsersClimbsLambda");
+    public LambdaResponse handleRequest(AuthenticatedLambdaRequest<GetUsersClimbHistoryRequest> input, Context context) {
+        log.info("Entered handleRequest from GetUsersClimbHistoryLambda");
         return super.runActivity(
             () -> input.fromUserClaims(claims ->
-                    GetAllUsersClimbsRequest.builder()
+                    GetUsersClimbHistoryRequest.builder()
                             .withUserId(claims.get("email"))
                             .build()),
             (request, serviceComponent) ->

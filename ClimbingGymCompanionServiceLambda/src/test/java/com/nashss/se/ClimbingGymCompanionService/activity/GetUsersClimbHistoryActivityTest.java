@@ -1,7 +1,7 @@
 package com.nashss.se.ClimbingGymCompanionService.activity;
 
-import com.nashss.se.ClimbingGymCompanionService.activity.requests.GetAllUsersClimbsRequest;
-import com.nashss.se.ClimbingGymCompanionService.activity.results.GetAllUsersClimbsResult;
+import com.nashss.se.ClimbingGymCompanionService.activity.requests.GetUsersClimbHistoryRequest;
+import com.nashss.se.ClimbingGymCompanionService.activity.results.GetUsersClimbHistoryResult;
 import com.nashss.se.ClimbingGymCompanionService.dynamodb.ClimbDao;
 import com.nashss.se.ClimbingGymCompanionService.dynamodb.pojos.Climb;
 import com.nashss.se.ClimbingGymCompanionService.models.ClimbModel;
@@ -17,15 +17,15 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.openMocks;
 
-public class GetAllUsersClimbsActivityTest {
+public class GetUsersClimbHistoryActivityTest {
     @Mock
     private ClimbDao climbDao;
-    private GetAllUsersClimbsActivity getAllUsersClimbsActivity;
+    private GetUsersClimbHistoryActivity getUsersClimbHistoryActivity;
 
     @BeforeEach
     void setup() {
         openMocks(this);
-        getAllUsersClimbsActivity = new GetAllUsersClimbsActivity(climbDao);
+        getUsersClimbHistoryActivity = new GetUsersClimbHistoryActivity(climbDao);
     }
 
     @Test
@@ -47,12 +47,12 @@ public class GetAllUsersClimbsActivityTest {
 
         when(climbDao.getAllUsersClimbs(expectedUserId)).thenReturn(climbs);
 
-        GetAllUsersClimbsRequest request = GetAllUsersClimbsRequest.builder()
+        GetUsersClimbHistoryRequest request = GetUsersClimbHistoryRequest.builder()
                 .withUserId(expectedUserId)
                 .build();
 
         //WHEN
-        GetAllUsersClimbsResult result = getAllUsersClimbsActivity.handleRequest(request);
+        GetUsersClimbHistoryResult result = getUsersClimbHistoryActivity.handleRequest(request);
 
         //THEN
         assertNotNull(result);
