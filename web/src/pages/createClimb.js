@@ -28,7 +28,7 @@ class CreateClimb extends BindingClass {
         } else {
             console.log('/////////User is not logged in////////');
     
-            document.getElementById("loginModal").style.display = "flex";
+            document.getElementById("loginModal").style.display = "block";
     
             const loginButton = document.createElement('div');
             loginButton.textContent = 'Login';
