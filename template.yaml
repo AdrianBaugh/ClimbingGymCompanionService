@@ -402,12 +402,12 @@ Resources:
             Auth:
               Authorizer: 'NONE'
 
-  GetAllClimbsByUserIdLambda:
+  GetUsersClimbHistoryLambda:
     Type: AWS::Serverless::Function
     Properties:
       Role: !GetAtt AccessRole.Arn
       CodeUri: ClimbingGymCompanionServiceLambda
-      Handler: com.nashss.se.ClimbingGymCompanionService.lambda.GetAllClimbsByUserIdLambda::handleRequest
+      Handler: com.nashss.se.ClimbingGymCompanionService.lambda.GetUsersClimbHistoryLambda::handleRequest
       Runtime: java11
       Architectures:
         - x86_64

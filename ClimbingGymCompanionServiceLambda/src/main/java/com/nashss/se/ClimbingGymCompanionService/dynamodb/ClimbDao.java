@@ -6,9 +6,14 @@ import com.nashss.se.ClimbingGymCompanionService.metrics.MetricsConstants;
 import com.nashss.se.ClimbingGymCompanionService.metrics.MetricsPublisher;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBQueryExpression;
+import com.amazonaws.services.dynamodbv2.model.AttributeValue;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import javax.inject.Inject;
 
 public class ClimbDao {
@@ -43,6 +48,7 @@ public class ClimbDao {
      * Retrieves a Climb by its IDs.
      *
      * @param climbId The ID of the climb to retrieve.
+     * @param userId the id of the user
      * @return The Climb object if found, or throws exception if not found.
      */
     public Climb getClimbById(String climbId, String userId) {
@@ -50,9 +56,29 @@ public class ClimbDao {
         if (climb == null) {
             metricsPublisher.addCount(MetricsConstants.GETCLIMB_CLIMBNOTFOUND_COUNT, 1);
             throw new ClimbNotFoundException(String.format(
-                    "Climb not found for climbId, %s for user: %s", climbId, userId));
+                    "Climb not found for climbId: %s for user: %s", climbId, userId));
         }
         metricsPublisher.addCount(MetricsConstants.GETCLIMB_CLIMBNOTFOUND_COUNT, 0);
         return climb;
+    }
+
+    /**
+     *
+     * @param userId for to retrieve the climbs from
+     * @return list of climbs from the user
+     */
+    public List<Climb> getAllUsersClimbs(String userId) {
+        log.info("Entered ClimbDao getAllUsersClimbs() ");
+
+        Map<String, AttributeValue> expressionAttributeValues = new HashMap<>();
+        expressionAttributeValues.put(":userIdValue", new AttributeValue().withS(userId));
+
+        DynamoDBQueryExpression<Climb> queryExpression = new DynamoDBQueryExpression<Climb>()
+                .withIndexName("ClimbsByUserIdIndex")
+                .withConsistentRead(false)
+                .withKeyConditionExpression("userId = :userIdValue")
+                .withExpressionAttributeValues(expressionAttributeValues);
+
+        return dynamoDbMapper.query(Climb.class, queryExpression);
     }
 }
