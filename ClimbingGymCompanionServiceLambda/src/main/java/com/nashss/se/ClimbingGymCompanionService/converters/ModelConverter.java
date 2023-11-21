@@ -65,4 +65,16 @@ public class ModelConverter {
                 .withNotes(climb.getNotes())
                 .build();
     }
+
+    /**
+     * Converts a list of Climbs to a list of Climb Models.
+     *
+     * @param climbList The climbs to convert to Climb Models.
+     * @return The converted list of Climb Models.
+     */
+    public List<ClimbModel> toClimbModelList(List<Climb> climbList) {
+        return climbList.stream()
+                .map(climb -> toClimbModel(climb))
+                .collect(Collectors.toList());
+    }
 }

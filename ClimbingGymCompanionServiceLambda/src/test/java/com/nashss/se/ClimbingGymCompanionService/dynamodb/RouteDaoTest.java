@@ -6,8 +6,6 @@ import com.nashss.se.ClimbingGymCompanionService.exceptions.RouteNotFoundExcepti
 import com.nashss.se.ClimbingGymCompanionService.metrics.MetricsConstants;
 import com.nashss.se.ClimbingGymCompanionService.metrics.MetricsPublisher;
 
-import java.util.List;
-
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBQueryExpression;
 import com.amazonaws.services.dynamodbv2.datamodeling.PaginatedQueryList;
@@ -17,10 +15,17 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.Mock;
 
-import static org.junit.jupiter.api.Assertions.*;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.anyDouble;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 public class RouteDaoTest {
@@ -97,7 +102,7 @@ public class RouteDaoTest {
     }
 
     @Test
-    public void saveReservation_callsMapperWithReservation() {
+    public void saveRoute_callsMapperWithRoute() {
         // GIVEN
         Route route = new Route();
 
