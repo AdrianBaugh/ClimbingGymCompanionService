@@ -10,6 +10,9 @@ import com.nashss.se.ClimbingGymCompanionService.models.ClimbModel;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import javax.inject.Inject;
 
@@ -47,7 +50,11 @@ public class GetUsersClimbHistoryActivity {
         log.info("Received GetUsersClimbHistoryRequest {}", getUsersClimbHistoryRequest);
 
         List<Climb> climbs = climbDao.getAllUsersClimbs(getUsersClimbHistoryRequest.getUserId());
-        List<ClimbModel> climbModels = new ModelConverter().toClimbModelList(climbs);
+
+        List<Climb> sorted = new ArrayList<>(climbs);
+        Collections.sort(sorted, Comparator.comparing(Climb::getDateTimeClimbed).reversed());
+
+        List<ClimbModel> climbModels = new ModelConverter().toClimbModelList(sorted);
 
         return GetUsersClimbHistoryResult.builder()
                 .withClimbList(climbModels)

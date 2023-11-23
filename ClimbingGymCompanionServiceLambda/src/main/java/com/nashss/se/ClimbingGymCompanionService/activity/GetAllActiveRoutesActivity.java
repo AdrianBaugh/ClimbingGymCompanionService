@@ -10,6 +10,9 @@ import com.nashss.se.ClimbingGymCompanionService.models.RouteModel;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import javax.inject.Inject;
 
@@ -47,7 +50,11 @@ public class GetAllActiveRoutesActivity {
         log.info("Received GetAllActiveRoutesRequest {}", getAllActiveRoutesRequest);
 
         List<Route> activeRoutes = routeDao.getAllActiveRoutes(getAllActiveRoutesRequest.getIsArchived());
-        List<RouteModel> routeModels = new ModelConverter().toRouteModelList(activeRoutes);
+
+        List<Route> sorted = new ArrayList<>(activeRoutes);
+        Collections.sort(sorted, Comparator.comparing(Route::getLocation));
+
+        List<RouteModel> routeModels = new ModelConverter().toRouteModelList(sorted);
 
         return GetAllActiveRoutesResult.builder()
                 .withRouteList(routeModels)
