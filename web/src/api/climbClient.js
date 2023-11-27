@@ -298,4 +298,33 @@ export default class ClimbClient extends BindingClass {
             this.handleError(error, errorCallback)
         }
     }
+
+     /**
+     * 
+     * @param climbId 
+     * @param climbStatus 
+     * @param thumbsUp 
+     * @param notes 
+     * @param errorCallback 
+     * @returns 
+     */
+     async updateClimb(climbId, climbStatus, thumbsUp, type, notes, errorCallback) {
+        try {
+            const token = await this.getTokenOrThrow("You must be logged in to update a climb!");        
+            
+            const response = await this.axiosClient.put(`climbs/${climbId}`, {
+                climbStatus: climbStatus,
+                thumbsUp: thumbsUp,
+                type: type,
+                notes: notes
+            }, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+            return response.data.climb;
+        } catch (error) {
+            this.handleError(error, errorCallback)
+        }
+    }
 }
