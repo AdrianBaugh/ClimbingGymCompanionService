@@ -16,6 +16,8 @@ public class MetricsConstants {
             "CreateClimb.InvalidAttributeValueException.Count";
     public static final String CREATEROUTE_INVALIDATTRIBUTECHANGE_COUNT =
             "CreateRoute.InvalidAttributeChangeException.Count";
+    public static final String DELETECLIMB_CLIMBNOTFOUND_COUNT =
+            "DeleteClimb.ClimbNotFoundException.Count";
     public static final String SERVICE = "Service";
     public static final String SERVICE_NAME = "ClimbingGymCompanionService";
     public static final String NAMESPACE_NAME = "Capstone/ClimbingGymCompanionService";

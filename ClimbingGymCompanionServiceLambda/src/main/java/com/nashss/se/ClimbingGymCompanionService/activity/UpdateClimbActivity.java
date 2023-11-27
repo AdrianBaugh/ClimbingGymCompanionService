@@ -8,6 +8,7 @@ import com.nashss.se.ClimbingGymCompanionService.dynamodb.RouteDao;
 import com.nashss.se.ClimbingGymCompanionService.dynamodb.pojos.Climb;
 import com.nashss.se.ClimbingGymCompanionService.dynamodb.pojos.Route;
 import com.nashss.se.ClimbingGymCompanionService.models.ClimbModel;
+import com.nashss.se.ClimbingGymCompanionService.models.RouteModel;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -31,6 +32,17 @@ public class UpdateClimbActivity {
         this.routeDao = routeDao;
     }
 
+    /**
+     * This method handles the incoming request to update a climb's info
+     * with the provided climb metadata from the request.
+     * <p>
+     * It then returns the updated climb with a constructed routeId.
+     * <p>
+     *
+     * @param updateClimbRequest request an object containing the climb metadata
+     *                              associated with it
+     * @return UpdateClimbResult a result object containing the API defined {@link RouteModel}
+     */
     public UpdateClimbResult handleRequest(final UpdateClimbRequest updateClimbRequest) {
         log.info("Received the Update Climb Request {}", updateClimbRequest);
 

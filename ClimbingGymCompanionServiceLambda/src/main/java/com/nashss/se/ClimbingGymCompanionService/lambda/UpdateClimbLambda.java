@@ -1,12 +1,10 @@
 package com.nashss.se.ClimbingGymCompanionService.lambda;
 
-import com.nashss.se.ClimbingGymCompanionService.activity.requests.CreateClimbRequest;
 import com.nashss.se.ClimbingGymCompanionService.activity.requests.UpdateClimbRequest;
 import com.nashss.se.ClimbingGymCompanionService.activity.results.UpdateClimbResult;
 
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
