@@ -12,10 +12,13 @@ import { formatDateTime } from '../util/dateUtils';
 class ViewClimb extends BindingClass {
     constructor() {
         super();
-        this.bindClassMethods(['clientLoaded', 'mount', 'addClimbToPage', 'addClimbHistoryToPage'], this);
+        this.bindClassMethods(['clientLoaded', 'mount', 'addClimbToPage', 'addClimbHistoryToPage',
+         'submit', 'statusDropdown', 'typeDropdown', 'redirectToViewClimb'], this);
         this.dataStore = new DataStore();
         this.dataStore.addChangeListener(this.addClimbToPage);
         this.dataStore.addChangeListener(this.addClimbHistoryToPage);
+        this.dataStore.addChangeListener(this.redirectToViewClimb);
+
         this.header = new Header(this.dataStore);
         console.log("ViewClimb constructor");
     }
@@ -39,6 +42,8 @@ class ViewClimb extends BindingClass {
             });
             document.getElementById('loginBtn').appendChild(loginButton);
         }
+        const climbHistory = await this.client.viewUsersClimbHistory();
+        this.dataStore.set('climbHistory', climbHistory);
         
         // Check if climbId is present and not null
         const urlParams = new URLSearchParams(window.location.search);
@@ -50,9 +55,6 @@ class ViewClimb extends BindingClass {
             const currentDisplayedRoute = await this.client.viewRoute(climb.routeId);
             this.dataStore.set('currentDisplayedRoute', currentDisplayedRoute);
         }
-
-        const climbHistory = await this.client.viewUsersClimbHistory();
-        this.dataStore.set('climbHistory', climbHistory);
     }
     
 
@@ -60,9 +62,32 @@ class ViewClimb extends BindingClass {
      * Add the header to the page and load the ClimbClient.
      */
     mount() {
+        document.getElementById('updateClimb').addEventListener('click', this.submit);
+
         this.header.addHeaderToPage();
         this.client = new ClimbClient();
+        this.statusDropdown();
+        this.typeDropdown();
         this.clientLoaded();
+
+        const openModalButton = document.getElementById('openModalBtn');
+        const closeModalButton = document.getElementById('closeModalBtn');
+        const modal = document.getElementById('updateClimbModal');
+    
+        openModalButton.addEventListener('click', () => {
+            modal.style.display = 'block';
+        });
+    
+        closeModalButton.addEventListener('click', () => {
+            modal.style.display = 'none';
+        });
+    
+        // Close the modal if the user clicks outside of it
+        window.addEventListener('click', (event) => {
+            if (event.target === modal) {
+                modal.style.display = 'none';
+            }
+        });
     }
 
     addClimbToPage() {
@@ -72,7 +97,7 @@ class ViewClimb extends BindingClass {
             document.getElementById('climb-details').style.display = 'none';
             return;
         }
-    
+        console.log('Adding currnet climb to page ', climb)
         const route = this.dataStore.get('currentDisplayedRoute');
         if (route == null ) {
             return;
@@ -94,8 +119,8 @@ class ViewClimb extends BindingClass {
         document.getElementById('difficulty').innerText = route.difficulty;
         document.getElementById('climb-status').innerText = climb.climbStatus;
         document.getElementById('type').innerText = climb.type;
-        document.getElementById('rating').innerText = climb.rating !== null ?
-            (climb.rating ? 'Thumbs Up!' : 'Thumbs Down') :
+        document.getElementById('rating').innerText = climb.thumbsUp !== null ?
+            (climb.thumbsUp ? 'Thumbs Up!' : 'Thumbs Down') :
             'Not yet Rated!';
         document.getElementById('dateTime-climbed').innerText = formatDateTime(climb.dateTimeClimbed);
         document.getElementById('notes').innerText = climb.notes;
@@ -133,6 +158,116 @@ class ViewClimb extends BindingClass {
         climbHtml += '</table>';
 
         climbHistoryElement.innerHTML = textHtml + climbHtml;
+    }
+
+
+    // Function to populate the status dropdown
+    statusDropdown() {
+        const statusDropdown = document.getElementById('statusDropdown');
+    
+        statusDropdown.innerHTML = '';
+    
+        const statuses = ['COMPLETED_FLASHED', 'COMPLETED_SENT', 'COMPLETED_IN_STAGES', 'PROJECTING', 'WANT_TO_CLIMB', 'TOO_DIFFICULT' ];
+
+        const placeholderOption = document.createElement('option');
+        placeholderOption.value = '';
+        placeholderOption.textContent = 'Select a status'; // Placeholder text
+        placeholderOption.disabled = true;
+        placeholderOption.selected = true; // Optional: Select this by default
+        statusDropdown.appendChild(placeholderOption);
+    
+        statuses.forEach(status => {
+        const option = document.createElement('option');
+        option.value = status;
+        option.textContent = status;
+        statusDropdown.appendChild(option);
+        });
+    }
+
+    // Function to populate the status dropdown
+    typeDropdown() {
+        const typeDropdown = document.getElementById('typeDropdown');
+    
+        typeDropdown.innerHTML = '';
+    
+        const types = ['BOULDER', 'TOP_ROPE', 'LEAD_CLIMB', 'AUTO_BELAY'];
+
+        const placeholderOption = document.createElement('option');
+        placeholderOption.value = '';
+        placeholderOption.textContent = 'Select a type'; // Placeholder text
+        placeholderOption.disabled = true;
+        placeholderOption.selected = true; // Optional: Select this by default
+        typeDropdown.appendChild(placeholderOption);
+    
+        types.forEach(type => {
+        const option = document.createElement('option');
+        option.value = type;
+        option.textContent = type;
+        typeDropdown.appendChild(option);
+        });
+    }
+
+    redirectToViewClimb() {
+        const climb = this.dataStore.get('climb');
+        if (climb != null) {
+            const currentUrl = new URL(window.location.href);
+            if (!currentUrl.searchParams.has('climbId')) {
+            console.log("Redirecting to viewClimbs.html");
+            window.location.href = `/viewClimbs.html?climbId=${climb.climbId}`;
+            }
+        }
+    }
+
+    async submit(evt) {
+        console.log('Submit button clicked');
+        evt.preventDefault();
+    
+        const errorMessageDisplay = document.getElementById('error-message');
+        errorMessageDisplay.innerText = '';
+        errorMessageDisplay.classList.add('hidden');
+    
+        const updateButton = document.getElementById('updateClimb');
+        const origButtonText = updateButton.innerText;
+        updateButton.innerText = 'Loading. . .';
+    
+        const type = document.getElementById('typeDropdown').value || null;
+        const climbStatus = document.getElementById('statusDropdown').value || null;
+        const notes = document.getElementById('notes').value || null;
+
+        // Get the value of the selected thumbs option
+        const thumbsUpRadioButton = document.getElementById('thumbsUp');
+        const thumbsDownRadioButton = document.getElementById('thumbsDown');
+        
+        let thumbsValue = null;
+    
+        if (thumbsUpRadioButton.checked) {
+            thumbsValue = true;
+        } else if (thumbsDownRadioButton.checked) {
+            thumbsValue = false;
+        }
+
+
+        const climb = this.dataStore.get('climb');
+        try {
+            const updatedClimb = await this.client.updateClimb(climb.climbId, climbStatus, thumbsValue, type, notes);
+            this.dataStore.set('climb', updatedClimb);
+            console.log('updatedClimb data before redirect:', updatedClimb);
+
+        } catch (error) {
+            createButton.innerText = origButtonText;
+            errorMessageDisplay.innerText = `Error: ${error.message}`;
+            errorMessageDisplay.classList.remove('hidden');
+        }
+
+        // Redirect after updating climb data
+        this.redirectToViewClimb();
+        const modal = document.getElementById('updateClimbModal')
+
+        setTimeout(() => {
+            modal.style.display = 'none';
+            updateButton.innerText = origButtonText;
+        }, 3000);
+
     }
 }
 

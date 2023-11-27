@@ -170,6 +170,7 @@ class ViewRoute extends BindingClass {
         const modal = document.getElementById('myModal')
         setTimeout(() => {
             modal.style.display = 'none';
+            updateButton.innerText= origButtonText;
         }, 3000);
 
     }

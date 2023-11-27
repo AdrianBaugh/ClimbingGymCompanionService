@@ -13,6 +13,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.List;
+import javax.inject.Inject;
 
 public class UpdateClimbActivity {
     private final Logger log = LogManager.getLogger();
@@ -24,6 +25,7 @@ public class UpdateClimbActivity {
      * @param climbDao the climbDao to access the database
      * @param routeDao for access to routes table
      */
+    @Inject
     public UpdateClimbActivity(ClimbDao climbDao, RouteDao routeDao) {
         this.climbDao = climbDao;
         this.routeDao = routeDao;

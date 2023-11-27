@@ -1,5 +1,6 @@
 package com.nashss.se.ClimbingGymCompanionService.lambda;
 
+import com.nashss.se.ClimbingGymCompanionService.activity.requests.CreateClimbRequest;
 import com.nashss.se.ClimbingGymCompanionService.activity.requests.UpdateClimbRequest;
 import com.nashss.se.ClimbingGymCompanionService.activity.results.UpdateClimbResult;
 
@@ -20,9 +21,13 @@ public class UpdateClimbLambda
         return super.runActivity(
             () -> {
                 UpdateClimbRequest unAuthenticatedRequest = input.fromBody(UpdateClimbRequest.class);
+                UpdateClimbRequest authenticatedRequest = input.fromUserClaims(claims -> UpdateClimbRequest.builder()
+                        .withUserId(claims.get("email"))
+                        .build());
                 return input.fromPath(path ->
                 UpdateClimbRequest.builder()
                         .withClimbId(path.get("climbId"))
+                        .withUserId(authenticatedRequest.getUserId())
                         .withType(unAuthenticatedRequest.getType())
                         .withClimbStatus(unAuthenticatedRequest.getClimbStatus())
                         .withThumbsUp(unAuthenticatedRequest.getThumbsUp())
