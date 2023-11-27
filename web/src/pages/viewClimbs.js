@@ -119,11 +119,12 @@ class ViewClimb extends BindingClass {
         let climbHtml = '<table><tr><th>Route Location</th><th>Current Status</th><th>Date / Time Climbed</th></tr>';
     
         for (const climb of climbHistory) {
-            const currentRoute = await this.client.viewRoute(climb.routeId);
+            let routeId = climb.routeId;
+            let location = routeId.split("::")[0];
     
             climbHtml += `
             <tr onclick="window.location='/viewClimbs.html?climbId=${climb.climbId}'">
-                <td>${currentRoute.location}</td>
+                <td>${location}</td>
                 <td>${climb.climbStatus}</td>
                 <td>${formatDateTime(climb.dateTimeClimbed)}</td>
             </tr>
