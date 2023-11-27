@@ -36,6 +36,17 @@
     border-radius: 8px; /* You can adjust the value to control the roundness */
   }
   
+  .button-delete {
+    background-color: var(--error-color);
+    border: none;
+    color: var(--secondary-color);
+    padding: 6px 8px 4px 8px;
+    text-align: center;
+    font-weight: bold;
+    text-decoration: none;
+    cursor: pointer;
+    border-radius: 8px; /* You can adjust the value to control the roundness */
+  }
 
 .button-group {
     display: flex;

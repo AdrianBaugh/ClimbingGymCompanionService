@@ -16,7 +16,7 @@ public class DeleteClimbLambda
 
     @Override
     public LambdaResponse handleRequest(AuthenticatedLambdaRequest<DeleteClimbRequest> input, Context context) {
-        log.info("handleRequest from Cancel Reservation LAMBDA");
+        log.info("handleRequest from delete climb LAMBDA");
         return super.runActivity(
             () -> {
                 DeleteClimbRequest unauthenticatedRequest = input.fromPath(path ->
