@@ -6,6 +6,7 @@ import com.nashss.se.ClimbingGymCompanionService.activity.GetAllActiveRoutesActi
 import com.nashss.se.ClimbingGymCompanionService.activity.GetClimbActivity;
 import com.nashss.se.ClimbingGymCompanionService.activity.GetRouteActivity;
 import com.nashss.se.ClimbingGymCompanionService.activity.GetUsersClimbHistoryActivity;
+import com.nashss.se.ClimbingGymCompanionService.activity.UpdateClimbActivity;
 import com.nashss.se.ClimbingGymCompanionService.activity.UpdateRouteStatusActivity;
 
 import dagger.Component;
@@ -59,5 +60,11 @@ public interface ServiceComponent {
      * @return UpdateRouteStatusActivity
      */
     UpdateRouteStatusActivity provideUpdateRouteActivity();
+
+    /**
+     *
+     * @return UpdateClimbActivity
+     */
+    UpdateClimbActivity provideUpdateClimbActivity();
 }
 
