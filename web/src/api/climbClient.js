@@ -341,8 +341,6 @@ export default class ClimbClient extends BindingClass {
             const token = await this.getTokenOrThrow("You must be logged in to delete a climb!");        
             
             const response = await this.axiosClient.delete(`climbs/${climbId}`, {
-
-            }, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }

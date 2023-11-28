@@ -282,7 +282,6 @@ class ViewClimb extends BindingClass {
     }
 
     async delete() {
-        console.log('Delete climb button clicked');
         const climb = this.dataStore.get('climb');
         const deleteButton = document.getElementById('deleteClimbButton');
         const messageContainer = document.getElementById('messageContainer');
@@ -290,28 +289,33 @@ class ViewClimb extends BindingClass {
         const errorMessageDisplay = document.getElementById('error-message');
         errorMessageDisplay.innerText = '';
         errorMessageDisplay.classList.add('hidden');
-
-        try {
-            console.log('Delete climb before redirect and backend call');
-            await this.client.deleteClimb(climb.climbId);
-            
-        } catch (error) {
-            createButton.innerText = origButtonText;
-            errorMessageDisplay.innerText = `Error: ${error.message}`;
-            errorMessageDisplay.classList.remove('hidden');
-        }
-        setTimeout(() => {
+    
+        const isConfirmed = confirm('Are you sure you want to delete this climb?');
+    
+        if (isConfirmed) {
+            try {
+                await this.client.deleteClimb(climb.climbId);
+            } catch (error) {
+                errorMessageDisplay.innerText = `Error: ${error.message}`;
+                errorMessageDisplay.classList.remove('hidden');
+                return; 
+            }
+    
             deleteButton.style.display = 'none';
             openModalBtn.style.display = 'none';
             messageContainer.style.display = 'block';
-        
             deleteMessage.textContent = 'This climb has been deleted!';
-        }, 3000);
+    
+            // Redirect after a delay to display the delete message
+            setTimeout(() => {
+                this.redirectToViewClimbHistory();
+            }, 3000);
+        } else {
+            // User clicked Cancel in the confirmation dialog
+            console.log('Delete operation canceled');
+        }
+    }    
 
-        this.redirectToViewClimbHistory();
-
-        console.log('Deleted climb after redirect')
-    }
 }
 
 /**
