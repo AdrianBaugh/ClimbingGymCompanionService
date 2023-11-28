@@ -290,7 +290,16 @@ class ViewClimb extends BindingClass {
         errorMessageDisplay.innerText = '';
         errorMessageDisplay.classList.add('hidden');
     
-        const isConfirmed = confirm('Are you sure you want to delete this climb?');
+        // Display a confirmation dialog
+        const { isConfirmed } = await Swal.fire({
+            title: 'Are you sure?',
+            text: 'You won\'t be able to revert this!',
+            icon: 'warning',
+            showCancelButton: true,
+            // // confirmButtonColor: 'var(--',
+            // cancelButtonColor: '#d33',
+            confirmButtonText: 'DELETE'
+        });
     
         if (isConfirmed) {
             try {
@@ -298,15 +307,16 @@ class ViewClimb extends BindingClass {
             } catch (error) {
                 errorMessageDisplay.innerText = `Error: ${error.message}`;
                 errorMessageDisplay.classList.remove('hidden');
-                return; 
+                return; // Exit the function if deletion fails
             }
     
+            // Display the "This climb has been deleted!" message immediately
             deleteButton.style.display = 'none';
             openModalBtn.style.display = 'none';
             messageContainer.style.display = 'block';
             deleteMessage.textContent = 'This climb has been deleted!';
-    
-            // Redirect after a delay to display the delete message
+            
+            // Redirect after a delay (if needed)
             setTimeout(() => {
                 this.redirectToViewClimbHistory();
             }, 3000);
@@ -314,7 +324,8 @@ class ViewClimb extends BindingClass {
             // User clicked Cancel in the confirmation dialog
             console.log('Delete operation canceled');
         }
-    }    
+    }
+    
 
 }
 
