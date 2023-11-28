@@ -206,15 +206,21 @@ Resources:
             Statement:
             - Effect: Allow
               Action: dynamodb:*
-              Resource: !Sub "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/routes"
-                
+              Resource:
+              - !Sub "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/routes"
+              - !Sub "arn:aws:dynamodb"${AWS::Region}:${AWS::AccountId}:table/routes/index/RoutesByLocationIndex"
+              - !Sub "arn:aws:dynamodb"${AWS::Region}:${AWS::AccountId}:table/routes/index/RoutesByArchivedIndex"
+
         - PolicyName: 'AccessClimbsTable'
           PolicyDocument:
             Version: '2012-10-17'
             Statement:
             - Effect: Allow
               Action: dynamodb:*
-              Resource: !Sub "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/climbs"
+              Resource:
+              - !Sub "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/climbs"
+              - !Sub "arn:aws:dynamodb"${AWS::Region}:${AWS::AccountId}:table/climbs/index/ClimbsByRouteIdIndex"
+              - !Sub "arn:aws:dynamodb"${AWS::Region}:${AWS::AccountId}:table/climbs/index/ClimbsByUserIdIndex"
 
   #-----------------------------------------------------
   # Lambda Functions Configuration
