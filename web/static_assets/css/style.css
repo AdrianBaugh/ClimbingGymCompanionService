@@ -36,6 +36,17 @@
     border-radius: 8px; /* You can adjust the value to control the roundness */
   }
   
+  .button-delete {
+    background-color: var(--error-color);
+    border: none;
+    color: var(--secondary-color);
+    padding: 6px 8px 4px 8px;
+    text-align: center;
+    font-weight: bold;
+    text-decoration: none;
+    cursor: pointer;
+    border-radius: 8px; /* You can adjust the value to control the roundness */
+  }
 
 .button-group {
     display: flex;
@@ -194,4 +205,26 @@ tr:hover {
     color: black;
     text-decoration: none;
     cursor: pointer;
+}
+
+/* SweetAlert modals */
+.swal2-popup {
+    font-size: 1.2rem; /* Adjust as needed */
+}
+
+.swal2-title {
+    font-size: 1.8rem; /* Adjust as needed */
+}
+
+.swal2-content {
+    font-size: 1.6rem; /* Adjust as needed */
+}
+
+.swal2-popup .swal2-confirm {
+    font-size: 1.4rem; /* Adjust as needed */
+    background-color: var(--error-color);
+}
+
+.swal2-popup .swal2-cancel {
+    background-color: var(--tertiary-color);
 }

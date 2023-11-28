@@ -13,11 +13,16 @@ class ViewClimb extends BindingClass {
     constructor() {
         super();
         this.bindClassMethods(['clientLoaded', 'mount', 'addClimbToPage', 'addClimbHistoryToPage',
-         'submit', 'statusDropdown', 'typeDropdown', 'redirectToViewClimb'], this);
+         'submit', 'statusDropdown', 'typeDropdown', 'redirectToViewClimb', 'redirectToViewClimbHistory', 'delete'], this);
         this.dataStore = new DataStore();
         this.dataStore.addChangeListener(this.addClimbToPage);
         this.dataStore.addChangeListener(this.addClimbHistoryToPage);
         this.dataStore.addChangeListener(this.redirectToViewClimb);
+        
+
+        // *********************************************** //
+        // this.dataStore.addChangeListener(this.redirectToViewClimbHistory)
+
 
         this.header = new Header(this.dataStore);
         console.log("ViewClimb constructor");
@@ -63,6 +68,8 @@ class ViewClimb extends BindingClass {
      */
     mount() {
         document.getElementById('updateClimb').addEventListener('click', this.submit);
+        document.getElementById('deleteClimbButton').addEventListener('click', this.delete);
+
 
         this.header.addHeaderToPage();
         this.client = new ClimbClient();
@@ -218,6 +225,11 @@ class ViewClimb extends BindingClass {
         }
     }
 
+    redirectToViewClimbHistory() {
+        console.log("Redirecting to viewClimbs.html");
+        window.location.href = `/viewClimbs.html`;
+    }
+
     async submit(evt) {
         console.log('Submit button clicked');
         evt.preventDefault();
@@ -267,8 +279,54 @@ class ViewClimb extends BindingClass {
             modal.style.display = 'none';
             updateButton.innerText = origButtonText;
         }, 3000);
-
     }
+
+    async delete() {
+        const climb = this.dataStore.get('climb');
+        const deleteButton = document.getElementById('deleteClimbButton');
+        const messageContainer = document.getElementById('messageContainer');
+        const deleteMessage = document.getElementById('message');
+        const errorMessageDisplay = document.getElementById('error-message');
+        errorMessageDisplay.innerText = '';
+        errorMessageDisplay.classList.add('hidden');
+    
+        // Display a confirmation dialog
+        const { isConfirmed } = await Swal.fire({
+            title: 'Are you sure?',
+            text: 'You won\'t be able to revert this!',
+            icon: 'warning',
+            showCancelButton: true,
+            // // confirmButtonColor: 'var(--',
+            // cancelButtonColor: '#d33',
+            confirmButtonText: 'DELETE'
+        });
+    
+        if (isConfirmed) {
+            try {
+                await this.client.deleteClimb(climb.climbId);
+            } catch (error) {
+                errorMessageDisplay.innerText = `Error: ${error.message}`;
+                errorMessageDisplay.classList.remove('hidden');
+                return; // Exit the function if deletion fails
+            }
+    
+            // Display the "This climb has been deleted!" message immediately
+            deleteButton.style.display = 'none';
+            openModalBtn.style.display = 'none';
+            messageContainer.style.display = 'block';
+            deleteMessage.textContent = 'This climb has been deleted!';
+            
+            // Redirect after a delay (if needed)
+            setTimeout(() => {
+                this.redirectToViewClimbHistory();
+            }, 3000);
+        } else {
+            // User clicked Cancel in the confirmation dialog
+            console.log('Delete operation canceled');
+        }
+    }
+    
+
 }
 
 /**

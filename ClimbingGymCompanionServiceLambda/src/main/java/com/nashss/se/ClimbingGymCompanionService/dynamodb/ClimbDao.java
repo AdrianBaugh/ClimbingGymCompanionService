@@ -81,4 +81,26 @@ public class ClimbDao {
 
         return dynamoDbMapper.query(Climb.class, queryExpression);
     }
+
+    /**
+     * Deletes a climb from the climb table.
+     * @param userId hash key for climb
+     * @param climbId sort key for climb
+     * @return true if successful or throws an exception otherwise
+     */
+    public boolean deleteClimb(String userId, String climbId) {
+        Climb climbToDelete = new Climb();
+
+        climbToDelete.setUserId(userId);
+        climbToDelete.setClimbId(climbId);
+
+        try {
+            dynamoDbMapper.delete(climbToDelete);
+            metricsPublisher.addCount(MetricsConstants.DELETECLIMB_CLIMBNOTFOUND_COUNT, 0);
+            return true;
+        } catch (Exception e) {
+            metricsPublisher.addCount(MetricsConstants.DELETECLIMB_CLIMBNOTFOUND_COUNT, 1);
+            throw new ClimbNotFoundException(e);
+        }
+    }
 }

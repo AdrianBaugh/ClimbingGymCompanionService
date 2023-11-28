@@ -327,4 +327,27 @@ export default class ClimbClient extends BindingClass {
             this.handleError(error, errorCallback)
         }
     }
+
+
+     /**
+     * 
+     * @param climbId 
+     * @param errorCallback 
+     * @returns 
+     */
+     async deleteClimb(climbId, errorCallback) {
+        try {
+            console.log('ClimbId to be deleted: ', climbId)
+            const token = await this.getTokenOrThrow("You must be logged in to delete a climb!");        
+            
+            const response = await this.axiosClient.delete(`climbs/${climbId}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+            return response.data.climb;
+        } catch (error) {
+            this.handleError(error, errorCallback)
+        }
+    }
 }
