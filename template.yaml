@@ -345,6 +345,8 @@ Resources:
           Properties:
             Path: /routes/{routeId}
             Method: get
+            Auth:
+              Authorizer: 'NONE'
 
   UpdateClimbLambda:
     Type: AWS::Serverless::Function
