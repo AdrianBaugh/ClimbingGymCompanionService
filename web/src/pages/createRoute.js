@@ -153,12 +153,20 @@ class CreateRoute extends BindingClass {
         const type = document.getElementById('typeDropdown').value || null;
         const difficulty = document.getElementById('difficulty').value || null;
     
+
         // image
         const routeImageInput = document.getElementById('route-image');
         let routeImageFile = null;
-        if (routeImageInput != null ) {
-             routeImageFile = this.handleImageUpload(routeImageInput);
+
+        try {
+            routeImageFile = await this.handleImageUpload(routeImageInput);
+        } catch (error) {
+            createButton.innerText = origButtonText;
+            errorMessageDisplay.innerText = `Error: ${error.message}`;
+            errorMessageDisplay.classList.remove('hidden');
+            return;
         }
+
         routeImageFile = routeImageInput.files.length > 0 ? routeImageInput.files[0] : null;
     
         const route = await this.client.createRoute(location, color, routeStatus, type, difficulty, routeImageFile, (error) => {
@@ -168,20 +176,17 @@ class CreateRoute extends BindingClass {
         });
         this.dataStore.set('route', route);
     }
-  
-    redirectToViewRoute() {
-        const route = this.dataStore.get('route');
-        if (route != null) {
-            console.log("Redirecting to viewRoute.html");
-            window.location.href = `/viewRoute.html?routeId=${route.routeId}`;
-        }
-    }
 
-     handleImageUpload(routeImageInput) {
-        console.log('Attemping to reduce image size')
-        const file = routeImageInput.files[0];
+    handleImageUpload(routeImageInput) {
+        return new Promise((resolve, reject) => {
+            console.log('Attempting to reduce image size');
+            const file = routeImageInput.files[0];
     
-        if (file) {
+            if (!file) {
+                reject(new Error('No file selected.'));
+                return;
+            }
+    
             const maxSizeKB = 400; // Maximum allowed file size in KB
             const reader = new FileReader();
     
@@ -219,22 +224,26 @@ class CreateRoute extends BindingClass {
                     canvas.toBlob(function (blob) {
                         // Check if the compressed image size is within the limit
                         if (blob.size <= maxSizeKB * 1024) {
-                            // Your code to handle the compressed image
                             console.log('Compressed image size:', blob.size, 'bytes');
-                            // Example: uploadImageToServer(blob);
+                            resolve(blob);
                         } else {
-                            alert('Image size exceeds the maximum allowed size.');
-                            // Optionally, you can clear the input or take other actions
-                            routeImageInput.value = '';
+                            reject(new Error('Image size exceeds the maximum allowed size.'));
                         }
                     }, file.type);
                 };
             };
     
             reader.readAsDataURL(file);
+        });
+    }
+    
+    redirectToViewRoute() {
+        const route = this.dataStore.get('route');
+        if (route != null) {
+            console.log("Redirecting to viewRoute.html");
+            window.location.href = `/viewRoute.html?routeId=${route.routeId}`;
         }
-    }    
-        
+    }
 }
 
 /**
