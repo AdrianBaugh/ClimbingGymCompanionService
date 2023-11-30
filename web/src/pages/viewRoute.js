@@ -64,12 +64,46 @@ class ViewRoute extends BindingClass {
     /**
      * When the route is updated in the datastore, update the route metadata on the page.
      */
-    addRouteToPage() {
+    async addRouteToPage() {
         const route = this.dataStore.get('route');
         if (route == null) {
             return;
         }
-    
+
+        //BEGIN IMAGE TESTING
+        //const routeImage = null;
+        const base64String = route.routeImageBase64;
+        if ( base64String != null) {
+            //routeImage = this.convertBase64ToFile(base64String, route.imageName, route.imageType)
+       
+            // Assuming 'routeImageBase64' is the base64 string of your image
+            // const routeImageBase64 = "your_base64_string_here";
+            const routeImageName = route.imageName;
+            const routeImageType = route.imageType; // e.g., "image/jpeg", "image/png", etc.
+
+            // Get the img element by its id
+            const routeImageElement = document.getElementById('route-image');
+
+            // Construct the data URL using the routeImageBase64, routeImageType, and routeImageName
+            if (base64String) {
+                // Convert base64 to File
+                const routeImageFile = await this.convertBase64ToFile(base64String, routeImageName, routeImageType);
+
+                // Create a data URL using the File object
+                const dataURL = URL.createObjectURL(routeImageFile);
+
+                routeImageElement.src = dataURL;
+                routeImageElement.alt = routeImageName;
+            } else {
+                // Set an alternative text if routeImageBase64 is null
+                routeImageElement.src = ''; // Clear the src attribute
+                routeImageElement.alt = 'No image yet';
+            }
+        }
+        //document.getElementById('route-image').innerText = routeImage !== null ? routeImage : 'No image yet!';
+
+        // END IMAGE TESTING
+
         document.getElementById('route-location').innerText = route.location;
         document.getElementById('route-status').innerText = route.routeStatus;
         document.getElementById('type').innerText = route.type;
@@ -104,6 +138,39 @@ class ViewRoute extends BindingClass {
             });
         }
     }
+
+        /**
+     * Function to convert a base64 string to a File object 
+     * 
+     * !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+     * this method may need to be moved to where ever the file or image is being used or displayed so like the viewClimb.js file
+     * !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+     * 
+     * @param {*} base64String 
+     * @param {*} fileName 
+     * @param {*} fileType 
+     * @returns the file that has been converted
+     */
+        convertBase64ToFile(base64String, fileName, fileType) {
+            console.log('Attempting to convert base64String to file');
+            const byteCharacters = atob(base64String);
+            const byteArrays = [];
+    
+            for (let offset = 0; offset < byteCharacters.length; offset += 512) {
+                const slice = byteCharacters.slice(offset, offset + 512);
+    
+                const byteNumbers = new Array(slice.length);
+                for (let i = 0; i < slice.length; i++) {
+                    byteNumbers[i] = slice.charCodeAt(i);
+                }
+    
+                const byteArray = new Uint8Array(byteNumbers);
+                byteArrays.push(byteArray);
+            }
+    
+            const blob = new Blob(byteArrays, { type: fileType });
+            return new File([blob], fileName, { type: fileType });
+        }
 
         // Function to populate the status dropdown
     statusDropdown() {

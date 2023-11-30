@@ -190,11 +190,16 @@ export default class ClimbClient extends BindingClass {
     async createRoute(location, color, routeStatus, type, difficulty, routeImageFile, errorCallback) {
         try {
             const token = await this.getTokenOrThrow("You must be logged in to create a route!");
-
-            const pictureKey = null;
-            if (routeImageFile != null) {
-            // The S3 object key for the uploaded image
-                pictureKey = `images/${location}-${Date.now()}-${routeImageFile.name}`;
+    
+            let imageName = null;
+            let imageType = null;
+            let routeImageBase64 = null;
+    
+            if (routeImageFile) {
+                // The S3 object key for the uploaded image
+                imageName = routeImageFile.name;
+                imageType = routeImageFile.type;
+                routeImageBase64 = await this.convertFileToBase64(routeImageFile);
             }
             
             const response = await this.axiosClient.post(`routes`, {
@@ -203,17 +208,37 @@ export default class ClimbClient extends BindingClass {
                 routeStatus: routeStatus,
                 type: type,
                 difficulty: difficulty,
-                pictureKey: pictureKey
+                imageName: imageName,
+                imageType: imageType,
+                routeImageBase64: routeImageBase64,
             }, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
             });
+    
             return response.data.route;
         } catch (error) {
-            this.handleError(error, errorCallback)
+            this.handleError(error, errorCallback);
         }
     }
+    
+    /**
+     * Helper Function to convert a image File to base64
+     * @param {*} file is the image file
+     * @returns 
+     */
+    convertFileToBase64(file) {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = () => resolve(reader.result.split(',')[1]);
+            reader.onerror = error => reject(error);
+            reader.readAsDataURL(file);
+        });
+    }
+
+
+
 
     // async createRouteWithImage(location, color, routeStatus, type, difficulty, routeImageFile, errorCallback) {
     //     try {
@@ -227,7 +252,9 @@ export default class ClimbClient extends BindingClass {
     //       formData.append('type', type);
     //       formData.append('difficulty', difficulty);
     //       formData.append('routeImageFile', routeImageFile);
-      
+
+    //         // probably should have the backend create the key in the IDUtils
+
     //       // The S3 object key for the uploaded image
     //       const pictureKey = `images/${location}-${Date.now()}-${routeImageFile.name}`;
     //       formData.append('pictureKey', pictureKey);

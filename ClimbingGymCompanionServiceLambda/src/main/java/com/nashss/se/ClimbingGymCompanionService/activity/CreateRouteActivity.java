@@ -58,7 +58,9 @@ public class CreateRouteActivity {
         newRoute.setType(createRouteRequest.getType());
         newRoute.setDifficulty(createRouteRequest.getDifficulty());
         newRoute.setRating(null);
-        newRoute.setPictureKey(createRouteRequest.getPictureKey());
+        newRoute.setImageName(createRouteRequest.getImageName());
+        newRoute.setImageType(createRouteRequest.getImageType());
+        newRoute.setRouteImageBase64(createRouteRequest.getRouteImageBase64());
         newRoute.setNotesList(new ArrayList<>());
 
         routeDao.saveRoute(newRoute);

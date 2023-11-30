@@ -155,7 +155,11 @@ class CreateRoute extends BindingClass {
     
         // image
         const routeImageInput = document.getElementById('route-image');
-        const routeImageFile = routeImageInput.files.length > 0 ? routeImageInput.files[0] : null;
+        let routeImageFile = null;
+        if (routeImageInput != null ) {
+             routeImageFile = this.handleImageUpload(routeImageInput);
+        }
+        routeImageFile = routeImageInput.files.length > 0 ? routeImageInput.files[0] : null;
     
         const route = await this.client.createRoute(location, color, routeStatus, type, difficulty, routeImageFile, (error) => {
         createButton.innerText = origButtonText;
@@ -172,6 +176,65 @@ class CreateRoute extends BindingClass {
             window.location.href = `/viewRoute.html?routeId=${route.routeId}`;
         }
     }
+
+     handleImageUpload(routeImageInput) {
+        console.log('Attemping to reduce image size')
+        const file = routeImageInput.files[0];
+    
+        if (file) {
+            const maxSizeKB = 400; // Maximum allowed file size in KB
+            const reader = new FileReader();
+    
+            reader.onload = function (e) {
+                const img = new Image();
+                img.src = e.target.result;
+    
+                img.onload = function () {
+                    const canvas = document.createElement('canvas');
+                    const ctx = canvas.getContext('2d');
+    
+                    // Set the maximum width and height while maintaining the aspect ratio
+                    const maxWidth = 800;
+                    const maxHeight = 600;
+    
+                    let width = img.width;
+                    let height = img.height;
+    
+                    if (width > maxWidth) {
+                        height *= maxWidth / width;
+                        width = maxWidth;
+                    }
+    
+                    if (height > maxHeight) {
+                        width *= maxHeight / height;
+                        height = maxHeight;
+                    }
+    
+                    canvas.width = width;
+                    canvas.height = height;
+    
+                    ctx.drawImage(img, 0, 0, width, height);
+    
+                    // Convert the compressed image to Blob format
+                    canvas.toBlob(function (blob) {
+                        // Check if the compressed image size is within the limit
+                        if (blob.size <= maxSizeKB * 1024) {
+                            // Your code to handle the compressed image
+                            console.log('Compressed image size:', blob.size, 'bytes');
+                            // Example: uploadImageToServer(blob);
+                        } else {
+                            alert('Image size exceeds the maximum allowed size.');
+                            // Optionally, you can clear the input or take other actions
+                            routeImageInput.value = '';
+                        }
+                    }, file.type);
+                };
+            };
+    
+            reader.readAsDataURL(file);
+        }
+    }    
+        
 }
 
 /**

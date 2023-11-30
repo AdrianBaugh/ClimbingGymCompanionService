@@ -24,7 +24,9 @@ public class Route {
     private String difficulty;
     private LocalDate dateCreated;
     private Integer rating;
-    private String pictureKey;
+    private String imageName;
+    private String imageType;
+    private String routeImageBase64;
     private List<String> notesList;
 
     @DynamoDBHashKey(attributeName = "routeId")
@@ -109,13 +111,31 @@ public class Route {
         this.rating = rating;
     }
 
-    @DynamoDBAttribute(attributeName = "pictureKey")
-    public String getPictureKey() {
-        return pictureKey;
+    @DynamoDBAttribute(attributeName = "imageName")
+    public String getImageName() {
+        return imageName;
     }
 
-    public void setPictureKey(String pictureKey) {
-        this.pictureKey = pictureKey;
+    public void setImageName(String imageName) {
+        this.imageName = imageName;
+    }
+
+    @DynamoDBAttribute(attributeName = "imageType")
+    public String getImageType() {
+        return imageType;
+    }
+
+    public void setImageType(String imageType) {
+        this.imageType = imageType;
+    }
+
+    @DynamoDBAttribute(attributeName = "routeImageBase64")
+    public String getRouteImageBase64() {
+        return routeImageBase64;
+    }
+
+    public void setRouteImageBase64(String routeImageBase64) {
+        this.routeImageBase64 = routeImageBase64;
     }
 
     @DynamoDBAttribute(attributeName = "notesList")
@@ -129,25 +149,22 @@ public class Route {
 
     @Override
     public boolean equals(Object other) {
-        if (this == other) {
-            return true;
-        }
-        if (other == null || getClass() != other.getClass()) {
-            return false;
-        }
+        if (this == other) return true;
+        if (other == null || getClass() != other.getClass()) return false;
         Route route = (Route) other;
         return Objects.equals(routeId, route.routeId) && Objects.equals(routeStatus, route.routeStatus) &&
                 Objects.equals(isArchived, route.isArchived) && Objects.equals(location, route.location) &&
                 Objects.equals(color, route.color) && Objects.equals(type, route.type) &&
                 Objects.equals(difficulty, route.difficulty) && Objects.equals(dateCreated, route.dateCreated) &&
-                Objects.equals(rating, route.rating) && Objects.equals(pictureKey, route.pictureKey) &&
-                Objects.equals(notesList, route.notesList);
+                Objects.equals(rating, route.rating) && Objects.equals(imageName, route.imageName) &&
+                Objects.equals(imageType, route.imageType) &&
+                Objects.equals(routeImageBase64, route.routeImageBase64) && Objects.equals(notesList, route.notesList);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(routeId, routeStatus, isArchived, location, color,
-                type, difficulty, dateCreated, rating, pictureKey, notesList);
+        return Objects.hash(routeId, routeStatus, isArchived, location, color, type, difficulty,
+                dateCreated, rating, imageName, imageType, routeImageBase64, notesList);
     }
 
     @Override
@@ -162,7 +179,9 @@ public class Route {
                 ", difficulty='" + difficulty + '\'' +
                 ", dateCreated=" + dateCreated +
                 ", rating=" + rating +
-                ", pictureKey='" + pictureKey + '\'' +
+                ", imageName='" + imageName + '\'' +
+                ", imageType='" + imageType + '\'' +
+                ", routeImageBase64='" + routeImageBase64 + '\'' +
                 ", notesList=" + notesList +
                 '}';
     }

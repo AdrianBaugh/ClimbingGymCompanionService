@@ -14,26 +14,29 @@ public class RouteModel {
     private String difficulty;
     private LocalDate dateCreated;
     private Integer rating;
-    private String pictureKey;
+    private String imageName;
+    private String imageType;
+    private String routeImageBase64;
     private List<String> notesList;
 
     /**
      *
-     * @param routeId the routeId
-     * @param routeStatus the routeStatus
-     * @param isArchived the Archived status
-     * @param location the location
-     * @param color the color
-     * @param type the type
-     * @param difficulty the difficulty
-     * @param dateCreated the date the route was created
-     * @param rating the rating
-     * @param pictureKey the pictureKey
-     * @param notesList the list of notes
+     * @param routeId
+     * @param routeStatus
+     * @param isArchived
+     * @param location
+     * @param color
+     * @param type
+     * @param difficulty
+     * @param dateCreated
+     * @param rating
+     * @param imageName
+     * @param imageType
+     * @param routeImageBase64
+     * @param notesList
      */
     public RouteModel(String routeId, String routeStatus, String isArchived, String location,
-                      String color, String type, String difficulty, LocalDate dateCreated,
-                      Integer rating, String pictureKey, List<String> notesList) {
+                      String color, String type, String difficulty, LocalDate dateCreated, Integer rating, String imageName, String imageType, String routeImageBase64, List<String> notesList) {
         this.routeId = routeId;
         this.routeStatus = routeStatus;
         this.isArchived = isArchived;
@@ -43,7 +46,9 @@ public class RouteModel {
         this.difficulty = difficulty;
         this.dateCreated = dateCreated;
         this.rating = rating;
-        this.pictureKey = pictureKey;
+        this.imageName = imageName;
+        this.imageType = imageType;
+        this.routeImageBase64 = routeImageBase64;
         this.notesList = notesList;
     }
 
@@ -83,8 +88,16 @@ public class RouteModel {
         return rating;
     }
 
-    public String getPictureKey() {
-        return pictureKey;
+    public String getImageName() {
+        return imageName;
+    }
+
+    public String getImageType() {
+        return imageType;
+    }
+
+    public String getRouteImageBase64() {
+        return routeImageBase64;
     }
 
     public List<String> getNotesList() {
@@ -93,25 +106,15 @@ public class RouteModel {
 
     @Override
     public boolean equals(Object other) {
-        if (this == other) {
-            return true;
-        }
-        if (other == null || getClass() != other.getClass()) {
-            return false;
-        }
+        if (this == other) return true;
+        if (other == null || getClass() != other.getClass()) return false;
         RouteModel that = (RouteModel) other;
-        return Objects.equals(routeId, that.routeId) && Objects.equals(routeStatus, that.routeStatus) &&
-                Objects.equals(isArchived, that.isArchived) && Objects.equals(location, that.location) &&
-                Objects.equals(color, that.color) && Objects.equals(type, that.type) &&
-                Objects.equals(difficulty, that.difficulty) && Objects.equals(dateCreated, that.dateCreated) &&
-                Objects.equals(rating, that.rating) && Objects.equals(pictureKey, that.pictureKey) &&
-                Objects.equals(notesList, that.notesList);
+        return Objects.equals(routeId, that.routeId) && Objects.equals(routeStatus, that.routeStatus) && Objects.equals(isArchived, that.isArchived) && Objects.equals(location, that.location) && Objects.equals(color, that.color) && Objects.equals(type, that.type) && Objects.equals(difficulty, that.difficulty) && Objects.equals(dateCreated, that.dateCreated) && Objects.equals(rating, that.rating) && Objects.equals(imageName, that.imageName) && Objects.equals(imageType, that.imageType) && Objects.equals(routeImageBase64, that.routeImageBase64) && Objects.equals(notesList, that.notesList);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(routeId, routeStatus, isArchived, location, color,
-                type, difficulty, dateCreated, rating, pictureKey, notesList);
+        return Objects.hash(routeId, routeStatus, isArchived, location, color, type, difficulty, dateCreated, rating, imageName, imageType, routeImageBase64, notesList);
     }
 
     //CHECKSTYLE:OFF:Builder
@@ -129,7 +132,9 @@ public class RouteModel {
         private String difficulty;
         private LocalDate dateCreated;
         private Integer rating;
-        private String pictureKey;
+        private String imageName;
+        private String imageType;
+        private String routeImageBase64;
         private List<String> notesList;
 
         public Builder withRouteId(String routeId) {
@@ -177,8 +182,18 @@ public class RouteModel {
             return this;
         }
 
-        public Builder withPictureKey(String pictureKey) {
-            this.pictureKey = pictureKey;
+        public Builder withImageName(String imageName) {
+            this.imageName = imageName;
+            return this;
+        }
+
+        public Builder withImageType(String imageType) {
+            this.imageType = imageType;
+            return this;
+        }
+
+        public Builder withRouteImageBase64(String routeImageBase64) {
+            this.routeImageBase64 = routeImageBase64;
             return this;
         }
 
@@ -189,7 +204,7 @@ public class RouteModel {
 
         public RouteModel build() {
             return new RouteModel(routeId, routeStatus, isArchived, location, color, type,
-                    difficulty, dateCreated, rating, pictureKey, notesList);
+                    difficulty, dateCreated, rating, imageName, imageType, routeImageBase64, notesList);
         }
     }
 }
