@@ -7,13 +7,11 @@ import com.nashss.se.ClimbingGymCompanionService.dynamodb.RouteDao;
 import com.nashss.se.ClimbingGymCompanionService.dynamodb.pojos.Route;
 import com.nashss.se.ClimbingGymCompanionService.enums.ArchivedStatus;
 import com.nashss.se.ClimbingGymCompanionService.models.RouteModel;
-import com.nashss.se.ClimbingGymCompanionService.utils.Base64Utils;
 import com.nashss.se.ClimbingGymCompanionService.utils.IdUtils;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.nio.file.Path;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import javax.inject.Inject;

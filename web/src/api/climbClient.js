@@ -225,7 +225,7 @@ export default class ClimbClient extends BindingClass {
      */
     async getPresignedS3Url(imageKey, errorCallback) {
         try {
-            const response = await this.axiosClient.get(`/s3/${imageKey}`, {
+            const response = await this.axiosClient.get(`/s3upload/${imageKey}`, {
                 headers: {
                     'Content-Type': 'application/json'
                 }
@@ -236,6 +236,26 @@ export default class ClimbClient extends BindingClass {
             this.handleError(error, errorCallback);
         }
     }
+
+        /**
+     * 
+     * @param {*} imageKey 
+     * @param {*} errorCallback 
+     * @returns 
+     */
+        async getPresignedS3Image(imageKey, errorCallback) {
+            try {
+                const response = await this.axiosClient.get(`/s3download/${imageKey}`, {
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+                console.log("Response data:" , response.data)
+                return response.data;
+            } catch (error) {
+                this.handleError(error, errorCallback);
+            }
+        }
     /**
      * 
      * @param {*} s3PresignedUrl 

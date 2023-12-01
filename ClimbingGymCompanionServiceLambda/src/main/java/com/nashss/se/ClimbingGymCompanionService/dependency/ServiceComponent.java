@@ -71,5 +71,11 @@ public interface ServiceComponent {
      * @return GetS3PreSignedUrlActivity
      */
     GetS3PreSignedUrlActivity provideGetS3PreSignedUrlActivity();
+
+    /**
+     *
+     * @return GetPresignedS3ImageActivity
+     */
+    GetPresignedS3ImageActivity provideGetPresignedS3ImageActivity();
 }
 

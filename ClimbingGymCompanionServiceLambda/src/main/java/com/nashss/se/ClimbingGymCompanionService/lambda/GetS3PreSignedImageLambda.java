@@ -8,7 +8,7 @@ import com.amazonaws.services.lambda.runtime.RequestHandler;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-public class GetS3PreSignedLambda
+public class GetS3PreSignedImageLambda
         extends LambdaActivityRunner<GetS3PreSignedUrlRequest, GetS3PreSignedUrlResult>
         implements RequestHandler<LambdaRequest<GetS3PreSignedUrlRequest>, LambdaResponse> {
 
@@ -16,14 +16,14 @@ public class GetS3PreSignedLambda
 
     @Override
     public LambdaResponse handleRequest(LambdaRequest<GetS3PreSignedUrlRequest> input, Context context) {
-        log.info("handleRequest from GetS3PreSignedLambda");
+        log.info("handleRequest from GetS3PreSignedImageLambda");
         return super.runActivity(
                 () -> input.fromPath(path ->
                         GetS3PreSignedUrlRequest.builder()
                                 .withImageKey(path.get("imageKey"))
                                 .build()),
                 (request, serviceComponent) ->
-                        serviceComponent.provideGetS3PreSignedUrlActivity().handleRequest(request)
+                        serviceComponent.provideGetPresignedS3ImageActivity().handleRequest(request)
         );
     }
 }

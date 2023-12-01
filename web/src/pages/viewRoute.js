@@ -71,7 +71,7 @@ class ViewRoute extends BindingClass {
         }
 
         // IMAGE 
-        this.displayRouteImage(route.routeImageBase64, route.imageName, route.imageType);
+        this.displayRouteImage(route.imageKey);
 
 
         document.getElementById('route-location').innerText = route.location;
@@ -112,54 +112,52 @@ class ViewRoute extends BindingClass {
         }
     }
 
-    /**
-     * Function to display the image on screen or No image is null
-     * @param {*} base64String 
-     * @param {*} imageName 
-     * @param {*} imageType 
-     */
-    async displayRouteImage(base64String, imageName, imageType) {
-        const routeImageElement = document.getElementById('route-image');
-        if (base64String != null) {
-            const routeImageFile = await this.convertBase64ToFile(base64String, imageName, imageType);
-            const dataURL = URL.createObjectURL(routeImageFile);
-
-            routeImageElement.src = dataURL;
-            routeImageElement.alt = imageName;
-        } else {
-            routeImageElement.src = '';
-            routeImageElement.alt = 'No image yet';
-        }
+/**
+ * Function to display the image on screen or No image is null
+ * @param {*} imageKey 
+ */
+async displayRouteImage(imageKey) {
+    const routeImageElement = document.getElementById('route-image');
+    if (imageKey != null) {
+        const imageUrl = await this.client.getPresignedS3Image(imageKey);
+        routeImageElement.src = imageUrl.s3PreSignedUrl;
+        console.log("imageURL: " , imageUrl.s3PreSignedUrl)
+        routeImageElement.alt = imageName;
+    } else {
+        routeImageElement.src = '';
+        routeImageElement.alt = 'No image yet';
     }
+}
 
-    /**
-     * Function to convert a base64 string to a File object 
-     * 
-     * @param {*} base64String 
-     * @param {*} fileName 
-     * @param {*} fileType 
-     * @returns the file that has been converted
-     */
-    convertBase64ToFile(base64String, fileName, fileType) {
-        console.log('Attempting to convert base64String to file');
-        const byteCharacters = atob(base64String);
-        const byteArrays = [];
 
-        for (let offset = 0; offset < byteCharacters.length; offset += 512) {
-            const slice = byteCharacters.slice(offset, offset + 512);
+    // /**
+    //  * Function to convert a base64 string to a File object 
+    //  * 
+    //  * @param {*} base64String 
+    //  * @param {*} fileName 
+    //  * @param {*} fileType 
+    //  * @returns the file that has been converted
+    //  */
+    // convertBase64ToFile(base64String, fileName, fileType) {
+    //     console.log('Attempting to convert base64String to file');
+    //     const byteCharacters = atob(base64String);
+    //     const byteArrays = [];
 
-            const byteNumbers = new Array(slice.length);
-            for (let i = 0; i < slice.length; i++) {
-                byteNumbers[i] = slice.charCodeAt(i);
-            }
+    //     for (let offset = 0; offset < byteCharacters.length; offset += 512) {
+    //         const slice = byteCharacters.slice(offset, offset + 512);
 
-            const byteArray = new Uint8Array(byteNumbers);
-            byteArrays.push(byteArray);
-        }
+    //         const byteNumbers = new Array(slice.length);
+    //         for (let i = 0; i < slice.length; i++) {
+    //             byteNumbers[i] = slice.charCodeAt(i);
+    //         }
 
-        const blob = new Blob(byteArrays, { type: fileType });
-        return new File([blob], fileName, { type: fileType });
-    }
+    //         const byteArray = new Uint8Array(byteNumbers);
+    //         byteArrays.push(byteArray);
+    //     }
+
+    //     const blob = new Blob(byteArrays, { type: fileType });
+    //     return new File([blob], fileName, { type: fileType });
+    // }
 
    /**
     * Function to populate the status dropdown
