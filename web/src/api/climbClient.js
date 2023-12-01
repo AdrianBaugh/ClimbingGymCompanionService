@@ -189,6 +189,7 @@ export default class ClimbClient extends BindingClass {
     */
     async createRoute(location, color, routeStatus, type, difficulty, routeImageFile, errorCallback) {
         try {
+
             const token = await this.getTokenOrThrow("You must be logged in to create a route!");
     
             let imageName = null;
@@ -201,6 +202,7 @@ export default class ClimbClient extends BindingClass {
                 imageType = routeImageFile.type;
                 routeImageBase64 = await this.convertFileToBase64(routeImageFile);
             }
+            console.log("Attempting to send the route to the backend with: ", location, color, routeStatus, type, difficulty, imageName, imageType );  
             
             const response = await this.axiosClient.post(`routes`, {
                 location: location,
@@ -216,7 +218,7 @@ export default class ClimbClient extends BindingClass {
                     Authorization: `Bearer ${token}`
                 }
             });
-    
+            console.log("Success sending the route to the backend", response);  
             return response.data.route;
         } catch (error) {
             this.handleError(error, errorCallback);
@@ -229,6 +231,7 @@ export default class ClimbClient extends BindingClass {
      * @returns 
      */
     convertFileToBase64(file) {
+        console.log("Attempting to convert the file to base 64")
         return new Promise((resolve, reject) => {
             const reader = new FileReader();
             reader.onload = () => resolve(reader.result.split(',')[1]);
@@ -236,41 +239,6 @@ export default class ClimbClient extends BindingClass {
             reader.readAsDataURL(file);
         });
     }
-
-
-
-
-    // async createRouteWithImage(location, color, routeStatus, type, difficulty, routeImageFile, errorCallback) {
-    //     try {
-    //       const token = await this.getTokenOrThrow("You must be logged in to create a route!");
-      
-    //       // Create a FormData object to handle the file and other form data
-    //       const formData = new FormData();
-    //       formData.append('location', location);
-    //       formData.append('color', color);
-    //       formData.append('routeStatus', routeStatus);
-    //       formData.append('type', type);
-    //       formData.append('difficulty', difficulty);
-    //       formData.append('routeImageFile', routeImageFile);
-
-    //         // probably should have the backend create the key in the IDUtils
-
-    //       // The S3 object key for the uploaded image
-    //       const pictureKey = `images/${location}-${Date.now()}-${routeImageFile.name}`;
-    //       formData.append('pictureKey', pictureKey);
-      
-    //       const response = await this.axiosClient.post(`routes`, formData, {
-    //         headers: {
-    //           Authorization: `Bearer ${token}`,
-    //           'Content-Type': 'multipart/form-data', // Set content type to multipart/form-data
-    //         },
-    //       });
-      
-    //       return response.data.route;
-    //     } catch (error) {
-    //       this.handleError(error, errorCallback);
-    //     }
-    //   }
 
     /**
     * Update a new route by the current user.

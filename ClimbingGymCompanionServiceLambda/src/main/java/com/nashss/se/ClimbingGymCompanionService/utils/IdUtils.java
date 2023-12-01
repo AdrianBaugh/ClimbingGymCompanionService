@@ -48,4 +48,8 @@ public class IdUtils {
     public static String generateClimbId(LocalDateTime dateTime) {
         return  RandomStringUtils.randomAlphanumeric(MAX_ID_LENGTH) + "::" + dateTime;
     }
+
+    public static String generateImageKey(String fileName) {
+        return RandomStringUtils.randomAlphanumeric(MAX_ID_LENGTH) + "::" + fileName;
+    }
 }

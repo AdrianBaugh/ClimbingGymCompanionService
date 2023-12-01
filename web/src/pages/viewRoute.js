@@ -70,39 +70,9 @@ class ViewRoute extends BindingClass {
             return;
         }
 
-        //BEGIN IMAGE TESTING
-        //const routeImage = null;
-        const base64String = route.routeImageBase64;
-        if ( base64String != null) {
-            //routeImage = this.convertBase64ToFile(base64String, route.imageName, route.imageType)
-       
-            // Assuming 'routeImageBase64' is the base64 string of your image
-            // const routeImageBase64 = "your_base64_string_here";
-            const routeImageName = route.imageName;
-            const routeImageType = route.imageType; // e.g., "image/jpeg", "image/png", etc.
+        // IMAGE 
+        this.displayRouteImage(route.routeImageBase64, route.imageName, route.imageType);
 
-            // Get the img element by its id
-            const routeImageElement = document.getElementById('route-image');
-
-            // Construct the data URL using the routeImageBase64, routeImageType, and routeImageName
-            if (base64String) {
-                // Convert base64 to File
-                const routeImageFile = await this.convertBase64ToFile(base64String, routeImageName, routeImageType);
-
-                // Create a data URL using the File object
-                const dataURL = URL.createObjectURL(routeImageFile);
-
-                routeImageElement.src = dataURL;
-                routeImageElement.alt = routeImageName;
-            } else {
-                // Set an alternative text if routeImageBase64 is null
-                routeImageElement.src = ''; // Clear the src attribute
-                routeImageElement.alt = 'No image yet';
-            }
-        }
-        //document.getElementById('route-image').innerText = routeImage !== null ? routeImage : 'No image yet!';
-
-        // END IMAGE TESTING
 
         document.getElementById('route-location').innerText = route.location;
         document.getElementById('route-status').innerText = route.routeStatus;
@@ -114,6 +84,10 @@ class ViewRoute extends BindingClass {
     
         const toggleButton = document.getElementById('toggleButton');
         const notesList = document.getElementById('notesList');
+        if (route.notesList == null || route.notesList.length === 0) {
+            // need to update this to be the whole card of div instead of the button
+            toggleButton.innerHTML = 'No public beta yet!';
+        }
 
         toggleButton.addEventListener('click', function () {
             notesList.classList.toggle('hidden');
@@ -124,7 +98,6 @@ class ViewRoute extends BindingClass {
         });
 
         function generateTableContent(notes, notesList) {
-            // add logic so that if notes is empty it displays a message to the user
             notesList.innerHTML = '';
 
             const tableHeaders = document.createElement('tr');
@@ -139,40 +112,58 @@ class ViewRoute extends BindingClass {
         }
     }
 
-        /**
+    /**
+     * Function to display the image on screen or No image is null
+     * @param {*} base64String 
+     * @param {*} imageName 
+     * @param {*} imageType 
+     */
+    async displayRouteImage(base64String, imageName, imageType) {
+        const routeImageElement = document.getElementById('route-image');
+        if (base64String != null) {
+            const routeImageFile = await this.convertBase64ToFile(base64String, imageName, imageType);
+            const dataURL = URL.createObjectURL(routeImageFile);
+
+            routeImageElement.src = dataURL;
+            routeImageElement.alt = imageName;
+        } else {
+            routeImageElement.src = '';
+            routeImageElement.alt = 'No image yet';
+        }
+    }
+
+    /**
      * Function to convert a base64 string to a File object 
-     * 
-     * !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-     * this method may need to be moved to where ever the file or image is being used or displayed so like the viewClimb.js file
-     * !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
      * 
      * @param {*} base64String 
      * @param {*} fileName 
      * @param {*} fileType 
      * @returns the file that has been converted
      */
-        convertBase64ToFile(base64String, fileName, fileType) {
-            console.log('Attempting to convert base64String to file');
-            const byteCharacters = atob(base64String);
-            const byteArrays = [];
-    
-            for (let offset = 0; offset < byteCharacters.length; offset += 512) {
-                const slice = byteCharacters.slice(offset, offset + 512);
-    
-                const byteNumbers = new Array(slice.length);
-                for (let i = 0; i < slice.length; i++) {
-                    byteNumbers[i] = slice.charCodeAt(i);
-                }
-    
-                const byteArray = new Uint8Array(byteNumbers);
-                byteArrays.push(byteArray);
+    convertBase64ToFile(base64String, fileName, fileType) {
+        console.log('Attempting to convert base64String to file');
+        const byteCharacters = atob(base64String);
+        const byteArrays = [];
+
+        for (let offset = 0; offset < byteCharacters.length; offset += 512) {
+            const slice = byteCharacters.slice(offset, offset + 512);
+
+            const byteNumbers = new Array(slice.length);
+            for (let i = 0; i < slice.length; i++) {
+                byteNumbers[i] = slice.charCodeAt(i);
             }
-    
-            const blob = new Blob(byteArrays, { type: fileType });
-            return new File([blob], fileName, { type: fileType });
+
+            const byteArray = new Uint8Array(byteNumbers);
+            byteArrays.push(byteArray);
         }
 
-        // Function to populate the status dropdown
+        const blob = new Blob(byteArrays, { type: fileType });
+        return new File([blob], fileName, { type: fileType });
+    }
+
+   /**
+    * Function to populate the status dropdown
+    */
     statusDropdown() {
         const statusDropdown = document.getElementById('statusDropdown');
     

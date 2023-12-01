@@ -25,7 +25,7 @@ public class Route {
     private LocalDate dateCreated;
     private Integer rating;
     private String imageName;
-    private String imageType;
+    private String imageKey;
     private String routeImageBase64;
     private List<String> notesList;
 
@@ -120,16 +120,15 @@ public class Route {
         this.imageName = imageName;
     }
 
-    @DynamoDBAttribute(attributeName = "imageType")
-    public String getImageType() {
-        return imageType;
+    @DynamoDBAttribute(attributeName = "imageKey")
+    public String getImageKey() {
+        return imageKey;
     }
 
-    public void setImageType(String imageType) {
-        this.imageType = imageType;
+    public void setImageKey(String imageKey) {
+        this.imageKey = imageKey;
     }
 
-    @DynamoDBAttribute(attributeName = "routeImageBase64")
     public String getRouteImageBase64() {
         return routeImageBase64;
     }
@@ -157,14 +156,14 @@ public class Route {
                 Objects.equals(color, route.color) && Objects.equals(type, route.type) &&
                 Objects.equals(difficulty, route.difficulty) && Objects.equals(dateCreated, route.dateCreated) &&
                 Objects.equals(rating, route.rating) && Objects.equals(imageName, route.imageName) &&
-                Objects.equals(imageType, route.imageType) &&
-                Objects.equals(routeImageBase64, route.routeImageBase64) && Objects.equals(notesList, route.notesList);
+                Objects.equals(imageKey, route.imageKey) && Objects.equals(routeImageBase64, route.routeImageBase64) &&
+                Objects.equals(notesList, route.notesList);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(routeId, routeStatus, isArchived, location, color, type, difficulty,
-                dateCreated, rating, imageName, imageType, routeImageBase64, notesList);
+        return Objects.hash(routeId, routeStatus, isArchived, location, color, type,
+                difficulty, dateCreated, rating, imageName, imageKey, routeImageBase64, notesList);
     }
 
     @Override
@@ -180,7 +179,7 @@ public class Route {
                 ", dateCreated=" + dateCreated +
                 ", rating=" + rating +
                 ", imageName='" + imageName + '\'' +
-                ", imageType='" + imageType + '\'' +
+                ", imageKey='" + imageKey + '\'' +
                 ", routeImageBase64='" + routeImageBase64 + '\'' +
                 ", notesList=" + notesList +
                 '}';

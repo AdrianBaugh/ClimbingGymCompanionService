@@ -17,6 +17,7 @@ public class CreateRouteLambda
      */
     @Override
     public LambdaResponse handleRequest(LambdaRequest<CreateRouteRequest> input, Context context) {
+        System.out.println("!!!!!!!!!!!! in the Create Route Lambda!!!!!!!!!!!!!!");
         return super.runActivity(
             () -> input.fromBody(CreateRouteRequest.class),
             (request, serviceComponent) ->

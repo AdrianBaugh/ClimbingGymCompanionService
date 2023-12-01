@@ -159,7 +159,9 @@ class CreateRoute extends BindingClass {
         let routeImageFile = null;
 
         try {
-            routeImageFile = await this.handleImageUpload(routeImageInput);
+            //routeImageFile = await this.handleImageUpload(routeImageInput);
+            routeImageFile = routeImageInput.files.length > 0 ? routeImageInput.files[0] : null;
+
         } catch (error) {
             createButton.innerText = origButtonText;
             errorMessageDisplay.innerText = `Error: ${error.message}`;
@@ -177,65 +179,65 @@ class CreateRoute extends BindingClass {
         this.dataStore.set('route', route);
     }
 
-    handleImageUpload(routeImageInput) {
-        return new Promise((resolve, reject) => {
-            console.log('Attempting to reduce image size');
-            const file = routeImageInput.files[0];
+    // handleImageUpload(routeImageInput) {
+    //     return new Promise((resolve, reject) => {
+    //         console.log('Attempting to reduce image size');
+    //         const file = routeImageInput.files[0];
     
-            if (!file) {
-                reject(new Error('No file selected.'));
-                return;
-            }
+    //         if (!file) {
+    //             reject(new Error('No file selected.'));
+    //             return;
+    //         }
     
-            const maxSizeKB = 400; // Maximum allowed file size in KB
-            const reader = new FileReader();
+    //         const maxSizeKB = 2000; // Maximum allowed file size in KB
+    //         const reader = new FileReader();
     
-            reader.onload = function (e) {
-                const img = new Image();
-                img.src = e.target.result;
+    //         reader.onload = function (e) {
+    //             const img = new Image();
+    //             img.src = e.target.result;
     
-                img.onload = function () {
-                    const canvas = document.createElement('canvas');
-                    const ctx = canvas.getContext('2d');
+    //             img.onload = function () {
+    //                 const canvas = document.createElement('canvas');
+    //                 const ctx = canvas.getContext('2d');
     
-                    // Set the maximum width and height while maintaining the aspect ratio
-                    const maxWidth = 800;
-                    const maxHeight = 600;
+    //                 // Set the maximum width and height while maintaining the aspect ratio
+    //                 const maxWidth = 800;
+    //                 const maxHeight = 600;
     
-                    let width = img.width;
-                    let height = img.height;
+    //                 let width = img.width;
+    //                 let height = img.height;
     
-                    if (width > maxWidth) {
-                        height *= maxWidth / width;
-                        width = maxWidth;
-                    }
+    //                 if (width > maxWidth) {
+    //                     height *= maxWidth / width;
+    //                     width = maxWidth;
+    //                 }
     
-                    if (height > maxHeight) {
-                        width *= maxHeight / height;
-                        height = maxHeight;
-                    }
+    //                 if (height > maxHeight) {
+    //                     width *= maxHeight / height;
+    //                     height = maxHeight;
+    //                 }
     
-                    canvas.width = width;
-                    canvas.height = height;
+    //                 canvas.width = width;
+    //                 canvas.height = height;
     
-                    ctx.drawImage(img, 0, 0, width, height);
+    //                 ctx.drawImage(img, 0, 0, width, height);
     
-                    // Convert the compressed image to Blob format
-                    canvas.toBlob(function (blob) {
-                        // Check if the compressed image size is within the limit
-                        if (blob.size <= maxSizeKB * 1024) {
-                            console.log('Compressed image size:', blob.size, 'bytes');
-                            resolve(blob);
-                        } else {
-                            reject(new Error('Image size exceeds the maximum allowed size.'));
-                        }
-                    }, file.type);
-                };
-            };
+    //                 // Convert the compressed image to Blob format
+    //                 canvas.toBlob(function (blob) {
+    //                     // Check if the compressed image size is within the limit
+    //                     if (blob.size <= maxSizeKB * 1024) {
+    //                         console.log('Compressed image size:', blob.size, 'bytes');
+    //                         resolve(blob);
+    //                     } else {
+    //                         reject(new Error('Image size exceeds the maximum allowed size.'));
+    //                     }
+    //                 }, file.type);
+    //             };
+    //         };
     
-            reader.readAsDataURL(file);
-        });
-    }
+    //         reader.readAsDataURL(file);
+    //     });
+    // }
     
     redirectToViewRoute() {
         const route = this.dataStore.get('route');

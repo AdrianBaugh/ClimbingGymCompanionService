@@ -10,19 +10,17 @@ public class CreateRouteRequest {
     private final String routeStatus;
     private final String type;
     private final String difficulty;
-    private final String pictureKey;
     private final String routeImageBase64;
     private final String imageName;
     private final String imageType;
 
     public CreateRouteRequest(String location, String color, String routeStatus, String type, String difficulty,
-                              String pictureKey, String routeImageBase64, String imageName, String imageType) {
+                              String routeImageBase64, String imageName, String imageType) {
         this.location = location;
         this.color = color;
         this.routeStatus = routeStatus;
         this.type = type;
         this.difficulty = difficulty;
-        this.pictureKey = pictureKey;
         this.routeImageBase64 = routeImageBase64;
         this.imageName = imageName;
         this.imageType = imageType;
@@ -48,10 +46,6 @@ public class CreateRouteRequest {
         return difficulty;
     }
 
-    public String getPictureKey() {
-        return pictureKey;
-    }
-
     public String getRouteImageBase64() {
         return routeImageBase64;
     }
@@ -72,7 +66,6 @@ public class CreateRouteRequest {
                 ", routeStatus='" + routeStatus + '\'' +
                 ", type='" + type + '\'' +
                 ", difficulty='" + difficulty + '\'' +
-                ", pictureKey='" + pictureKey + '\'' +
                 ", routeImageBase64='" + routeImageBase64 + '\'' +
                 ", imageName='" + imageName + '\'' +
                 ", imageType='" + imageType + '\'' +
@@ -91,7 +84,6 @@ public class CreateRouteRequest {
         private String routeStatus;
         private String type;
         private String difficulty;
-        private String pictureKey;
         private String routeImageBase64;
         private String imageName;
         private String imageType;
@@ -121,10 +113,6 @@ public class CreateRouteRequest {
             return this;
         }
 
-        public Builder withPictureKey(String pictureKey) {
-            this.pictureKey = pictureKey;
-            return this;
-        }
         public Builder withRouteImageBase64(String routeImageBase64) {
             this.routeImageBase64 = routeImageBase64;
             return this;
@@ -140,7 +128,7 @@ public class CreateRouteRequest {
         }
 
         public CreateRouteRequest build() {
-            return new CreateRouteRequest(location, color, routeStatus, type, difficulty, pictureKey, routeImageBase64, imageName, imageType);
+            return new CreateRouteRequest(location, color, routeStatus, type, difficulty, routeImageBase64, imageName, imageType);
         }
     }
 }

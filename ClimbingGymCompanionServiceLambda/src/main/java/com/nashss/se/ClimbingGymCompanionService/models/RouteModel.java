@@ -15,7 +15,7 @@ public class RouteModel {
     private LocalDate dateCreated;
     private Integer rating;
     private String imageName;
-    private String imageType;
+    private String imageKey;
     private String routeImageBase64;
     private List<String> notesList;
 
@@ -31,12 +31,14 @@ public class RouteModel {
      * @param dateCreated
      * @param rating
      * @param imageName
-     * @param imageType
+     * @param imageKey
      * @param routeImageBase64
      * @param notesList
      */
     public RouteModel(String routeId, String routeStatus, String isArchived, String location,
-                      String color, String type, String difficulty, LocalDate dateCreated, Integer rating, String imageName, String imageType, String routeImageBase64, List<String> notesList) {
+                      String color, String type, String difficulty, LocalDate dateCreated,
+                      Integer rating, String imageName, String imageKey, String routeImageBase64,
+                      List<String> notesList) {
         this.routeId = routeId;
         this.routeStatus = routeStatus;
         this.isArchived = isArchived;
@@ -47,7 +49,7 @@ public class RouteModel {
         this.dateCreated = dateCreated;
         this.rating = rating;
         this.imageName = imageName;
-        this.imageType = imageType;
+        this.imageKey = imageKey;
         this.routeImageBase64 = routeImageBase64;
         this.notesList = notesList;
     }
@@ -92,8 +94,8 @@ public class RouteModel {
         return imageName;
     }
 
-    public String getImageType() {
-        return imageType;
+    public String getImageKey() {
+        return imageKey;
     }
 
     public String getRouteImageBase64() {
@@ -109,12 +111,20 @@ public class RouteModel {
         if (this == other) return true;
         if (other == null || getClass() != other.getClass()) return false;
         RouteModel that = (RouteModel) other;
-        return Objects.equals(routeId, that.routeId) && Objects.equals(routeStatus, that.routeStatus) && Objects.equals(isArchived, that.isArchived) && Objects.equals(location, that.location) && Objects.equals(color, that.color) && Objects.equals(type, that.type) && Objects.equals(difficulty, that.difficulty) && Objects.equals(dateCreated, that.dateCreated) && Objects.equals(rating, that.rating) && Objects.equals(imageName, that.imageName) && Objects.equals(imageType, that.imageType) && Objects.equals(routeImageBase64, that.routeImageBase64) && Objects.equals(notesList, that.notesList);
+        return Objects.equals(routeId, that.routeId) && Objects.equals(routeStatus, that.routeStatus) &&
+                Objects.equals(isArchived, that.isArchived) && Objects.equals(location, that.location) &&
+                Objects.equals(color, that.color) && Objects.equals(type, that.type) &&
+                Objects.equals(difficulty, that.difficulty) && Objects.equals(dateCreated, that.dateCreated) &&
+                Objects.equals(rating, that.rating) && Objects.equals(imageName, that.imageName) &&
+                Objects.equals(imageKey, that.imageKey) && Objects.equals(routeImageBase64, that.routeImageBase64) &&
+                Objects.equals(notesList, that.notesList);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(routeId, routeStatus, isArchived, location, color, type, difficulty, dateCreated, rating, imageName, imageType, routeImageBase64, notesList);
+        return Objects.hash(routeId, routeStatus, isArchived, location, color, type,
+                difficulty, dateCreated, rating, imageName, imageKey, routeImageBase64,
+                notesList);
     }
 
     //CHECKSTYLE:OFF:Builder
@@ -133,7 +143,7 @@ public class RouteModel {
         private LocalDate dateCreated;
         private Integer rating;
         private String imageName;
-        private String imageType;
+        private String imageKey;
         private String routeImageBase64;
         private List<String> notesList;
 
@@ -187,8 +197,8 @@ public class RouteModel {
             return this;
         }
 
-        public Builder withImageType(String imageType) {
-            this.imageType = imageType;
+        public Builder withImageKey(String imageKey) {
+            this.imageKey = imageKey;
             return this;
         }
 
@@ -204,7 +214,8 @@ public class RouteModel {
 
         public RouteModel build() {
             return new RouteModel(routeId, routeStatus, isArchived, location, color, type,
-                    difficulty, dateCreated, rating, imageName, imageType, routeImageBase64, notesList);
+                    difficulty, dateCreated, rating, imageName, imageKey, routeImageBase64,
+                    notesList);
         }
     }
 }

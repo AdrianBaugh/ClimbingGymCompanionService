@@ -7,11 +7,13 @@ import com.nashss.se.ClimbingGymCompanionService.dynamodb.RouteDao;
 import com.nashss.se.ClimbingGymCompanionService.dynamodb.pojos.Route;
 import com.nashss.se.ClimbingGymCompanionService.enums.ArchivedStatus;
 import com.nashss.se.ClimbingGymCompanionService.models.RouteModel;
+import com.nashss.se.ClimbingGymCompanionService.utils.Base64Utils;
 import com.nashss.se.ClimbingGymCompanionService.utils.IdUtils;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.nio.file.Path;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import javax.inject.Inject;
@@ -43,10 +45,16 @@ public class CreateRouteActivity {
      */
     public CreateRouteResult handleRequest(final CreateRouteRequest createRouteRequest) {
         log.info("received CreateRouteRequest {}", createRouteRequest);
-
+        System.out.println("received CreateRouteRequest "+ createRouteRequest);
         String location = createRouteRequest.getLocation();
         String color = createRouteRequest.getColor();
         LocalDate date = LocalDate.now();
+
+        String imageName = createRouteRequest.getImageName();
+        String imageKey = null;
+        if (imageName != null) {
+            imageKey = IdUtils.generateImageKey(imageName);
+        }
 
         Route newRoute = new Route();
         newRoute.setRouteId(IdUtils.generateRouteId(location, color, date));
@@ -58,10 +66,18 @@ public class CreateRouteActivity {
         newRoute.setType(createRouteRequest.getType());
         newRoute.setDifficulty(createRouteRequest.getDifficulty());
         newRoute.setRating(null);
-        newRoute.setImageName(createRouteRequest.getImageName());
-        newRoute.setImageType(createRouteRequest.getImageType());
-        newRoute.setRouteImageBase64(createRouteRequest.getRouteImageBase64());
+        newRoute.setImageName(imageName);
+        newRoute.setImageKey(imageKey);
         newRoute.setNotesList(new ArrayList<>());
+
+        if (imageKey != null) {
+            Path path = Base64Utils.convertBase64ToFile(createRouteRequest.getRouteImageBase64(), imageName);
+            log.info("attempting to save to s3 via the Create Route Activity");
+            System.out.println("attempting to save to s3 via the Create Route Activity");
+
+            routeDao.saveToS3(path, imageKey);
+        }
+
 
         routeDao.saveRoute(newRoute);
 
