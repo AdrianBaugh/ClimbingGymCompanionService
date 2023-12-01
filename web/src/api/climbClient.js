@@ -182,22 +182,20 @@ export default class ClimbClient extends BindingClass {
     * @param errorCallback (Optional) A function to execute if the call fails.
     * @returns The route that has been created.
     */
-    async createRoute(location, color, routeStatus, type, difficulty, routeImageFile, errorCallback) {
+    async createRoute(location, color, routeStatus, type, difficulty, routeImageFile, imageKey, errorCallback) {
         try {
 
             const token = await this.getTokenOrThrow("You must be logged in to create a route!");
     
             let imageName = null;
             let imageType = null;
-            let routeImageBase64 = null;
     
             if (routeImageFile) {
                 // The S3 object key for the uploaded image
                 imageName = routeImageFile.name;
                 imageType = routeImageFile.type;
-                //routeImageBase64 = await this.convertFileToBase64(routeImageFile);
             }
-            console.log("Attempting to send the route to the backend with: ", location, color, routeStatus, type, difficulty, imageName, imageType );  
+            console.log("Attempting to send the route to the backend with: ", location, color, routeStatus, type, difficulty, imageName, imageType, imageKey );  
             
             const response = await this.axiosClient.post(`routes`, {
                 location: location,
@@ -207,7 +205,7 @@ export default class ClimbClient extends BindingClass {
                 difficulty: difficulty,
                 imageName: imageName,
                 imageType: imageType,
-                routeImageBase64: routeImageBase64,
+                imageKey: imageKey,
             }, {
                 headers: {
                     Authorization: `Bearer ${token}`
@@ -227,10 +225,8 @@ export default class ClimbClient extends BindingClass {
      */
     async getPresignedS3Url(imageKey, errorCallback) {
         try {
-            //const token = await this.getTokenOrThrow("Only authenticated users can get presigned URLs.");
             const response = await this.axiosClient.get(`/s3/${imageKey}`, {
                 headers: {
-                    //Authorization: `Bearer ${token}`,
                     'Content-Type': 'application/json'
                 }
             });
@@ -248,7 +244,6 @@ export default class ClimbClient extends BindingClass {
      * @returns 
      */
     async uploadToS3(s3PresignedUrl, routeImageFile, errorCallback) {
-        
         try {
             const response = await this.axiosClient.put(s3PresignedUrl, routeImageFile, {
                 headers: {
@@ -261,21 +256,6 @@ export default class ClimbClient extends BindingClass {
             this.handleError(error, errorCallback);
         }
     }
-    
-    // /**
-    //  * Helper Function to convert a image File to base64
-    //  * @param {*} file is the image file
-    //  * @returns 
-    //  */
-    // convertFileToBase64(file) {
-    //     console.log("Attempting to convert the file to base 64")
-    //     return new Promise((resolve, reject) => {
-    //         const reader = new FileReader();
-    //         reader.onload = () => resolve(reader.result.split(',')[1]);
-    //         reader.onerror = error => reject(error);
-    //         reader.readAsDataURL(file);
-    //     });
-    // }
 
     /**
     * Update a new route by the current user.

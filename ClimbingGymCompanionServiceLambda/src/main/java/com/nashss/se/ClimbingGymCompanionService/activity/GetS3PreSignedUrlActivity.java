@@ -14,6 +14,7 @@ import javax.inject.Inject;
 
 public class GetS3PreSignedUrlActivity {
     public static final String IMAGE_BUCKET_NAME = "climbing.gym.companion.images";
+    public static final int PRESIGNED_URL_TIMEOUT_DURATION = 7;
 
     @Inject
     public GetS3PreSignedUrlActivity() {
@@ -39,7 +40,7 @@ public class GetS3PreSignedUrlActivity {
                     .build();
 
             PutObjectPresignRequest presignRequest = PutObjectPresignRequest.builder()
-                    .signatureDuration(Duration.ofMinutes(25))
+                    .signatureDuration(Duration.ofMinutes(PRESIGNED_URL_TIMEOUT_DURATION))
                     .putObjectRequest(objectRequest)
                     .build();
 
@@ -47,9 +48,6 @@ public class GetS3PreSignedUrlActivity {
         }
         URL presignedUrl = presignedPutObjectRequest.url();
         String url = presignedUrl.toString();
-        System.out.println("!!!!!!!!!!!!!!!!!!!!! START !!!!!!!!!!!!!!");
-        System.out.println(url);
-        System.out.println("!!!!!!!!!!!!!!!!!!!!! END !!!!!!!!!!!!!!");
 
         return GetS3PreSignedUrlResult.builder()
                 .withS3PreSignedUrl(url)

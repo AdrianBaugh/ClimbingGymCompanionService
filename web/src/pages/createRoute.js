@@ -2,7 +2,7 @@ import ClimbClient from "../api/climbClient";
 import Header from "../components/header";
 import BindingClass from "../util/bindingClass";
 import DataStore from "../util/DataStore";
-import idUtils from "../util/idUtils";
+import { generateImageKey } from "../util/idUtils";
 
 
 /**
@@ -158,14 +158,16 @@ class CreateRoute extends BindingClass {
         // Handle the Image
         const routeImageInput = document.getElementById('route-image');
         let routeImageFile = null;
+        let imageKey = null;
 
         try {
             routeImageFile = routeImageInput.files.length > 0 ? routeImageInput.files[0] : null;
             if (routeImageFile != null) {
                 console.log("Image is not null and starting getPresigned String")
-                //const imageKey = this.idUtils.generateImageKey(routeImageFile.name)
-
-                const s3string = await this.client.getPresignedS3Url(routeImageFile.name);
+                // Create the key to use for the image in S3 also save to DDB
+                imageKey = generateImageKey(routeImageFile.name)
+                
+                const s3string = await this.client.getPresignedS3Url(imageKey);
                 console.log("presigned URL String: " , s3string)
                 const s3response = await this.uploadImageToS3(s3string.s3PreSignedUrl, routeImageFile);
 
@@ -177,13 +179,13 @@ class CreateRoute extends BindingClass {
             return;
         }
         // End Image Handling
-    
-        // const route = await this.client.createRoute(location, color, routeStatus, type, difficulty, routeImageFile, (error) => {
-        // createButton.innerText = origButtonText;
-        // errorMessageDisplay.innerText = `Error: ${error.message}`;
-        // errorMessageDisplay.classList.remove('hidden');
-        // });
-        // this.dataStore.set('route', route);
+        console.log("Attempting to create the new route and send to backend")
+        const route = await this.client.createRoute(location, color, routeStatus, type, difficulty, routeImageFile, imageKey, (error) => {
+        createButton.innerText = origButtonText;
+        errorMessageDisplay.innerText = `Error: ${error.message}`;
+        errorMessageDisplay.classList.remove('hidden');
+        });
+        this.dataStore.set('route', route);
     }
 
     async uploadImageToS3(s3PresignedUrl, routeImageFile) {
