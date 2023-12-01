@@ -32,7 +32,6 @@ public class ModelConverter {
                 .withRating(route.getRating())
                 .withImageName(route.getImageName())
                 .withImageKey(route.getImageKey())
-                .withRouteImageBase64(route.getRouteImageBase64())
                 .withNotesList(route.getNotesList())
                 .build();
 

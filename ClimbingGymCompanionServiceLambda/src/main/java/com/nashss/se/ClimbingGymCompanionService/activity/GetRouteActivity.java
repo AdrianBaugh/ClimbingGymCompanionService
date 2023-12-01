@@ -42,13 +42,6 @@ public class GetRouteActivity {
 
         Route route = routeDao.getRouteById(getRouteRequest.getRouteId());
 
-        String imageKey = route.getImageKey();
-        String routeImageBase64 = null;
-
-        if (imageKey != null) {
-            routeImageBase64 = routeDao.getFromS3(imageKey);
-            route.setRouteImageBase64(routeImageBase64);
-        }
 
         RouteModel routeModel = new ModelConverter().toRouteModel(route);
 

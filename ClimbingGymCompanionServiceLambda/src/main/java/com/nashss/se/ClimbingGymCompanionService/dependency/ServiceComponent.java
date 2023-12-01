@@ -1,14 +1,6 @@
 package com.nashss.se.ClimbingGymCompanionService.dependency;
 
-import com.nashss.se.ClimbingGymCompanionService.activity.CreateClimbActivity;
-import com.nashss.se.ClimbingGymCompanionService.activity.CreateRouteActivity;
-import com.nashss.se.ClimbingGymCompanionService.activity.DeleteClimbActivity;
-import com.nashss.se.ClimbingGymCompanionService.activity.GetAllActiveRoutesActivity;
-import com.nashss.se.ClimbingGymCompanionService.activity.GetClimbActivity;
-import com.nashss.se.ClimbingGymCompanionService.activity.GetRouteActivity;
-import com.nashss.se.ClimbingGymCompanionService.activity.GetUsersClimbHistoryActivity;
-import com.nashss.se.ClimbingGymCompanionService.activity.UpdateClimbActivity;
-import com.nashss.se.ClimbingGymCompanionService.activity.UpdateRouteStatusActivity;
+import com.nashss.se.ClimbingGymCompanionService.activity.*;
 
 import dagger.Component;
 
@@ -73,5 +65,11 @@ public interface ServiceComponent {
      * @return DeleteClimbActivity
      */
     DeleteClimbActivity provideDeleteClimbActivity();
+
+    /**
+     *
+     * @return GetS3PreSignedUrlActivity
+     */
+    GetS3PreSignedUrlActivity provideGetS3PreSignedUrlActivity();
 }
 

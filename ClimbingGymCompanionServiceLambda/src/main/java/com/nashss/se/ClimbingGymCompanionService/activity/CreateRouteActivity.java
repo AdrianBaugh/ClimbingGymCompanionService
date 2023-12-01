@@ -50,12 +50,6 @@ public class CreateRouteActivity {
         String color = createRouteRequest.getColor();
         LocalDate date = LocalDate.now();
 
-        String imageName = createRouteRequest.getImageName();
-        String imageKey = null;
-        if (imageName != null) {
-            imageKey = IdUtils.generateImageKey(imageName);
-        }
-
         Route newRoute = new Route();
         newRoute.setRouteId(IdUtils.generateRouteId(location, color, date));
         newRoute.setLocation(location);
@@ -66,17 +60,10 @@ public class CreateRouteActivity {
         newRoute.setType(createRouteRequest.getType());
         newRoute.setDifficulty(createRouteRequest.getDifficulty());
         newRoute.setRating(null);
-        newRoute.setImageName(imageName);
-        newRoute.setImageKey(imageKey);
+        newRoute.setImageName(createRouteRequest.getImageName());
+        newRoute.setImageKey(createRouteRequest.getImageKey());
         newRoute.setNotesList(new ArrayList<>());
 
-        if (imageKey != null) {
-            Path path = Base64Utils.convertBase64ToFile(createRouteRequest.getRouteImageBase64(), imageName);
-            log.info("attempting to save to s3 via the Create Route Activity");
-            System.out.println("attempting to save to s3 via the Create Route Activity");
-
-            routeDao.saveToS3(path, imageKey);
-        }
 
 
         routeDao.saveRoute(newRoute);

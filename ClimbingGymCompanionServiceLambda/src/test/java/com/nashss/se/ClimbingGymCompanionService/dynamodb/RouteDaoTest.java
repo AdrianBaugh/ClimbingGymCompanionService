@@ -44,7 +44,7 @@ public class RouteDaoTest {
     @BeforeEach
     public void setup() {
         initMocks(this);
-        this.routeDao = new RouteDao(dynamoDBMapper, s3, metricsPublisher);
+        this.routeDao = new RouteDao(dynamoDBMapper, metricsPublisher);
         when(paginatedQueryList.toArray()).thenReturn(new Object[0]);
     }
     @Test

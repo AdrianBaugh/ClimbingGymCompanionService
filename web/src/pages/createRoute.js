@@ -2,6 +2,7 @@ import ClimbClient from "../api/climbClient";
 import Header from "../components/header";
 import BindingClass from "../util/bindingClass";
 import DataStore from "../util/DataStore";
+import idUtils from "../util/idUtils";
 
 
 /**
@@ -154,90 +155,56 @@ class CreateRoute extends BindingClass {
         const difficulty = document.getElementById('difficulty').value || null;
     
 
-        // image
+        // Handle the Image
         const routeImageInput = document.getElementById('route-image');
         let routeImageFile = null;
 
         try {
-            //routeImageFile = await this.handleImageUpload(routeImageInput);
             routeImageFile = routeImageInput.files.length > 0 ? routeImageInput.files[0] : null;
+            if (routeImageFile != null) {
+                console.log("Image is not null and starting getPresigned String")
+                //const imageKey = this.idUtils.generateImageKey(routeImageFile.name)
 
+                const s3string = await this.client.getPresignedS3Url(routeImageFile.name);
+                console.log("presigned URL String: " , s3string)
+                const s3response = await this.uploadImageToS3(s3string.s3PreSignedUrl, routeImageFile);
+
+            }
         } catch (error) {
             createButton.innerText = origButtonText;
             errorMessageDisplay.innerText = `Error: ${error.message}`;
             errorMessageDisplay.classList.remove('hidden');
             return;
         }
-
-        routeImageFile = routeImageInput.files.length > 0 ? routeImageInput.files[0] : null;
+        // End Image Handling
     
-        const route = await this.client.createRoute(location, color, routeStatus, type, difficulty, routeImageFile, (error) => {
-        createButton.innerText = origButtonText;
-        errorMessageDisplay.innerText = `Error: ${error.message}`;
-        errorMessageDisplay.classList.remove('hidden');
-        });
-        this.dataStore.set('route', route);
+        // const route = await this.client.createRoute(location, color, routeStatus, type, difficulty, routeImageFile, (error) => {
+        // createButton.innerText = origButtonText;
+        // errorMessageDisplay.innerText = `Error: ${error.message}`;
+        // errorMessageDisplay.classList.remove('hidden');
+        // });
+        // this.dataStore.set('route', route);
     }
 
-    // handleImageUpload(routeImageInput) {
-    //     return new Promise((resolve, reject) => {
-    //         console.log('Attempting to reduce image size');
-    //         const file = routeImageInput.files[0];
-    
-    //         if (!file) {
-    //             reject(new Error('No file selected.'));
-    //             return;
-    //         }
-    
-    //         const maxSizeKB = 2000; // Maximum allowed file size in KB
-    //         const reader = new FileReader();
-    
-    //         reader.onload = function (e) {
-    //             const img = new Image();
-    //             img.src = e.target.result;
-    
-    //             img.onload = function () {
-    //                 const canvas = document.createElement('canvas');
-    //                 const ctx = canvas.getContext('2d');
-    
-    //                 // Set the maximum width and height while maintaining the aspect ratio
-    //                 const maxWidth = 800;
-    //                 const maxHeight = 600;
-    
-    //                 let width = img.width;
-    //                 let height = img.height;
-    
-    //                 if (width > maxWidth) {
-    //                     height *= maxWidth / width;
-    //                     width = maxWidth;
-    //                 }
-    
-    //                 if (height > maxHeight) {
-    //                     width *= maxHeight / height;
-    //                     height = maxHeight;
-    //                 }
-    
-    //                 canvas.width = width;
-    //                 canvas.height = height;
-    
-    //                 ctx.drawImage(img, 0, 0, width, height);
-    
-    //                 // Convert the compressed image to Blob format
-    //                 canvas.toBlob(function (blob) {
-    //                     // Check if the compressed image size is within the limit
-    //                     if (blob.size <= maxSizeKB * 1024) {
-    //                         console.log('Compressed image size:', blob.size, 'bytes');
-    //                         resolve(blob);
-    //                     } else {
-    //                         reject(new Error('Image size exceeds the maximum allowed size.'));
-    //                     }
-    //                 }, file.type);
-    //             };
-    //         };
-    
-    //         reader.readAsDataURL(file);
-    //     });
-    // }
+    async uploadImageToS3(s3PresignedUrl, routeImageFile) {
+
+        console.log("S3 URL BEFORE UPLOAD ATTEMPT: " , s3PresignedUrl)
+
+        if (routeImageFile == null) {
+          console.warn("No image available.");
+          return;
+        }
+        console.log("Attempting to upload to S3")
+      try {
+          const uploadResponse = await this.client.uploadToS3(s3PresignedUrl, routeImageFile);
+          // return uploadResponse;
+          console.log("Success uploading to S3", uploadResponse)
+
+          return uploadResponse;
+      } catch (error) {
+          console.error('Error uploading image to S3: ', error);
+      }
+    }
     
     redirectToViewRoute() {
         const route = this.dataStore.get('route');
