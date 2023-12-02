@@ -18,12 +18,12 @@ public class GetS3PreSignedImageLambda
     public LambdaResponse handleRequest(LambdaRequest<GetS3PreSignedUrlRequest> input, Context context) {
         log.info("handleRequest from GetS3PreSignedImageLambda");
         return super.runActivity(
-                () -> input.fromPath(path ->
-                        GetS3PreSignedUrlRequest.builder()
-                                .withImageKey(path.get("imageKey"))
-                                .build()),
-                (request, serviceComponent) ->
-                        serviceComponent.provideGetPresignedS3ImageActivity().handleRequest(request)
+            () -> input.fromPath(path ->
+                    GetS3PreSignedUrlRequest.builder()
+                            .withImageKey(path.get("imageKey"))
+                            .build()),
+            (request, serviceComponent) ->
+                    serviceComponent.provideGetPresignedS3ImageActivity().handleRequest(request)
         );
     }
 }

@@ -191,7 +191,7 @@ export default class ClimbClient extends BindingClass {
             let imageType = null;
     
             if (routeImageFile) {
-                // The S3 object key for the uploaded image
+                // The S3 object info for the uploaded image
                 imageName = routeImageFile.name;
                 imageType = routeImageFile.type;
             }

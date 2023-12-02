@@ -16,6 +16,9 @@ public class GetPresignedS3ImageActivity {
     public static final String IMAGE_BUCKET_NAME = "climbing.gym.companion.images";
     public static final int PRESIGNED_URL_TIMEOUT_DURATION = 7;
 
+    /**
+     * GetPresignedS3ImageActivity constructor.
+     */
     @Inject
     public GetPresignedS3ImageActivity() {
     }
@@ -31,7 +34,7 @@ public class GetPresignedS3ImageActivity {
 
         PresignedGetObjectRequest getObjectRequest;
 
-        try(S3Presigner s3Presigner = S3Presigner.create()) {
+        try (S3Presigner s3Presigner = S3Presigner.create()) {
             GetObjectRequest objectRequest = GetObjectRequest.builder()
                     .bucket(IMAGE_BUCKET_NAME)
                     .key(imageKey)

@@ -14,6 +14,17 @@ public class CreateRouteRequest {
     private final String imageName;
     private final String imageType;
 
+    /**
+     *
+     * @param location Create route request metadata
+     * @param color Create route request metadata
+     * @param routeStatus Create route request metadata
+     * @param type Create route request metadata
+     * @param difficulty Create route request metadata
+     * @param imageKey Create route request metadata
+     * @param imageName Create route request metadata
+     * @param imageType Create route request metadata
+     */
     public CreateRouteRequest(String location, String color, String routeStatus, String type, String difficulty,
                               String imageKey, String imageName, String imageType) {
         this.location = location;

@@ -2,20 +2,20 @@ package com.nashss.se.ClimbingGymCompanionService.activity.results;
 
 public class GetS3PreSignedUrlResult {
 
-    private final String S3PreSignedUrl;
+    private final String s3PreSignedUrl;
 
     private GetS3PreSignedUrlResult(String imageKey) {
-        this.S3PreSignedUrl = imageKey;
+        this.s3PreSignedUrl = imageKey;
     }
 
     public String getS3PreSignedUrl() {
-        return S3PreSignedUrl;
+        return s3PreSignedUrl;
     }
 
     @Override
     public String toString() {
         return "GetS3PreSignedUrlResult{" +
-                "S3PreSignedUrl='" + S3PreSignedUrl + '\'' +
+                "s3PreSignedUrl='" + s3PreSignedUrl + '\'' +
                 '}';
     }
 
@@ -24,15 +24,15 @@ public class GetS3PreSignedUrlResult {
         return new Builder();
     }
     public static class Builder {
-        private String S3PreSignedUrl;
+        private String s3PreSignedUrl;
 
         public Builder withS3PreSignedUrl(String GetS3PreSignedUrlResult) {
-            this.S3PreSignedUrl = GetS3PreSignedUrlResult;
+            this.s3PreSignedUrl = GetS3PreSignedUrlResult;
             return this;
         }
 
         public GetS3PreSignedUrlResult build() {
-            return new GetS3PreSignedUrlResult(S3PreSignedUrl);
+            return new GetS3PreSignedUrlResult(s3PreSignedUrl);
         }
     }
 }

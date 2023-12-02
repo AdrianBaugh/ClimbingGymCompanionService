@@ -139,8 +139,12 @@ public class Route {
 
     @Override
     public boolean equals(Object other) {
-        if (this == other) return true;
-        if (other == null || getClass() != other.getClass()) return false;
+        if (this == other) {
+            return true;
+        }
+        if (other == null || getClass() != other.getClass()) {
+            return false;
+        }
         Route route = (Route) other;
         return Objects.equals(routeId, route.routeId) && Objects.equals(routeStatus, route.routeStatus) &&
                 Objects.equals(isArchived, route.isArchived) && Objects.equals(location, route.location) &&

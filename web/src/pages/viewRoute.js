@@ -43,20 +43,20 @@ class ViewRoute extends BindingClass {
 
         const openModalButton = document.getElementById('openModalBtn');
         const closeModalButton = document.getElementById('closeModalBtn');
-        const modal = document.getElementById('myModal');
+        const routeStatusModal = document.getElementById('routeStatusModal');
     
         openModalButton.addEventListener('click', () => {
-            modal.style.display = 'block';
+            routeStatusModal.style.display = 'block';
         });
     
         closeModalButton.addEventListener('click', () => {
-            modal.style.display = 'none';
+            routeStatusModal.style.display = 'none';
         });
     
         // Close the modal if the user clicks outside of it
         window.addEventListener('click', (event) => {
-            if (event.target === modal) {
-                modal.style.display = 'none';
+            if (event.target === routeStatusModal) {
+                routeStatusModal.style.display = 'none';
             }
         });
     }
@@ -71,8 +71,7 @@ class ViewRoute extends BindingClass {
         }
 
         // IMAGE 
-        this.displayRouteImage(route.imageKey);
-
+        this.displayRouteImage(route);
 
         document.getElementById('route-location').innerText = route.location;
         document.getElementById('route-status').innerText = route.routeStatus;
@@ -84,10 +83,14 @@ class ViewRoute extends BindingClass {
     
         const toggleButton = document.getElementById('toggleButton');
         const notesList = document.getElementById('notesList');
+        const noBetaMessage = document.getElementById("noBetaMessage");
+        const betaLabel = document.getElementById('betaLabel')
         if (route.notesList == null || route.notesList.length === 0) {
-            // need to update this to be the whole card of div instead of the button
-            toggleButton.innerHTML = 'No public beta yet!';
-        }
+            noBetaMessage.style.display = "block";
+          } else {
+            betaLabel.style.display = "block";
+            toggleButton.style.display = "block";
+          }
 
         toggleButton.addEventListener('click', function () {
             notesList.classList.toggle('hidden');
@@ -116,48 +119,18 @@ class ViewRoute extends BindingClass {
  * Function to display the image on screen or No image is null
  * @param {*} imageKey 
  */
-async displayRouteImage(imageKey) {
+async displayRouteImage(route) {
     const routeImageElement = document.getElementById('route-image');
-    if (imageKey != null) {
-        const imageUrl = await this.client.getPresignedS3Image(imageKey);
+    if (route.imageKey != null) {
+        const imageUrl = await this.client.getPresignedS3Image(route.imageKey);
         routeImageElement.src = imageUrl.s3PreSignedUrl;
         console.log("imageURL: " , imageUrl.s3PreSignedUrl)
-        routeImageElement.alt = imageName;
+        routeImageElement.alt = route.imageName;
     } else {
         routeImageElement.src = '';
-        routeImageElement.alt = 'No image yet';
+        routeImageElement.alt = 'No image :(';
     }
 }
-
-
-    // /**
-    //  * Function to convert a base64 string to a File object 
-    //  * 
-    //  * @param {*} base64String 
-    //  * @param {*} fileName 
-    //  * @param {*} fileType 
-    //  * @returns the file that has been converted
-    //  */
-    // convertBase64ToFile(base64String, fileName, fileType) {
-    //     console.log('Attempting to convert base64String to file');
-    //     const byteCharacters = atob(base64String);
-    //     const byteArrays = [];
-
-    //     for (let offset = 0; offset < byteCharacters.length; offset += 512) {
-    //         const slice = byteCharacters.slice(offset, offset + 512);
-
-    //         const byteNumbers = new Array(slice.length);
-    //         for (let i = 0; i < slice.length; i++) {
-    //             byteNumbers[i] = slice.charCodeAt(i);
-    //         }
-
-    //         const byteArray = new Uint8Array(byteNumbers);
-    //         byteArrays.push(byteArray);
-    //     }
-
-    //     const blob = new Blob(byteArrays, { type: fileType });
-    //     return new File([blob], fileName, { type: fileType });
-    // }
 
    /**
     * Function to populate the status dropdown
@@ -171,9 +144,9 @@ async displayRouteImage(imageKey) {
 
         const placeholderOption = document.createElement('option');
         placeholderOption.value = '';
-        placeholderOption.textContent = 'Select a status'; // Placeholder text
+        placeholderOption.textContent = 'Select a status'; 
         placeholderOption.disabled = true;
-        placeholderOption.selected = true; // Optional: Select this by default
+        placeholderOption.selected = true; 
         statusDropdown.appendChild(placeholderOption);
     
         statuses.forEach(status => {
@@ -183,7 +156,7 @@ async displayRouteImage(imageKey) {
         statusDropdown.appendChild(option);
         });
     }
-
+    
     redirectToViewRoute() {
         const route = this.dataStore.get('route');
         if (route != null) {
@@ -228,9 +201,7 @@ async displayRouteImage(imageKey) {
             modal.style.display = 'none';
             updateButton.innerText= origButtonText;
         }, 3000);
-
     }
-    
 }
 
 /**

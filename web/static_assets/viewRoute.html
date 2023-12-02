@@ -11,14 +11,14 @@
     <header class="header" id="header"></header>
     <div class="card">
         <label> Route Image: </label> 
-        <img id="route-image" alt="Route Image" />
+        <img id="route-image" alt="" />
     </div>
 
 
 <div class="card">
-    <p class="detail-header">Route: <span id="route-location">loading...</span></p>
+    <h3>Route Details</h3>
     <hr></hr>
-    <h3>Details</h3>
+    <p class="detail-header">Route: <span id="route-location">loading...</span></p>
     <p class="detail-header">Route Status: <span id="route-status">loading...</span></p>
     <p class="detail-header">Difficulty: <span id="difficulty">loading...</span></p>
     <p class="detail-header">Color: <span id="color">loading...</span></p>
@@ -27,29 +27,29 @@
     <p class="detail-header">Date route was set: <span id="date-created">loading...</span></p>
 
 
-<button class="button" id="openModalBtn">Update Route Status</button>
-<div id="myModal" class="modal">
+<button class="button" id="openModalBtn">UPDATE ROUTE STATUS</button>
+<div id="routeStatusModal" class="modal">
     <div class="modal-content">
         <span class="close" id="closeModalBtn">&times;</span>
                
         <select id="statusDropdown"></select>
-        <h4>Tip: Has this route been removed? set it to Archived. </h4>
+        <h5>Tip: Has this route been reset or removed? Set status to Archived. </h4>
         <div>
             <p class="hidden error" id="error-message"> </p>
-            <a href="#" class="button" id="updateStatus">Submit</a>
+            <a href="#" class="button" id="updateStatus">SUBMIT</a>
         </div>
     </div>
 </div>
 </div>
-    <div class="card" id="beta">
-        <label> WARNING SPOLIERS!</label> 
-
-        <button id="toggleButton" class="button">See Route Beta</button>
-        <table id="notesList" class="hidden"></table>
-    </div>
+<div class="card" id="beta">
+    <label id="betaLabel" style="display: none;"> WARNING SPOILERS!</label> 
+    <button id="toggleButton" class="button" style="display: none;">SEE ROUTE BETA</button>
+    <table id="notesList" class="hidden"></table>
+    <p id="noBetaMessage" style="display: none;">No public beta yet!</p>
+  </div>
 
     <div class="card">
-        <a href="createClimb.html" class="button">Record Climb!</a>
+        <a href="createClimb.html" class="button">RECORD CLIMB</a>
     </div>
 </body>
 
