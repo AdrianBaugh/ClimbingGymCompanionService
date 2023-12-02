@@ -135,7 +135,7 @@ class ViewClimb extends BindingClass {
             document.getElementById('type').innerText = climb.type;
             document.getElementById('rating').innerText = climb.thumbsUp !== null ?
                 (climb.thumbsUp ? 'Thumbs Up!' : 'Thumbs Down') :
-                'Not yet Rated!';
+                'Not Rated!';
             document.getElementById('dateTime-climbed').innerText = formatDateTime(climb.dateTimeClimbed);
             document.getElementById('notes').innerText = climb.notes;
         }
