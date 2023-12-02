@@ -51,6 +51,7 @@ public class CreateClimbActivity {
         LocalDateTime dateTime = LocalDateTime.now();
         String routeId = createClimbRequest.getRouteId();
         String notes = createClimbRequest.getNotes();
+        Boolean rating = createClimbRequest.getThumbsUp();
 
         Climb newClimb = new Climb();
         newClimb.setClimbId(IdUtils.generateClimbId(dateTime));
@@ -59,7 +60,11 @@ public class CreateClimbActivity {
         newClimb.setRouteId(routeId);
         newClimb.setClimbStatus(createClimbRequest.getClimbStatus());
         newClimb.setDateTimeClimbed(dateTime);
-        newClimb.setThumbsUp(createClimbRequest.getThumbsUp());
+
+        if (rating != null) {
+            updateRouteRating(rating, routeId);
+        }
+        newClimb.setThumbsUp(rating);
 
         if (notes != null) {
             updateRouteNotes(notes, routeId);
@@ -87,6 +92,41 @@ public class CreateClimbActivity {
         notes.add(newNote);
 
         route.setNotesList(notes);
+
+        routeDao.saveRoute(route);
+    }
+
+    /**
+     * Helper to update the rating for a particular route that was climbed.
+     * only climbs where the user recorded a thumbs up or thumbs down are counted
+     * non-rated climbs are ignored
+     * @param routeId the route to update the rating to.
+     */
+    private void updateRouteRating(Boolean currRating, String routeId) {
+        List<Climb> climbs = climbDao.getAllClimbsByRouteId(routeId);
+
+        int thumbsUpCount = 0;
+        double totalCount = 0;
+
+        if (currRating) {
+            thumbsUpCount++;
+        }
+        totalCount++;
+
+        for (Climb climb: climbs) {
+            Boolean rating = climb.isThumbsUp();
+            if (rating != null && rating) {
+                thumbsUpCount++;
+                totalCount++;
+            } else if (rating != null && !rating) {
+                totalCount++;
+            }
+        }
+
+        double roundedResult = Math.ceil((thumbsUpCount / totalCount) * 100);
+
+        Route route = routeDao.getRouteById(routeId);
+        route.setRating((int) roundedResult);
 
         routeDao.saveRoute(route);
     }

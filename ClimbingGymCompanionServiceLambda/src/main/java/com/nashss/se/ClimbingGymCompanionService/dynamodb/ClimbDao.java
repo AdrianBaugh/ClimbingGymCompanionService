@@ -103,4 +103,24 @@ public class ClimbDao {
             throw new ClimbNotFoundException(e);
         }
     }
+
+    /**
+     *
+     * @param routeId to get all climbs for
+     * @return list of climbs
+     */
+    public List<Climb> getAllClimbsByRouteId(String routeId) {
+        log.info("Entered climbDao getAllClimbsByRouteId() ");
+
+        Map<String, AttributeValue> expressionAttributeValues = new HashMap<>();
+        expressionAttributeValues.put(":routeIdValue", new AttributeValue().withS(routeId));
+
+        DynamoDBQueryExpression<Climb> queryExpression = new DynamoDBQueryExpression<Climb>()
+                .withIndexName("ClimbsByRouteIdIndex")
+                .withConsistentRead(false)
+                .withKeyConditionExpression("routeId = :routeIdValue")
+                .withExpressionAttributeValues(expressionAttributeValues);
+
+        return dynamoDbMapper.query(Climb.class, queryExpression);
+    }
 }
