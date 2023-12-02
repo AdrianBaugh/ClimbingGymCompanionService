@@ -30,7 +30,8 @@ public class ModelConverter {
                 .withDifficulty(route.getDifficulty())
                 .withDateCreated(route.getDateCreated())
                 .withRating(route.getRating())
-                .withPictureKey(route.getPictureKey())
+                .withImageName(route.getImageName())
+                .withImageKey(route.getImageKey())
                 .withNotesList(route.getNotesList())
                 .build();
 

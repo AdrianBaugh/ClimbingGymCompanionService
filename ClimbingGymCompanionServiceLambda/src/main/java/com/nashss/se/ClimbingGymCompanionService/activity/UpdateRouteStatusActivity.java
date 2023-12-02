@@ -52,6 +52,8 @@ public class UpdateRouteStatusActivity {
         route.setRouteStatus(newStatus);
         if (Objects.equals(newStatus, RouteStatus.ARCHIVED.name())) {
             route.setIsArchived(ArchivedStatus.TRUE.name());
+        } else {
+            route.setIsArchived(ArchivedStatus.FALSE.name());
         }
 
         route = routeDao.saveRoute(route);

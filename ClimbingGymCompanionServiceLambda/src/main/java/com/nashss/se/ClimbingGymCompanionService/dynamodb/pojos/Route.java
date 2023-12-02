@@ -24,7 +24,8 @@ public class Route {
     private String difficulty;
     private LocalDate dateCreated;
     private Integer rating;
-    private String pictureKey;
+    private String imageName;
+    private String imageKey;
     private List<String> notesList;
 
     @DynamoDBHashKey(attributeName = "routeId")
@@ -109,13 +110,22 @@ public class Route {
         this.rating = rating;
     }
 
-    @DynamoDBAttribute(attributeName = "pictureKey")
-    public String getPictureKey() {
-        return pictureKey;
+    @DynamoDBAttribute(attributeName = "imageName")
+    public String getImageName() {
+        return imageName;
     }
 
-    public void setPictureKey(String pictureKey) {
-        this.pictureKey = pictureKey;
+    public void setImageName(String imageName) {
+        this.imageName = imageName;
+    }
+
+    @DynamoDBAttribute(attributeName = "imageKey")
+    public String getImageKey() {
+        return imageKey;
+    }
+
+    public void setImageKey(String imageKey) {
+        this.imageKey = imageKey;
     }
 
     @DynamoDBAttribute(attributeName = "notesList")
@@ -140,14 +150,14 @@ public class Route {
                 Objects.equals(isArchived, route.isArchived) && Objects.equals(location, route.location) &&
                 Objects.equals(color, route.color) && Objects.equals(type, route.type) &&
                 Objects.equals(difficulty, route.difficulty) && Objects.equals(dateCreated, route.dateCreated) &&
-                Objects.equals(rating, route.rating) && Objects.equals(pictureKey, route.pictureKey) &&
-                Objects.equals(notesList, route.notesList);
+                Objects.equals(rating, route.rating) && Objects.equals(imageName, route.imageName) &&
+                Objects.equals(imageKey, route.imageKey) && Objects.equals(notesList, route.notesList);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(routeId, routeStatus, isArchived, location, color,
-                type, difficulty, dateCreated, rating, pictureKey, notesList);
+        return Objects.hash(routeId, routeStatus, isArchived, location, color, type,
+                difficulty, dateCreated, rating, imageName, imageKey, notesList);
     }
 
     @Override
@@ -162,7 +172,8 @@ public class Route {
                 ", difficulty='" + difficulty + '\'' +
                 ", dateCreated=" + dateCreated +
                 ", rating=" + rating +
-                ", pictureKey='" + pictureKey + '\'' +
+                ", imageName='" + imageName + '\'' +
+                ", imageKey='" + imageKey + '\'' +
                 ", notesList=" + notesList +
                 '}';
     }

@@ -162,11 +162,14 @@ Resources:
         Statement:
           -
             Effect: Allow
-            Action: 's3:GetObject'
+            Action: 
+              - 's3:*'
             Resource:
               - !Sub "arn:aws:s3:::${S3Bucket}/*"
             Principal:
-              AWS: !Sub "arn:aws:iam::cloudfront:user/CloudFront Origin Access Identity ${CloudFrontOriginAccessIdentity}"
+              AWS: 
+                - !Sub "arn:aws:iam::cloudfront:user/CloudFront Origin Access Identity ${CloudFrontOriginAccessIdentity}"
+                - !GetAtt AccessRole.Arn 
 
 
   #-----------------------------------------------------
@@ -179,6 +182,7 @@ Resources:
       ManagedPolicyArns:
         - 'arn:aws:iam::aws:policy/service-role/AWSLambdaRole'
         - 'arn:aws:iam::aws:policy/AWSLambdaExecute'
+        - 'arn:aws:iam::aws:policy/AmazonS3FullAccess'
       AssumeRolePolicyDocument:
         Version: "2012-10-17" 
         Statement: 
@@ -448,6 +452,50 @@ Resources:
           Type: Api
           Properties:
             Path: /climbsByRoute
+            Method: get
+            Auth:
+              Authorizer: 'NONE'
+              
+  GetS3PreSignedLambda:
+    Type: AWS::Serverless::Function
+    Properties:
+      Role: !GetAtt AccessRole.Arn
+      CodeUri: ClimbingGymCompanionServiceLambda
+      Handler: com.nashss.se.ClimbingGymCompanionService.lambda.GetS3PreSignedLambda::handleRequest
+      Runtime: java11
+      Architectures:
+        - x86_64
+      MemorySize: 512
+      Environment:
+        Variables:
+          JAVA_TOOL_OPTIONS: -XX:+TieredCompilation -XX:TieredStopAtLevel=1
+      Events:
+        ClimbingGymCompanionService:
+          Type: Api
+          Properties:
+            Path: /s3upload/{imageKey}
+            Method: get
+            Auth:
+              Authorizer: 'NONE'
+
+  GetS3PreSignedImageLambda:
+    Type: AWS::Serverless::Function
+    Properties:
+      Role: !GetAtt AccessRole.Arn
+      CodeUri: ClimbingGymCompanionServiceLambda
+      Handler: com.nashss.se.ClimbingGymCompanionService.lambda.GetS3PreSignedImageLambda::handleRequest
+      Runtime: java11
+      Architectures:
+        - x86_64
+      MemorySize: 512
+      Environment:
+        Variables:
+          JAVA_TOOL_OPTIONS: -XX:+TieredCompilation -XX:TieredStopAtLevel=1
+      Events:
+        ClimbingGymCompanionService:
+          Type: Api
+          Properties:
+            Path: /s3download/{imageKey}
             Method: get
             Auth:
               Authorizer: 'NONE'

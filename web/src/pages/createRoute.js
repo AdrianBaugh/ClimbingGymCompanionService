@@ -2,6 +2,7 @@ import ClimbClient from "../api/climbClient";
 import Header from "../components/header";
 import BindingClass from "../util/bindingClass";
 import DataStore from "../util/DataStore";
+import { generateImageKey } from "../util/idUtils";
 
 
 /**
@@ -153,18 +154,60 @@ class CreateRoute extends BindingClass {
         const type = document.getElementById('typeDropdown').value || null;
         const difficulty = document.getElementById('difficulty').value || null;
     
-        // image
+
+        // Handle the Image
         const routeImageInput = document.getElementById('route-image');
-        const routeImageFile = routeImageInput.files.length > 0 ? routeImageInput.files[0] : null;
-    
-        const route = await this.client.createRoute(location, color, routeStatus, type, difficulty, routeImageFile, (error) => {
+        let routeImageFile = null;
+        let imageKey = null;
+
+        try {
+            routeImageFile = routeImageInput.files.length > 0 ? routeImageInput.files[0] : null;
+            if (routeImageFile != null) {
+                console.log("Image is not null and starting getPresigned String")
+                // Create the key to use for the image in S3 also save to DDB
+                imageKey = generateImageKey(routeImageFile.name)
+                
+                const s3string = await this.client.getPresignedS3Url(imageKey);
+                console.log("presigned URL String: " , s3string)
+                const s3response = await this.uploadImageToS3(s3string.s3PreSignedUrl, routeImageFile);
+
+            }
+        } catch (error) {
+            createButton.innerText = origButtonText;
+            errorMessageDisplay.innerText = `Error: ${error.message}`;
+            errorMessageDisplay.classList.remove('hidden');
+            return;
+        }
+        // End Image Handling
+        console.log("Attempting to create the new route and send to backend")
+        const route = await this.client.createRoute(location, color, routeStatus, type, difficulty, routeImageFile, imageKey, (error) => {
         createButton.innerText = origButtonText;
         errorMessageDisplay.innerText = `Error: ${error.message}`;
         errorMessageDisplay.classList.remove('hidden');
         });
         this.dataStore.set('route', route);
     }
-  
+
+    async uploadImageToS3(s3PresignedUrl, routeImageFile) {
+
+        console.log("S3 URL BEFORE UPLOAD ATTEMPT: " , s3PresignedUrl)
+
+        if (routeImageFile == null) {
+          console.warn("No image available.");
+          return;
+        }
+        console.log("Attempting to upload to S3")
+      try {
+          const uploadResponse = await this.client.uploadToS3(s3PresignedUrl, routeImageFile);
+          // return uploadResponse;
+          console.log("Success uploading to S3", uploadResponse)
+
+          return uploadResponse;
+      } catch (error) {
+          console.error('Error uploading image to S3: ', error);
+      }
+    }
+    
     redirectToViewRoute() {
         const route = this.dataStore.get('route');
         if (route != null) {

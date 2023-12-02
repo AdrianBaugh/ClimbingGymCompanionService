@@ -10,16 +10,31 @@ public class CreateRouteRequest {
     private final String routeStatus;
     private final String type;
     private final String difficulty;
-    private final String pictureKey;
+    private final String imageKey;
+    private final String imageName;
+    private final String imageType;
 
-    private CreateRouteRequest(String location, String color, String routeStatus,
-                               String type, String difficulty, String pictureKey) {
+    /**
+     *
+     * @param location Create route request metadata
+     * @param color Create route request metadata
+     * @param routeStatus Create route request metadata
+     * @param type Create route request metadata
+     * @param difficulty Create route request metadata
+     * @param imageKey Create route request metadata
+     * @param imageName Create route request metadata
+     * @param imageType Create route request metadata
+     */
+    public CreateRouteRequest(String location, String color, String routeStatus, String type, String difficulty,
+                              String imageKey, String imageName, String imageType) {
         this.location = location;
         this.color = color;
         this.routeStatus = routeStatus;
         this.type = type;
         this.difficulty = difficulty;
-        this.pictureKey = pictureKey;
+        this.imageKey = imageKey;
+        this.imageName = imageName;
+        this.imageType = imageType;
     }
 
     public String getLocation() {
@@ -42,8 +57,16 @@ public class CreateRouteRequest {
         return difficulty;
     }
 
-    public String getPictureKey() {
-        return pictureKey;
+    public String getImageKey() {
+        return imageKey;
+    }
+
+    public String getImageName() {
+        return imageName;
+    }
+
+    public String getImageType() {
+        return imageType;
     }
 
     @Override
@@ -54,7 +77,9 @@ public class CreateRouteRequest {
                 ", routeStatus='" + routeStatus + '\'' +
                 ", type='" + type + '\'' +
                 ", difficulty='" + difficulty + '\'' +
-                ", pictureKey='" + pictureKey + '\'' +
+                ", imageKey='" + imageKey + '\'' +
+                ", imageName='" + imageName + '\'' +
+                ", imageType='" + imageType + '\'' +
                 '}';
     }
 
@@ -70,7 +95,9 @@ public class CreateRouteRequest {
         private String routeStatus;
         private String type;
         private String difficulty;
-        private String pictureKey;
+        private String imageKey;
+        private String imageName;
+        private String imageType;
 
         public Builder withLocation(String location) {
             this.location = location;
@@ -97,13 +124,22 @@ public class CreateRouteRequest {
             return this;
         }
 
-        public Builder withPictureKey(String pictureKey) {
-            this.pictureKey = pictureKey;
+        public Builder withImageKey(String imageKey) {
+            this.imageKey = imageKey;
+            return this;
+        }
+
+        public Builder withImageName(String imageName) {
+            this.imageName = imageName;
+            return this;
+        }
+        public Builder withImageType(String imageType) {
+            this.imageType = imageType;
             return this;
         }
 
         public CreateRouteRequest build() {
-            return new CreateRouteRequest(location, color, routeStatus, type, difficulty, pictureKey);
+            return new CreateRouteRequest(location, color, routeStatus, type, difficulty, imageKey, imageName, imageType);
         }
     }
 }

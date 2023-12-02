@@ -12,17 +12,23 @@ import { formatDateTime } from '../util/dateUtils';
 class ViewClimb extends BindingClass {
     constructor() {
         super();
-        this.bindClassMethods(['clientLoaded', 'mount', 'addClimbToPage', 'addClimbHistoryToPage',
-         'submit', 'statusDropdown', 'typeDropdown', 'redirectToViewClimb', 'redirectToViewClimbHistory', 'delete'], this);
+        this.bindClassMethods([
+            'clientLoaded',
+            'mount',
+            'addClimbToPage',
+            'addClimbHistoryToPage',
+            'submit',
+            'statusDropdown',
+            'typeDropdown',
+            'redirectToViewClimb',
+            'redirectToViewClimbHistory',
+            'delete'
+        ], this);
+
         this.dataStore = new DataStore();
         this.dataStore.addChangeListener(this.addClimbToPage);
         this.dataStore.addChangeListener(this.addClimbHistoryToPage);
         this.dataStore.addChangeListener(this.redirectToViewClimb);
-        
-
-        // *********************************************** //
-        // this.dataStore.addChangeListener(this.redirectToViewClimbHistory)
-
 
         this.header = new Header(this.dataStore);
         console.log("ViewClimb constructor");
@@ -47,6 +53,7 @@ class ViewClimb extends BindingClass {
             });
             document.getElementById('loginBtn').appendChild(loginButton);
         }
+
         const climbHistory = await this.client.viewUsersClimbHistory();
         this.dataStore.set('climbHistory', climbHistory);
         
@@ -103,34 +110,35 @@ class ViewClimb extends BindingClass {
             // If climbId is null, hide the corresponding HTML
             document.getElementById('climb-details').style.display = 'none';
             return;
+        } else {
+            console.log('Adding current climb details to page ', climb)
+            const route = this.dataStore.get('currentDisplayedRoute');
+            if (route == null ) {
+                return;
+            }
+        
+            document.getElementById('climb-details').style.display = 'block';
+        
+            const routeLocationElement = document.getElementById('route-location');
+            routeLocationElement.innerText = route.location;
+
+            routeLocationElement.style.cursor = 'pointer';
+            routeLocationElement.style.color = 'blue'; // Change the link color as needed
+            routeLocationElement.style.textDecoration = 'underline';
+
+            routeLocationElement.addEventListener('click', function () {
+                window.location.href = `/viewRoute.html?routeId=${route.routeId}`;
+            });
+
+            document.getElementById('difficulty').innerText = route.difficulty;
+            document.getElementById('climb-status').innerText = climb.climbStatus;
+            document.getElementById('type').innerText = climb.type;
+            document.getElementById('rating').innerText = climb.thumbsUp !== null ?
+                (climb.thumbsUp ? 'Thumbs Up!' : 'Thumbs Down') :
+                'Not yet Rated!';
+            document.getElementById('dateTime-climbed').innerText = formatDateTime(climb.dateTimeClimbed);
+            document.getElementById('notes').innerText = climb.notes;
         }
-        console.log('Adding currnet climb to page ', climb)
-        const route = this.dataStore.get('currentDisplayedRoute');
-        if (route == null ) {
-            return;
-        }
-    
-        document.getElementById('climb-details').style.display = 'block';
-    
-        const routeLocationElement = document.getElementById('route-location');
-        routeLocationElement.innerText = route.location;
-
-        routeLocationElement.style.cursor = 'pointer';
-        routeLocationElement.style.color = 'blue'; // Change the color as needed
-        routeLocationElement.style.textDecoration = 'underline';
-
-        routeLocationElement.addEventListener('click', function () {
-            window.location.href = `/viewRoute.html?routeId=${route.routeId}`;
-        });
-
-        document.getElementById('difficulty').innerText = route.difficulty;
-        document.getElementById('climb-status').innerText = climb.climbStatus;
-        document.getElementById('type').innerText = climb.type;
-        document.getElementById('rating').innerText = climb.thumbsUp !== null ?
-            (climb.thumbsUp ? 'Thumbs Up!' : 'Thumbs Down') :
-            'Not yet Rated!';
-        document.getElementById('dateTime-climbed').innerText = formatDateTime(climb.dateTimeClimbed);
-        document.getElementById('notes').innerText = climb.notes;
     }
 
     async addClimbHistoryToPage() {

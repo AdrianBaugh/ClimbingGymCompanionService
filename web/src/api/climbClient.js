@@ -4,11 +4,6 @@ import Authenticator from "./authenticator";
 
 /**
  * Client to call the ClimbingGymCompanionService.
- *
- * This could be a great place to explore Mixins. Currently the client is being loaded multiple times on each page,
- * which we could avoid using inheritance or Mixins.
- * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes#Mix-ins
- * https://javascript.info/mixins
   */
 export default class ClimbClient extends BindingClass {
     constructor(props = {}) {
@@ -187,15 +182,20 @@ export default class ClimbClient extends BindingClass {
     * @param errorCallback (Optional) A function to execute if the call fails.
     * @returns The route that has been created.
     */
-    async createRoute(location, color, routeStatus, type, difficulty, routeImageFile, errorCallback) {
+    async createRoute(location, color, routeStatus, type, difficulty, routeImageFile, imageKey, errorCallback) {
         try {
-            const token = await this.getTokenOrThrow("You must be logged in to create a route!");
 
-            const pictureKey = null;
-            if (routeImageFile != null) {
-            // The S3 object key for the uploaded image
-                pictureKey = `images/${location}-${Date.now()}-${routeImageFile.name}`;
+            const token = await this.getTokenOrThrow("You must be logged in to create a route!");
+    
+            let imageName = null;
+            let imageType = null;
+    
+            if (routeImageFile) {
+                // The S3 object info for the uploaded image
+                imageName = routeImageFile.name;
+                imageType = routeImageFile.type;
             }
+            console.log("Attempting to send the route to the backend with: ", location, color, routeStatus, type, difficulty, imageName, imageType, imageKey );  
             
             const response = await this.axiosClient.post(`routes`, {
                 location: location,
@@ -203,47 +203,79 @@ export default class ClimbClient extends BindingClass {
                 routeStatus: routeStatus,
                 type: type,
                 difficulty: difficulty,
-                pictureKey: pictureKey
+                imageName: imageName,
+                imageType: imageType,
+                imageKey: imageKey,
             }, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
             });
+            console.log("Success sending the route to the backend", response);  
             return response.data.route;
         } catch (error) {
-            this.handleError(error, errorCallback)
+            this.handleError(error, errorCallback);
+        }
+    }
+    /**
+     * 
+     * @param {*} imageKey 
+     * @param {*} errorCallback 
+     * @returns 
+     */
+    async getPresignedS3Url(imageKey, errorCallback) {
+        try {
+            const response = await this.axiosClient.get(`/s3upload/${imageKey}`, {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+            console.log("Response data:" , response.data)
+            return response.data;
+        } catch (error) {
+            this.handleError(error, errorCallback);
         }
     }
 
-    // async createRouteWithImage(location, color, routeStatus, type, difficulty, routeImageFile, errorCallback) {
-    //     try {
-    //       const token = await this.getTokenOrThrow("You must be logged in to create a route!");
-      
-    //       // Create a FormData object to handle the file and other form data
-    //       const formData = new FormData();
-    //       formData.append('location', location);
-    //       formData.append('color', color);
-    //       formData.append('routeStatus', routeStatus);
-    //       formData.append('type', type);
-    //       formData.append('difficulty', difficulty);
-    //       formData.append('routeImageFile', routeImageFile);
-      
-    //       // The S3 object key for the uploaded image
-    //       const pictureKey = `images/${location}-${Date.now()}-${routeImageFile.name}`;
-    //       formData.append('pictureKey', pictureKey);
-      
-    //       const response = await this.axiosClient.post(`routes`, formData, {
-    //         headers: {
-    //           Authorization: `Bearer ${token}`,
-    //           'Content-Type': 'multipart/form-data', // Set content type to multipart/form-data
-    //         },
-    //       });
-      
-    //       return response.data.route;
-    //     } catch (error) {
-    //       this.handleError(error, errorCallback);
-    //     }
-    //   }
+        /**
+     * 
+     * @param {*} imageKey 
+     * @param {*} errorCallback 
+     * @returns 
+     */
+        async getPresignedS3Image(imageKey, errorCallback) {
+            try {
+                const response = await this.axiosClient.get(`/s3download/${imageKey}`, {
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+                console.log("Response data:" , response.data)
+                return response.data;
+            } catch (error) {
+                this.handleError(error, errorCallback);
+            }
+        }
+    /**
+     * 
+     * @param {*} s3PresignedUrl 
+     * @param {*} routeImageFile 
+     * @param {*} errorCallback 
+     * @returns 
+     */
+    async uploadToS3(s3PresignedUrl, routeImageFile, errorCallback) {
+        try {
+            const response = await this.axiosClient.put(s3PresignedUrl, routeImageFile, {
+                headers: {
+                    'Content-Type': 'image/webp',
+                }
+            });
+            return response;
+        } catch (error) {
+            console.error(error)
+            this.handleError(error, errorCallback);
+        }
+    }
 
     /**
     * Update a new route by the current user.

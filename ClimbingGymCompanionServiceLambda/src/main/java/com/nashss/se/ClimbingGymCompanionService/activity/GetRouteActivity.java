@@ -41,6 +41,8 @@ public class GetRouteActivity {
         log.info("Received GetRouteRequest {}", getRouteRequest);
 
         Route route = routeDao.getRouteById(getRouteRequest.getRouteId());
+
+
         RouteModel routeModel = new ModelConverter().toRouteModel(route);
 
         return GetRouteResult.builder()

@@ -43,20 +43,20 @@ class ViewRoute extends BindingClass {
 
         const openModalButton = document.getElementById('openModalBtn');
         const closeModalButton = document.getElementById('closeModalBtn');
-        const modal = document.getElementById('myModal');
+        const routeStatusModal = document.getElementById('routeStatusModal');
     
         openModalButton.addEventListener('click', () => {
-            modal.style.display = 'block';
+            routeStatusModal.style.display = 'block';
         });
     
         closeModalButton.addEventListener('click', () => {
-            modal.style.display = 'none';
+            routeStatusModal.style.display = 'none';
         });
     
         // Close the modal if the user clicks outside of it
         window.addEventListener('click', (event) => {
-            if (event.target === modal) {
-                modal.style.display = 'none';
+            if (event.target === routeStatusModal) {
+                routeStatusModal.style.display = 'none';
             }
         });
     }
@@ -64,12 +64,15 @@ class ViewRoute extends BindingClass {
     /**
      * When the route is updated in the datastore, update the route metadata on the page.
      */
-    addRouteToPage() {
+    async addRouteToPage() {
         const route = this.dataStore.get('route');
         if (route == null) {
             return;
         }
-    
+
+        // IMAGE 
+        this.displayRouteImage(route);
+
         document.getElementById('route-location').innerText = route.location;
         document.getElementById('route-status').innerText = route.routeStatus;
         document.getElementById('type').innerText = route.type;
@@ -80,6 +83,14 @@ class ViewRoute extends BindingClass {
     
         const toggleButton = document.getElementById('toggleButton');
         const notesList = document.getElementById('notesList');
+        const noBetaMessage = document.getElementById("noBetaMessage");
+        const betaLabel = document.getElementById('betaLabel')
+        if (route.notesList == null || route.notesList.length === 0) {
+            noBetaMessage.style.display = "block";
+          } else {
+            betaLabel.style.display = "block";
+            toggleButton.style.display = "block";
+          }
 
         toggleButton.addEventListener('click', function () {
             notesList.classList.toggle('hidden');
@@ -90,7 +101,6 @@ class ViewRoute extends BindingClass {
         });
 
         function generateTableContent(notes, notesList) {
-            // add logic so that if notes is empty it displays a message to the user
             notesList.innerHTML = '';
 
             const tableHeaders = document.createElement('tr');
@@ -105,7 +115,26 @@ class ViewRoute extends BindingClass {
         }
     }
 
-        // Function to populate the status dropdown
+/**
+ * Function to display the image on screen or No image is null
+ * @param {*} imageKey 
+ */
+async displayRouteImage(route) {
+    const routeImageElement = document.getElementById('route-image');
+    if (route.imageKey != null) {
+        const imageUrl = await this.client.getPresignedS3Image(route.imageKey);
+        routeImageElement.src = imageUrl.s3PreSignedUrl;
+        console.log("imageURL: " , imageUrl.s3PreSignedUrl)
+        routeImageElement.alt = route.imageName;
+    } else {
+        routeImageElement.src = '';
+        routeImageElement.alt = 'No image :(';
+    }
+}
+
+   /**
+    * Function to populate the status dropdown
+    */
     statusDropdown() {
         const statusDropdown = document.getElementById('statusDropdown');
     
@@ -115,9 +144,9 @@ class ViewRoute extends BindingClass {
 
         const placeholderOption = document.createElement('option');
         placeholderOption.value = '';
-        placeholderOption.textContent = 'Select a status'; // Placeholder text
+        placeholderOption.textContent = 'Select a status'; 
         placeholderOption.disabled = true;
-        placeholderOption.selected = true; // Optional: Select this by default
+        placeholderOption.selected = true; 
         statusDropdown.appendChild(placeholderOption);
     
         statuses.forEach(status => {
@@ -127,7 +156,7 @@ class ViewRoute extends BindingClass {
         statusDropdown.appendChild(option);
         });
     }
-
+    
     redirectToViewRoute() {
         const route = this.dataStore.get('route');
         if (route != null) {
@@ -172,9 +201,7 @@ class ViewRoute extends BindingClass {
             modal.style.display = 'none';
             updateButton.innerText= origButtonText;
         }, 3000);
-
     }
-    
 }
 
 /**

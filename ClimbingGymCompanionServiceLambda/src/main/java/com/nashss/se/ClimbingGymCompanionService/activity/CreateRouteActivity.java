@@ -43,7 +43,7 @@ public class CreateRouteActivity {
      */
     public CreateRouteResult handleRequest(final CreateRouteRequest createRouteRequest) {
         log.info("received CreateRouteRequest {}", createRouteRequest);
-
+        System.out.println("received CreateRouteRequest " + createRouteRequest);
         String location = createRouteRequest.getLocation();
         String color = createRouteRequest.getColor();
         LocalDate date = LocalDate.now();
@@ -58,8 +58,11 @@ public class CreateRouteActivity {
         newRoute.setType(createRouteRequest.getType());
         newRoute.setDifficulty(createRouteRequest.getDifficulty());
         newRoute.setRating(null);
-        newRoute.setPictureKey(createRouteRequest.getPictureKey());
+        newRoute.setImageName(createRouteRequest.getImageName());
+        newRoute.setImageKey(createRouteRequest.getImageKey());
         newRoute.setNotesList(new ArrayList<>());
+
+
 
         routeDao.saveRoute(newRoute);
 

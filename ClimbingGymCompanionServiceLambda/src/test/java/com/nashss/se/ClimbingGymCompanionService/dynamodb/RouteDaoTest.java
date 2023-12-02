@@ -14,6 +14,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.Mock;
+import software.amazon.awssdk.services.s3.S3Client;
 
 import java.util.List;
 
@@ -39,6 +40,7 @@ public class RouteDaoTest {
     private ArgumentCaptor<DynamoDBQueryExpression<Route>> queryCaptor;
 
     private RouteDao routeDao;
+    private S3Client s3;
     @BeforeEach
     public void setup() {
         initMocks(this);
