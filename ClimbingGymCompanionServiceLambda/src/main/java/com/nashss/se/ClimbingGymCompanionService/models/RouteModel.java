@@ -1,6 +1,6 @@
 package com.nashss.se.ClimbingGymCompanionService.models;
 
-import java.time.LocalDate;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Objects;
 
@@ -12,7 +12,7 @@ public class RouteModel {
     private String color;
     private String type;
     private String difficulty;
-    private LocalDate dateCreated;
+    private ZonedDateTime dateCreated;
     private Integer rating;
     private String imageName;
     private String imageKey;
@@ -34,7 +34,7 @@ public class RouteModel {
      * @param notesList route model metadaata
      */
     public RouteModel(String routeId, String routeStatus, String isArchived, String location,
-                      String color, String type, String difficulty, LocalDate dateCreated,
+                      String color, String type, String difficulty, ZonedDateTime dateCreated,
                       Integer rating, String imageName, String imageKey,
                       List<String> notesList) {
         this.routeId = routeId;
@@ -79,7 +79,7 @@ public class RouteModel {
         return difficulty;
     }
 
-    public LocalDate getDateCreated() {
+    public ZonedDateTime getDateCreated() {
         return dateCreated;
     }
 
@@ -137,7 +137,7 @@ public class RouteModel {
         private String color;
         private String type;
         private String difficulty;
-        private LocalDate dateCreated;
+        private ZonedDateTime dateCreated;
         private Integer rating;
         private String imageName;
         private String imageKey;
@@ -178,7 +178,7 @@ public class RouteModel {
             return this;
         }
 
-        public Builder withDateCreated(LocalDate dateCreated) {
+        public Builder withDateCreated(ZonedDateTime dateCreated) {
             this.dateCreated = dateCreated ;
             return this;
         }

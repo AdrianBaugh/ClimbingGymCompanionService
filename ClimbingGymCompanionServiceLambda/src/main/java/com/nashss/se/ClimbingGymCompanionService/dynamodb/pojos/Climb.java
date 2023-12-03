@@ -1,6 +1,6 @@
 package com.nashss.se.ClimbingGymCompanionService.dynamodb.pojos;
 
-import com.nashss.se.ClimbingGymCompanionService.converters.LocalDateTimeConverter;
+import com.nashss.se.ClimbingGymCompanionService.converters.ZonedDateTimeConverter;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBAttribute;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBHashKey;
@@ -11,7 +11,7 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTypeConverted;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTyped;
 
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.Objects;
 
 /**
@@ -26,7 +26,7 @@ public class Climb {
     private String routeId;
     private String type;
     private String climbStatus;
-    private LocalDateTime dateTimeClimbed;
+    private ZonedDateTime dateTimeClimbed;
     private Boolean thumbsUp;
     private String notes;
     @DynamoDBRangeKey(attributeName = "climbId")
@@ -74,12 +74,12 @@ public class Climb {
         this.climbStatus = climbStatus;
     }
     @DynamoDBAttribute(attributeName = "dateTimeClimbed")
-    @DynamoDBTypeConverted(converter = LocalDateTimeConverter.class)
-    public LocalDateTime getDateTimeClimbed() {
+    @DynamoDBTypeConverted(converter = ZonedDateTimeConverter.class)
+    public ZonedDateTime getDateTimeClimbed() {
         return dateTimeClimbed;
     }
 
-    public void setDateTimeClimbed(LocalDateTime dateTimeClimbed) {
+    public void setDateTimeClimbed(ZonedDateTime dateTimeClimbed) {
         this.dateTimeClimbed = dateTimeClimbed;
     }
     @DynamoDBAttribute(attributeName = "thumbsUp")

@@ -1,6 +1,6 @@
 package com.nashss.se.ClimbingGymCompanionService.models;
 
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.Objects;
 
 public class ClimbModel {
@@ -9,7 +9,7 @@ public class ClimbModel {
     private String routeId;
     private String type;
     private String climbStatus;
-    private LocalDateTime dateTimeClimbed;
+    private ZonedDateTime dateTimeClimbed;
     private Boolean thumbsUp;
     private String notes;
 
@@ -25,7 +25,7 @@ public class ClimbModel {
      * @param notes the notes
      */
     public ClimbModel(String climbId, String userId, String routeId, String type,
-                      String climbStatus, LocalDateTime dateTimeClimbed, Boolean thumbsUp, String notes) {
+                      String climbStatus, ZonedDateTime dateTimeClimbed, Boolean thumbsUp, String notes) {
         this.climbId = climbId;
         this.userId = userId;
         this.routeId = routeId;
@@ -58,7 +58,7 @@ public class ClimbModel {
         return climbStatus;
     }
 
-    public LocalDateTime getDateTimeClimbed() {
+    public ZonedDateTime getDateTimeClimbed() {
         return dateTimeClimbed;
     }
 
@@ -104,7 +104,7 @@ public class ClimbModel {
         private String routeId;
         private String type;
         private String climbStatus;
-        private LocalDateTime dateTimeClimbed;
+        private ZonedDateTime dateTimeClimbed;
         private Boolean thumbsUp;
         private String notes;
 
@@ -133,7 +133,7 @@ public class ClimbModel {
             return this;
         }
 
-        public Builder withDateTimeClimbed(LocalDateTime dateTimeClimbed) {
+        public Builder withDateTimeClimbed(ZonedDateTime dateTimeClimbed) {
             this.dateTimeClimbed = dateTimeClimbed;
             return this;
         }

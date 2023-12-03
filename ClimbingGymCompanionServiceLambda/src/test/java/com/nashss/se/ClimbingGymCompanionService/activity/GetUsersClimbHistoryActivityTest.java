@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 
 import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,14 +36,14 @@ public class GetUsersClimbHistoryActivityTest {
         // GIVEN
         String expectedClimbId = "validClimbID";
         String expectedUserId = "validUserID";
-        LocalDateTime dateTime = LocalDateTime.now();
+        ZonedDateTime dateTime = ZonedDateTime.now();
         Climb climb = new Climb();
         climb.setClimbId(expectedClimbId);
         climb.setUserId(expectedUserId);
         climb.setDateTimeClimbed(dateTime);
 
         String expectedClimbId2 = "validClimbID2";
-        LocalDateTime dateTime2 = LocalDateTime.now();
+        ZonedDateTime dateTime2 = ZonedDateTime.now();
         Climb climb2 = new Climb();
         climb2.setClimbId(expectedClimbId2);
         climb2.setUserId(expectedUserId);
