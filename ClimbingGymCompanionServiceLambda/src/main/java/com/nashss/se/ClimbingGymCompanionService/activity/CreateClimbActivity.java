@@ -8,12 +8,13 @@ import com.nashss.se.ClimbingGymCompanionService.dynamodb.RouteDao;
 import com.nashss.se.ClimbingGymCompanionService.dynamodb.pojos.Climb;
 import com.nashss.se.ClimbingGymCompanionService.dynamodb.pojos.Route;
 import com.nashss.se.ClimbingGymCompanionService.models.ClimbModel;
+import com.nashss.se.ClimbingGymCompanionService.utils.DateTimeUtils;
 import com.nashss.se.ClimbingGymCompanionService.utils.IdUtils;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.List;
 import javax.inject.Inject;
 
@@ -48,7 +49,7 @@ public class CreateClimbActivity {
     public CreateClimbResult handleRequest(final CreateClimbRequest createClimbRequest) {
         log.info("received createClimbRequest {}", createClimbRequest);
 
-        LocalDateTime dateTime = LocalDateTime.now();
+        ZonedDateTime dateTime = DateTimeUtils.getDateTime();
         String routeId = createClimbRequest.getRouteId();
         String notes = createClimbRequest.getNotes();
         Boolean rating = createClimbRequest.getThumbsUp();

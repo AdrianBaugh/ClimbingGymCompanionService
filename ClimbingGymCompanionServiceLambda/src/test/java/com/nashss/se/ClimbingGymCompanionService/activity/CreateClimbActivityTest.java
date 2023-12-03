@@ -17,7 +17,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.openMocks;
 
-public class CreateClimbActivityTest {
+public class    CreateClimbActivityTest {
 
     @Mock
     private ClimbDao climbDao;

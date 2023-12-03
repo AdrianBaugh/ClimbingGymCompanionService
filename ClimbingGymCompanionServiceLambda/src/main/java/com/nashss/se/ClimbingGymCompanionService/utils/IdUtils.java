@@ -3,8 +3,7 @@ package com.nashss.se.ClimbingGymCompanionService.utils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.regex.Pattern;
 
 public class IdUtils {
@@ -36,7 +35,7 @@ public class IdUtils {
      * @param date route was created
      * @return the key and routeID
      */
-    public static String generateRouteId(String location, String color, LocalDate date) {
+    public static String generateRouteId(String location, String color, ZonedDateTime date) {
         return location + "::" + color + "::" + date;
     }
 
@@ -45,7 +44,7 @@ public class IdUtils {
      * @param dateTime of the climbId generation
      * @return the id
      */
-    public static String generateClimbId(LocalDateTime dateTime) {
+    public static String generateClimbId(ZonedDateTime dateTime) {
         return  RandomStringUtils.randomAlphanumeric(MAX_ID_LENGTH) + "::" + dateTime;
     }
 }

@@ -7,12 +7,13 @@ import com.nashss.se.ClimbingGymCompanionService.dynamodb.RouteDao;
 import com.nashss.se.ClimbingGymCompanionService.dynamodb.pojos.Route;
 import com.nashss.se.ClimbingGymCompanionService.enums.ArchivedStatus;
 import com.nashss.se.ClimbingGymCompanionService.models.RouteModel;
+import com.nashss.se.ClimbingGymCompanionService.utils.DateTimeUtils;
 import com.nashss.se.ClimbingGymCompanionService.utils.IdUtils;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.time.LocalDate;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import javax.inject.Inject;
 
@@ -43,10 +44,10 @@ public class CreateRouteActivity {
      */
     public CreateRouteResult handleRequest(final CreateRouteRequest createRouteRequest) {
         log.info("received CreateRouteRequest {}", createRouteRequest);
-        System.out.println("received CreateRouteRequest " + createRouteRequest);
+
+        ZonedDateTime date = DateTimeUtils.getDateTime();
         String location = createRouteRequest.getLocation();
         String color = createRouteRequest.getColor();
-        LocalDate date = LocalDate.now();
 
         Route newRoute = new Route();
         newRoute.setRouteId(IdUtils.generateRouteId(location, color, date));
@@ -61,8 +62,6 @@ public class CreateRouteActivity {
         newRoute.setImageName(createRouteRequest.getImageName());
         newRoute.setImageKey(createRouteRequest.getImageKey());
         newRoute.setNotesList(new ArrayList<>());
-
-
 
         routeDao.saveRoute(newRoute);
 

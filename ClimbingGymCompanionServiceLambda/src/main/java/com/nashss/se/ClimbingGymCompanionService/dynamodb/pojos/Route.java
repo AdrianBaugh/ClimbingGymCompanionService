@@ -1,6 +1,6 @@
 package com.nashss.se.ClimbingGymCompanionService.dynamodb.pojos;
 
-import com.nashss.se.ClimbingGymCompanionService.converters.LocalDateConverter;
+import com.nashss.se.ClimbingGymCompanionService.converters.ZonedDateTimeConverter;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBAttribute;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBHashKey;
@@ -8,7 +8,7 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBIndexHashKey;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTypeConverted;
 
-import java.time.LocalDate;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Objects;
 
@@ -22,7 +22,7 @@ public class Route {
     private String color;
     private String type;
     private String difficulty;
-    private LocalDate dateCreated;
+    private ZonedDateTime dateCreated;
     private Integer rating;
     private String imageName;
     private String imageKey;
@@ -92,12 +92,12 @@ public class Route {
     }
 
     @DynamoDBAttribute(attributeName = "dateCreated")
-    @DynamoDBTypeConverted(converter = LocalDateConverter.class)
-    public LocalDate getDateCreated() {
+    @DynamoDBTypeConverted(converter = ZonedDateTimeConverter.class)
+    public ZonedDateTime getDateCreated() {
         return dateCreated;
     }
 
-    public void setDateCreated(LocalDate dateCreated) {
+    public void setDateCreated(ZonedDateTime dateCreated) {
         this.dateCreated = dateCreated;
     }
 
