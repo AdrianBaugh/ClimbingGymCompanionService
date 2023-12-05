@@ -6,16 +6,15 @@ import com.nashss.se.ClimbingGymCompanionService.converters.ModelConverter;
 import com.nashss.se.ClimbingGymCompanionService.dynamodb.ClimbDao;
 import com.nashss.se.ClimbingGymCompanionService.dynamodb.RouteDao;
 import com.nashss.se.ClimbingGymCompanionService.dynamodb.pojos.Climb;
-import com.nashss.se.ClimbingGymCompanionService.dynamodb.pojos.Route;
 import com.nashss.se.ClimbingGymCompanionService.models.ClimbModel;
 import com.nashss.se.ClimbingGymCompanionService.utils.DateTimeUtils;
 import com.nashss.se.ClimbingGymCompanionService.utils.IdUtils;
+import com.nashss.se.ClimbingGymCompanionService.utils.UpdateRouteUtils;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.time.ZonedDateTime;
-import java.util.List;
 import javax.inject.Inject;
 
 public class CreateClimbActivity {
@@ -63,12 +62,12 @@ public class CreateClimbActivity {
         newClimb.setDateTimeClimbed(dateTime);
 
         if (rating != null) {
-            updateRouteRating(rating, routeId);
+            UpdateRouteUtils.updateRouteRating(climbDao, routeDao, rating, routeId);
         }
         newClimb.setThumbsUp(rating);
 
         if (notes != null) {
-            updateRouteNotes(notes, routeId);
+            UpdateRouteUtils.updateRouteNotes(routeDao, notes, routeId);
         }
         newClimb.setNotes(notes);
 
@@ -79,56 +78,5 @@ public class CreateClimbActivity {
         return CreateClimbResult.builder()
                 .withClimb(climbModel)
                 .build();
-    }
-
-    /**
-     * Helper to update the notes list for particular route that was climbed.
-     * @param newNote the newNote
-     * @param routeId the route to add the newNote to.
-     */
-    private void updateRouteNotes(String newNote, String routeId) {
-        Route route = routeDao.getRouteById(routeId);
-
-        List<String> notes = route.getNotesList();
-        notes.add(newNote);
-
-        route.setNotesList(notes);
-
-        routeDao.saveRoute(route);
-    }
-
-    /**
-     * Helper to update the rating for a particular route that was climbed.
-     * only climbs where the user recorded a thumbs up or thumbs down are counted
-     * non-rated climbs are ignored
-     * @param routeId the route to update the rating to.
-     */
-    private void updateRouteRating(Boolean currRating, String routeId) {
-        List<Climb> climbs = climbDao.getAllClimbsByRouteId(routeId);
-
-        int thumbsUpCount = 0;
-        double totalCount = 0;
-
-        if (currRating) {
-            thumbsUpCount++;
-        }
-        totalCount++;
-
-        for (Climb climb: climbs) {
-            Boolean rating = climb.isThumbsUp();
-            if (rating != null && rating) {
-                thumbsUpCount++;
-                totalCount++;
-            } else if (rating != null && !rating) {
-                totalCount++;
-            }
-        }
-
-        double roundedResult = Math.ceil((thumbsUpCount / totalCount) * 100);
-
-        Route route = routeDao.getRouteById(routeId);
-        route.setRating((int) roundedResult);
-
-        routeDao.saveRoute(route);
     }
 }

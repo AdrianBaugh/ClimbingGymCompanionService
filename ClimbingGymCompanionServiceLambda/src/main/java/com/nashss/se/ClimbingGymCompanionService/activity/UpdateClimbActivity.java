@@ -6,14 +6,13 @@ import com.nashss.se.ClimbingGymCompanionService.converters.ModelConverter;
 import com.nashss.se.ClimbingGymCompanionService.dynamodb.ClimbDao;
 import com.nashss.se.ClimbingGymCompanionService.dynamodb.RouteDao;
 import com.nashss.se.ClimbingGymCompanionService.dynamodb.pojos.Climb;
-import com.nashss.se.ClimbingGymCompanionService.dynamodb.pojos.Route;
 import com.nashss.se.ClimbingGymCompanionService.models.ClimbModel;
 import com.nashss.se.ClimbingGymCompanionService.models.RouteModel;
+import com.nashss.se.ClimbingGymCompanionService.utils.UpdateRouteUtils;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.List;
 import javax.inject.Inject;
 
 public class UpdateClimbActivity {
@@ -61,10 +60,11 @@ public class UpdateClimbActivity {
             climb.setClimbStatus(climbStatus);
         }
         if (thumbsUp != null) {
+            UpdateRouteUtils.updateRouteRating(climbDao, routeDao, thumbsUp, routeId);
             climb.setThumbsUp(thumbsUp);
         }
         if (notes != null) {
-            updateRouteNotes(notes, routeId);
+            UpdateRouteUtils.updateRouteNotes(routeDao, notes, routeId);
             climb.setNotes(notes);
         }
 
@@ -74,21 +74,5 @@ public class UpdateClimbActivity {
         return UpdateClimbResult.builder()
                 .withClimb(climbModel)
                 .build();
-    }
-
-    /**
-     * Helper to update the notes list for particular route that was climbed.
-     * @param newNote the newNote
-     * @param routeId the route to add the newNote to.
-     */
-    private void updateRouteNotes(String newNote, String routeId) {
-        Route route = routeDao.getRouteById(routeId);
-
-        List<String> notes = route.getNotesList();
-        notes.add(newNote);
-
-        route.setNotesList(notes);
-
-        routeDao.saveRoute(route);
     }
 }
