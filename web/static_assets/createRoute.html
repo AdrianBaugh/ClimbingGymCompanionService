@@ -5,13 +5,13 @@
     <script type="text/javascript" src="assets/createRoute.js"></script>
     <link rel="stylesheet" type="text/css" href="css/style.css">
     <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inconsolata">
+
 </head>
 
 <body class="background">
     <header class="header" id="header"></header>
-    <div class="card">
-        <label> Create route stuff will go here:</label> 
-
+    
         <div id="loginModal" class="modal">
             <div class="modal-content">
                 <p>You must be logged in to create a route!</p>
@@ -20,31 +20,33 @@
             <a href="/" class="button">Go Home</a>
             </div>
         </div>
-    </div>
 
     <div class="card">
         <h2>Add a new Route!</h2>
         
-            <div class="flex-item">
-              <img src="ROUTE_MAP_V3.jpg" alt="route map">
-            </div>
+            
+              <img src="ROUTE_MAP_V4.jpg" alt="route map">
+        
             <hr></hr>
         <form class="card-content" id="create-route-form">
             <p class="hidden error" id="error-message"> </p>
             <p class="form-field">
                 <label>Please enter the Route's location:</label>
-                <input type="text" required class="validated-field" id="location" placeholder="ex. 25, North-Boulder-Right"
-                    autofocus>
-                    
+                <input type="text" required class="validated-field" id="location" placeholder="ex. 25, North-Boulder-Right" autofocus>
+              
                 <label for="colorDropdown">Color:</label>
-                <select id="colorDropdown"></select>
+                <select id="colorDropdown" class="custom-dropdown"></select>
+              
                 <label for="statusDropdown">Status:</label>
-                <select id="statusDropdown"></select>
+                <select id="statusDropdown" class="custom-dropdown"></select>
+              
                 <label for="typeDropdown">Type:</label>
-                <select id="typeDropdown"></select>
+                <select id="typeDropdown" class="custom-dropdown"></select>
+              
                 <label>Please enter the difficulty:</label>
                 <input type="text" id="difficulty" placeholder="ex. v3-v4, 5.10+">
-            </p>
+              </p>
+              
             <p class="form-field">
                 <label>Optional: Upload a picture of the Route:</label>
                 <input type="file" accept="image/*" capture="camera" id="route-image" name="routeImage">

@@ -139,7 +139,7 @@ class CreateRoute extends BindingClass {
         const location = document.getElementById('location').value;
         if (location === '' ) {
             createButton.innerText = origButtonText;
-            errorMessageDisplay.innerText = 'Please enter a route.';
+            errorMessageDisplay.innerText = 'Please select a route.';
             errorMessageDisplay.classList.remove('hidden');
             return;
         }

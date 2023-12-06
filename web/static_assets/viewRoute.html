@@ -5,13 +5,16 @@
     <script type="text/javascript" src="assets/viewRoute.js"></script>
     <link rel="stylesheet" type="text/css" href="css/style.css">
     <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inconsolata">
+
 </head>
 
 <body class="background">
     <header class="header" id="header"></header>
-    <div class="card">
-        <label> Route Image: </label> 
+    <div class="card" id="image">
+        <label id="imageLabel" style="display: none;"> Route Image: </label> 
         <img id="route-image" alt="" />
+        <p id="noImageMessage" style="display: none;">No Image Taken!</p>
     </div>
 
 

@@ -124,13 +124,19 @@ async displayRouteImage(route) {
     if (route.imageKey != null) {
         const imageUrl = await this.client.getPresignedS3Image(route.imageKey);
         routeImageElement.src = imageUrl.s3PreSignedUrl;
-        console.log("imageURL: " , imageUrl.s3PreSignedUrl)
+        console.log("imageURL: ", imageUrl.s3PreSignedUrl);
         routeImageElement.alt = route.imageName;
+        const imageLabel = document.getElementById("imageLabel");
+        imageLabel.style.display = "block";
     } else {
-        routeImageElement.src = '';
-        routeImageElement.alt = 'No image :(';
+        const imageCard = document.getElementById('image');
+        const noImageMessage = document.getElementById("noImageMessage");
+        noImageMessage.style.display = "block";
+        routeImageElement.style.display = "none"; // Hide only the image, not the entire card
     }
 }
+
+
 
    /**
     * Function to populate the status dropdown

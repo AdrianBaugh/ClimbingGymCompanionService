@@ -32,15 +32,26 @@ export default class Header extends BindingClass {
     }
 
     createSiteTitle() {
+        const logo = document.createElement('img');
+        logo.src = 'Project climb.png';
+        logo.width = 130;
+        logo.height = 65;
+       
+        const logoContainer = document.createElement('div');
+    
         const homeButton = document.createElement('a');
-        homeButton.classList.add('header_home');
-        homeButton.href = 'index.html';
-        homeButton.innerText = 'ClimbingGymCompanion';
+        homeButton.classList.add('header-home');
+        homeButton.href = '/';
 
         const siteTitle = document.createElement('div');
-        siteTitle.classList.add('site-title');
-        siteTitle.appendChild(homeButton);
+        const siteLink = document.createElement('a');
+        siteLink.href = '/';
 
+    
+        logoContainer.appendChild(logo);
+        siteLink.appendChild(logoContainer);
+        siteTitle.appendChild(siteLink);
+        siteTitle.appendChild(homeButton);
         return siteTitle;
     }
 
