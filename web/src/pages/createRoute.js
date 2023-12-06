@@ -3,6 +3,11 @@ import Header from "../components/header";
 import BindingClass from "../util/bindingClass";
 import DataStore from "../util/DataStore";
 import { generateImageKey } from "../util/idUtils";
+import routeColors from "../enums/routeColors";
+import routeStatus from "../enums/routeStatus";
+import routeTypes from "../enums/routeTypes";
+import routeLocations from "../enums/routeLocations";
+import routeDifficulties from "../enums/routeDifficulties";
 
 
 /**
@@ -11,7 +16,9 @@ import { generateImageKey } from "../util/idUtils";
 class CreateRoute extends BindingClass {
     constructor() {
         super();
-        this.bindClassMethods(['clientLoaded', 'mount', 'submit', 'redirectToViewRoute', 'colorsDropdown', 'statusDropdown', 'typeDropdown'], this);
+        this.bindClassMethods(['clientLoaded', 'mount', 'submit',
+         'redirectToViewRoute', 'locationDropdown', 'colorsDropdown',
+          'statusDropdown', 'typeDropdown', 'difficultyDropdown'], this);
         this.dataStore = new DataStore();
         this.dataStore.addChangeListener(this.redirectToViewRoute);
         this.header = new Header(this.dataStore);
@@ -46,36 +53,58 @@ class CreateRoute extends BindingClass {
 
         this.header.addHeaderToPage();
         this.client = new ClimbClient();
+        this.locationDropdown();
         this.colorsDropdown(); 
         this.statusDropdown();
         this.typeDropdown();
+        this.difficultyDropdown();
         this.clientLoaded();
+    }
+
+    // Function to populate the locations dropdown
+    locationDropdown() {
+        const locationDropdown = document.getElementById('locationDropdown');
+
+        locationDropdown.innerHTML = '';
+
+        const placeholderOption = document.createElement('option');
+        placeholderOption.value = '';
+        placeholderOption.textContent = 'Select a location'; // Placeholder text
+        placeholderOption.disabled = true;
+        placeholderOption.selected = true; 
+        locationDropdown.appendChild(placeholderOption);
+
+        for (const location in routeLocations) {
+            if (routeLocations.hasOwnProperty(location)) {
+            const option = document.createElement('option');
+            option.value = location;
+            option.textContent = routeLocations[location];
+            locationDropdown.appendChild(option);
+            }
+        }
     }
 
     // Function to populate the colors dropdown
     colorsDropdown() {
         const colorsDropdown = document.getElementById('colorDropdown');
-    
-        // Clear existing options
+
         colorsDropdown.innerHTML = '';
-    
-        // Define the colors array
-        const colors = ['BLACK', 'WHITE', 'RED', 'BLUE', 'GREEN', 'PINK', 'YELLOW', 'PURPLE', 'ORANGE', 'BROWN'];
-    
+
         const placeholderOption = document.createElement('option');
         placeholderOption.value = '';
         placeholderOption.textContent = 'Select a color'; // Placeholder text
         placeholderOption.disabled = true;
-        placeholderOption.selected = true; // Optional: Select this by default
+        placeholderOption.selected = true; 
         colorsDropdown.appendChild(placeholderOption);
-        
-        // Add options based on the colors array
-        colors.forEach(color => {
-        const option = document.createElement('option');
-        option.value = color;
-        option.textContent = color;
-        colorsDropdown.appendChild(option);
-        });
+
+        for (const color in routeColors) {
+            if (routeColors.hasOwnProperty(color)) {
+            const option = document.createElement('option');
+            option.value = color;
+            option.textContent = routeColors[color];
+            colorsDropdown.appendChild(option);
+            }
+        }
     }
 
     // Function to populate the status dropdown
@@ -84,44 +113,67 @@ class CreateRoute extends BindingClass {
     
         statusDropdown.innerHTML = '';
     
-        const statuses = ['ACTIVE', 'TOURNAMENT_ONLY', ];
-
         const placeholderOption = document.createElement('option');
         placeholderOption.value = '';
         placeholderOption.textContent = 'Select a status'; // Placeholder text
         placeholderOption.disabled = true;
-        placeholderOption.selected = true; // Optional: Select this by default
+        placeholderOption.selected = true; 
         statusDropdown.appendChild(placeholderOption);
     
-        statuses.forEach(status => {
-        const option = document.createElement('option');
-        option.value = status;
-        option.textContent = status;
-        statusDropdown.appendChild(option);
-        });
+        for (const status in routeStatus) {
+            if (routeStatus.hasOwnProperty(status)) {
+                const option = document.createElement('option');
+                option.value = status;
+                option.textContent = routeStatus[status];
+                statusDropdown.appendChild(option);
+            }
+        }
     }
 
-    // Function to populate the status dropdown
+    // Function to populate the type dropdown
     typeDropdown() {
         const typeDropdown = document.getElementById('typeDropdown');
     
         typeDropdown.innerHTML = '';
     
-        const types = ['BOULDER', 'TOP_ROPE', 'LEAD_CLIMB', 'AUTO_BELAY'];
-
         const placeholderOption = document.createElement('option');
         placeholderOption.value = '';
         placeholderOption.textContent = 'Select a type'; // Placeholder text
         placeholderOption.disabled = true;
-        placeholderOption.selected = true; // Optional: Select this by default
+        placeholderOption.selected = true; 
         typeDropdown.appendChild(placeholderOption);
     
-        types.forEach(type => {
-        const option = document.createElement('option');
-        option.value = type;
-        option.textContent = type;
-        typeDropdown.appendChild(option);
-        });
+        for (const type in routeTypes) {
+            if (routeTypes.hasOwnProperty(type)) {
+                const option = document.createElement('option');
+                option.value = type;
+                option.textContent = routeTypes[type];
+                typeDropdown.appendChild(option);
+            }
+        }
+    }
+
+    // Function to populate the difficulty dropdown
+    difficultyDropdown() {
+        const difficultyDropdown = document.getElementById('difficultyDropdown');
+    
+        difficultyDropdown.innerHTML = '';
+    
+        const placeholderOption = document.createElement('option');
+        placeholderOption.value = '';
+        placeholderOption.textContent = 'Select a difficulty'; // Placeholder text
+        placeholderOption.disabled = true;
+        placeholderOption.selected = true; 
+        difficultyDropdown.appendChild(placeholderOption);
+    
+        for (const difficulty in routeDifficulties) {
+            if (routeDifficulties.hasOwnProperty(difficulty)) {
+                const option = document.createElement('option');
+                option.value = difficulty;
+                option.textContent = routeDifficulties[difficulty];
+                difficultyDropdown.appendChild(option);
+            }
+        }
     }
     
     async submit(evt) {
@@ -136,10 +188,10 @@ class CreateRoute extends BindingClass {
         const origButtonText = createButton.innerText;
         createButton.innerText = 'Loading. . .';
     
-        const location = document.getElementById('location').value;
+        const location = document.getElementById('locationDropdown').value;
         if (location === '' ) {
             createButton.innerText = origButtonText;
-            errorMessageDisplay.innerText = 'Please enter a route.';
+            errorMessageDisplay.innerText = 'Please select a route.';
             errorMessageDisplay.classList.remove('hidden');
             return;
         }
@@ -152,7 +204,7 @@ class CreateRoute extends BindingClass {
         }
         const routeStatus = document.getElementById('statusDropdown').value || null;
         const type = document.getElementById('typeDropdown').value || null;
-        const difficulty = document.getElementById('difficulty').value || null;
+        const difficulty = document.getElementById('difficultyDropdown').value || null;
     
 
         // Handle the Image

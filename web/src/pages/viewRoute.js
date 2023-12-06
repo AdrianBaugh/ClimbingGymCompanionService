@@ -3,6 +3,12 @@ import Header from "../components/header";
 import BindingClass from "../util/bindingClass";
 import DataStore from "../util/DataStore";
 import { formatDate } from '../util/dateUtils';
+import routeStatus from "../enums/routeStatus";
+import routeTypes from "../enums/routeTypes";
+import routeLocations from "../enums/routeLocations";
+import routeDifficulties from "../enums/routeDifficulties";
+import { getValueFromEnum } from '../util/enumUtils.js';
+
 
 
 /**
@@ -61,6 +67,8 @@ class ViewRoute extends BindingClass {
         });
     }
 
+
+
     /**
      * When the route is updated in the datastore, update the route metadata on the page.
      */
@@ -73,10 +81,10 @@ class ViewRoute extends BindingClass {
         // IMAGE 
         this.displayRouteImage(route);
 
-        document.getElementById('route-location').innerText = route.location;
-        document.getElementById('route-status').innerText = route.routeStatus;
-        document.getElementById('type').innerText = route.type;
-        document.getElementById('difficulty').innerText = route.difficulty;
+        document.getElementById('route-location').innerText = getValueFromEnum(route.location, routeLocations);
+        document.getElementById('route-status').innerText = getValueFromEnum(route.routeStatus, routeStatus);
+        document.getElementById('type').innerText = getValueFromEnum(route.type, routeTypes);
+        document.getElementById('difficulty').innerText = getValueFromEnum(route.difficulty, routeDifficulties);
         document.getElementById('color').innerText = route.color;
         document.getElementById('rating').innerText = route.rating !== null ? route.rating : 'Not yet Rated!';
         document.getElementById('date-created').innerText = formatDate(route.dateCreated);
@@ -124,38 +132,44 @@ async displayRouteImage(route) {
     if (route.imageKey != null) {
         const imageUrl = await this.client.getPresignedS3Image(route.imageKey);
         routeImageElement.src = imageUrl.s3PreSignedUrl;
-        console.log("imageURL: " , imageUrl.s3PreSignedUrl)
+        console.log("imageURL: ", imageUrl.s3PreSignedUrl);
         routeImageElement.alt = route.imageName;
+        const imageLabel = document.getElementById("imageLabel");
+        imageLabel.style.display = "block";
     } else {
-        routeImageElement.src = '';
-        routeImageElement.alt = 'No image :(';
+        const imageCard = document.getElementById('image');
+        const noImageMessage = document.getElementById("noImageMessage");
+        noImageMessage.style.display = "block";
+        routeImageElement.style.display = "none"; // Hide only the image, not the entire card
     }
 }
+
+
 
    /**
     * Function to populate the status dropdown
     */
-    statusDropdown() {
-        const statusDropdown = document.getElementById('statusDropdown');
-    
-        statusDropdown.innerHTML = '';
-    
-        const statuses = ['ARCHIVED', 'TOURNAMENT_ONLY', 'CLOSED_MAINTENANCE', 'ACTIVE' ];
+   statusDropdown() {
+    const statusDropdown = document.getElementById('statusDropdown');
 
-        const placeholderOption = document.createElement('option');
-        placeholderOption.value = '';
-        placeholderOption.textContent = 'Select a status'; 
-        placeholderOption.disabled = true;
-        placeholderOption.selected = true; 
-        statusDropdown.appendChild(placeholderOption);
-    
-        statuses.forEach(status => {
-        const option = document.createElement('option');
-        option.value = status;
-        option.textContent = status;
-        statusDropdown.appendChild(option);
-        });
+    statusDropdown.innerHTML = '';
+
+    const placeholderOption = document.createElement('option');
+    placeholderOption.value = '';
+    placeholderOption.textContent = 'Select a status'; // Placeholder text
+    placeholderOption.disabled = true;
+    placeholderOption.selected = true; 
+    statusDropdown.appendChild(placeholderOption);
+
+    for (const status in routeStatus) {
+        if (routeStatus.hasOwnProperty(status)) {
+            const option = document.createElement('option');
+            option.value = status;
+            option.textContent = routeStatus[status];
+            statusDropdown.appendChild(option);
+        }
     }
+}
     
     redirectToViewRoute() {
         const route = this.dataStore.get('route');

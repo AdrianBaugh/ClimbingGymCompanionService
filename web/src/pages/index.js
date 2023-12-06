@@ -3,7 +3,10 @@ import Header from '../components/header';
 import BindingClass from "../util/bindingClass";
 import DataStore from '../util/DataStore';
 import { formatDate } from '../util/dateUtils';
-
+import routeStatus from "../enums/routeStatus";
+import routeLocations from "../enums/routeLocations";
+import routeDifficulties from "../enums/routeDifficulties";
+import { getValueFromEnum } from '../util/enumUtils.js';
 
 
 class Homepage extends BindingClass {
@@ -44,9 +47,9 @@ class Homepage extends BindingClass {
         for (const route of routes) {
             routeHtml += `
             <tr onclick="window.location='/viewRoute.html?routeId=${route.routeId}'">
-                <td>${route.location}</td>
-                <td>${route.difficulty}</td>
-                <td>${route.routeStatus}</td>
+                <td>${getValueFromEnum(route.location, routeLocations)}</td>
+                <td>${getValueFromEnum(route.difficulty, routeDifficulties)}</td>
+                <td>${getValueFromEnum(route.routeStatus, routeStatus)}</td>
                 <td>${formatDate(route.dateCreated)}</td>
                 <td>${route.rating !== null ? route.rating : 'Not yet Rated!'}</td>
             </tr>
