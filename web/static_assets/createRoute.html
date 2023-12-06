@@ -5,7 +5,6 @@
     <script type="text/javascript" src="assets/createRoute.js"></script>
     <link rel="stylesheet" type="text/css" href="css/style.css">
     <link rel="icon" type="image/x-icon" href="favicon.ico">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inconsolata">
 
 </head>
 
@@ -28,30 +27,40 @@
               <img src="ROUTE_MAP_V4.jpg" alt="route map">
         
             <hr></hr>
-        <form class="card-content" id="create-route-form">
-            <p class="hidden error" id="error-message"> </p>
-            <p class="form-field">
-                <label>Please enter the Route's location:</label>
-                <input type="text" required class="validated-field" id="location" placeholder="ex. 25, North-Boulder-Right" autofocus>
+            <form class="card-content" id="create-route-form">
+                <p class="hidden error" id="error-message"></p>
               
-                <label for="colorDropdown">Color:</label>
-                <select id="colorDropdown" class="custom-dropdown"></select>
+                <div class="form-field">
+                  <label for="locationDropdown">Location:</label>
+                    <select id="locationDropdown" class="custom-dropdown"></select>
+                  </div>
               
-                <label for="statusDropdown">Status:</label>
-                <select id="statusDropdown" class="custom-dropdown"></select>
+                <div class="form-field">
+                  <label for="colorDropdown">Color:</label>
+                    <select id="colorDropdown" class="custom-dropdown"></select>
+                  </div>
               
-                <label for="typeDropdown">Type:</label>
-                <select id="typeDropdown" class="custom-dropdown"></select>
+                <div class="form-field">
+                  <label for="statusDropdown">Status:</label>
+                    <select id="statusDropdown" class="custom-dropdown"></select>
+                </div>
               
-                <label>Please enter the difficulty:</label>
-                <input type="text" id="difficulty" placeholder="ex. v3-v4, 5.10+">
-              </p>
+                <div class="form-field">
+                  <label for="typeDropdown">Type:</label>
+                    <select id="typeDropdown" class="custom-dropdown"></select>
+                </div>
+
+                <div class="form-field">
+                    <label for="difficultyDropdown">Difficulty:</label>
+                      <select id="difficultyDropdown" class="custom-dropdown"></select>
+                  </div>
+                          
+                <div class="form-field">
+                  <label>Optional: Upload a picture of the Route:</label>
+                  <input type="file" accept="image/*" capture="camera" id="route-image" name="routeImage">
+                </div>
+              </form>
               
-            <p class="form-field">
-                <label>Optional: Upload a picture of the Route:</label>
-                <input type="file" accept="image/*" capture="camera" id="route-image" name="routeImage">
-            </p>   
-        </form>
             <hr></hr>
             <div>
                 <a href="#" class="button" id="create">Submit</a>

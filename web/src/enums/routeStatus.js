@@ -1,0 +1,10 @@
+// routeStatus.js
+
+const routeStatus = {
+ACTIVE: 'ACTIVE',
+ARCHIVED: 'ARCHIVED',
+CLOSED_MAINTENANCE: 'CLOSED FOR MAINTENANCE',
+TOURNAMENT_ONLY: 'TOURNAMENT USE ONLY'
+};
+
+export default routeStatus;

@@ -3,7 +3,12 @@ import Header from "../components/header";
 import BindingClass from "../util/bindingClass";
 import DataStore from "../util/DataStore";
 import { formatDateTime } from '../util/dateUtils';
-
+import climbStatus from "../enums/climbStatus";
+import routeStatus from "../enums/routeStatus";
+import routeTypes from "../enums/routeTypes";
+import routeLocations from "../enums/routeLocations";
+import routeDifficulties from "../enums/routeDifficulties";
+import { getValueFromEnum } from '../util/enumUtils.js';
 
 
 /**
@@ -120,7 +125,7 @@ class ViewClimb extends BindingClass {
             document.getElementById('climb-details').style.display = 'block';
         
             const routeLocationElement = document.getElementById('route-location');
-            routeLocationElement.innerText = route.location;
+            routeLocationElement.innerText = getValueFromEnum(route.location, routeLocations);
 
             routeLocationElement.style.cursor = 'pointer';
             routeLocationElement.style.color = 'blue'; // Change the link color as needed
@@ -130,14 +135,14 @@ class ViewClimb extends BindingClass {
                 window.location.href = `/viewRoute.html?routeId=${route.routeId}`;
             });
 
-            document.getElementById('difficulty').innerText = route.difficulty;
-            document.getElementById('climb-status').innerText = climb.climbStatus;
-            document.getElementById('type').innerText = climb.type;
+            document.getElementById('difficulty').innerText = getValueFromEnum(route.difficulty, routeDifficulties);
+            document.getElementById('climb-status').innerText = getValueFromEnum(climb.climbStatus, climbStatus);
+            document.getElementById('type').innerText = getValueFromEnum(climb.type, routeTypes);
             document.getElementById('rating').innerText = climb.thumbsUp !== null ?
                 (climb.thumbsUp ? 'Thumbs Up!' : 'Thumbs Down') :
                 'Not Rated!';
             document.getElementById('dateTime-climbed').innerText = formatDateTime(climb.dateTimeClimbed);
-            document.getElementById('notes').innerText = climb.notes;
+            document.getElementById('notes').innerText = (climb.notes === null) ? "No beta recorded." : climb.notes;
         }
     }
 
@@ -161,11 +166,11 @@ class ViewClimb extends BindingClass {
         for (const climb of climbHistory) {
             let routeId = climb.routeId;
             let location = routeId.split("::")[0];
-    
+            
             climbHtml += `
             <tr onclick="window.location='/viewClimbs.html?climbId=${climb.climbId}'">
-                <td>${location}</td>
-                <td>${climb.climbStatus}</td>
+                <td>${getValueFromEnum(location, routeLocations)}</td>
+                <td>${getValueFromEnum(climb.climbStatus, climbStatus)}</td>
                 <td>${formatDateTime(climb.dateTimeClimbed)}</td>
             </tr>
             `;
@@ -175,51 +180,50 @@ class ViewClimb extends BindingClass {
         climbHistoryElement.innerHTML = textHtml + climbHtml;
     }
 
-
     // Function to populate the status dropdown
     statusDropdown() {
         const statusDropdown = document.getElementById('statusDropdown');
     
         statusDropdown.innerHTML = '';
     
-        const statuses = ['COMPLETED_FLASHED', 'COMPLETED_SENT', 'COMPLETED_IN_STAGES', 'PROJECTING', 'WANT_TO_CLIMB', 'TOO_DIFFICULT' ];
-
         const placeholderOption = document.createElement('option');
         placeholderOption.value = '';
         placeholderOption.textContent = 'Select a status'; // Placeholder text
         placeholderOption.disabled = true;
-        placeholderOption.selected = true; // Optional: Select this by default
+        placeholderOption.selected = true; 
         statusDropdown.appendChild(placeholderOption);
     
-        statuses.forEach(status => {
-        const option = document.createElement('option');
-        option.value = status;
-        option.textContent = status;
-        statusDropdown.appendChild(option);
-        });
+        for (const status in routeStatus) {
+            if (routeStatus.hasOwnProperty(status)) {
+                const option = document.createElement('option');
+                option.value = status;
+                option.textContent = routeStatus[status];
+                statusDropdown.appendChild(option);
+            }
+        }
     }
 
-    // Function to populate the status dropdown
+    // Function to populate the type dropdown
     typeDropdown() {
         const typeDropdown = document.getElementById('typeDropdown');
     
         typeDropdown.innerHTML = '';
     
-        const types = ['BOULDER', 'TOP_ROPE', 'LEAD_CLIMB', 'AUTO_BELAY'];
-
         const placeholderOption = document.createElement('option');
         placeholderOption.value = '';
         placeholderOption.textContent = 'Select a type'; // Placeholder text
         placeholderOption.disabled = true;
-        placeholderOption.selected = true; // Optional: Select this by default
+        placeholderOption.selected = true; 
         typeDropdown.appendChild(placeholderOption);
     
-        types.forEach(type => {
-        const option = document.createElement('option');
-        option.value = type;
-        option.textContent = type;
-        typeDropdown.appendChild(option);
-        });
+        for (const type in routeTypes) {
+            if (routeTypes.hasOwnProperty(type)) {
+                const option = document.createElement('option');
+                option.value = type;
+                option.textContent = routeTypes[type];
+                typeDropdown.appendChild(option);
+            }
+        }
     }
 
     redirectToViewClimb() {
