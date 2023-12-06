@@ -33,7 +33,7 @@ export default class Header extends BindingClass {
 
     createSiteTitle() {
         const logo = document.createElement('img');
-        logo.src = 'Project climb.png';
+        logo.src = 'LOGO.png';
         logo.width = 130;
         logo.height = 65;
        
