@@ -159,9 +159,9 @@ class ViewClimb extends BindingClass {
             return;
         }
 
-        const textHtml = '<h4>Click a Climb below for more details:</h4>';
+        const textHtml = '<h6>Click a Climb below for details:</h6>';
     
-        let climbHtml = '<table><tr><th>Route Location</th><th>Current Status</th><th>Date / Time Climbed</th></tr>';
+        let climbHtml = '<table><tr><th>Route</th><th>Current Status</th><th>Date / Time Climbed</th></tr>';
     
         for (const climb of climbHistory) {
             let routeId = climb.routeId;
@@ -308,8 +308,6 @@ class ViewClimb extends BindingClass {
             text: 'You won\'t be able to revert this!',
             icon: 'warning',
             showCancelButton: true,
-            // // confirmButtonColor: 'var(--',
-            // cancelButtonColor: '#d33',
             confirmButtonText: 'DELETE'
         });
     
@@ -319,10 +317,9 @@ class ViewClimb extends BindingClass {
             } catch (error) {
                 errorMessageDisplay.innerText = `Error: ${error.message}`;
                 errorMessageDisplay.classList.remove('hidden');
-                return; // Exit the function if deletion fails
+                return;
             }
     
-            // Display the "This climb has been deleted!" message immediately
             deleteButton.style.display = 'none';
             openModalBtn.style.display = 'none';
             messageContainer.style.display = 'block';

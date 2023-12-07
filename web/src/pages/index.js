@@ -33,16 +33,15 @@ class Homepage extends BindingClass {
         this.clientLoaded();
     }
 
-
     addRoutesToPage() {
         console.log("add routes to page is starting");
-        const routes = this.dataStore.get('routes')
+        const routes = this.dataStore.get('routes');
         console.log("routes", routes);
     
         if (routes == null) {
             return;
         }
-        let routeHtml = '<table><tr><th>Route Location</th><th>Difficulty</th><th>Current Status</th><th>Date Set</th><th>% ThumbsUP!</th></tr>';
+        let routeHtml = '<div class="table-responsive-sm"><table class="table"><tr><th>Route</th><th>Difficulty</th><th>Current Status</th><th>Date Set</th><th>ThumbsUP!</th></tr>';
     
         for (const route of routes) {
             routeHtml += `
@@ -51,11 +50,11 @@ class Homepage extends BindingClass {
                 <td>${getValueFromEnum(route.difficulty, routeDifficulties)}</td>
                 <td>${getValueFromEnum(route.routeStatus, routeStatus)}</td>
                 <td>${formatDate(route.dateCreated)}</td>
-                <td>${route.rating !== null ? route.rating : 'Not yet Rated!'}</td>
+                <td>${route.rating !== null ? route.rating + '%': 'Not yet Rated!'}</td>
             </tr>
             `;
         }
-        routeHtml += '</table>';
+        routeHtml += '</table></div>';
     
         document.getElementById('routeList').innerHTML = routeHtml;
     }
