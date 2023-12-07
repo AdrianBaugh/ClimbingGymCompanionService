@@ -2,6 +2,12 @@ import ClimbClient from "../api/climbClient";
 import Header from "../components/header";
 import BindingClass from "../util/bindingClass";
 import DataStore from "../util/DataStore";
+import climbStatus from "../enums/climbStatus";
+import routeStatus from "../enums/routeStatus";
+import routeTypes from "../enums/routeTypes";
+import routeLocations from "../enums/routeLocations";
+import routeDifficulties from "../enums/routeDifficulties";
+import { getValueFromEnum } from '../util/enumUtils.js';
 
 /**
  * Logic needed for the create climb page of the website.
@@ -81,7 +87,7 @@ class CreateClimb extends BindingClass {
             if (route.routeStatus === "ACTIVE") {
                 const option = document.createElement('option');
                 option.value = route.routeId;
-                option.textContent = route.location;  // Display route location or another relevant property
+                option.textContent = getValueFromEnum(route.location, routeLocations);  // Display route location or another relevant property
                 dropdown.appendChild(option);
             }
         });
@@ -94,44 +100,44 @@ class CreateClimb extends BindingClass {
     
         statusDropdown.innerHTML = '';
     
-        const statuses = ['COMPLETED_FLASHED', 'COMPLETED_SENT', 'COMPLETED_IN_STAGES', 'PROJECTING', 'WANT_TO_CLIMB', 'TOO_DIFFICULT' ];
-
         const placeholderOption = document.createElement('option');
         placeholderOption.value = '';
         placeholderOption.textContent = 'Select a status'; // Placeholder text
         placeholderOption.disabled = true;
-        placeholderOption.selected = true; // Optional: Select this by default
+        placeholderOption.selected = true; 
         statusDropdown.appendChild(placeholderOption);
     
-        statuses.forEach(status => {
-        const option = document.createElement('option');
-        option.value = status;
-        option.textContent = status;
-        statusDropdown.appendChild(option);
-        });
+        for (const status in climbStatus) {
+            if (climbStatus.hasOwnProperty(status)) {
+                const option = document.createElement('option');
+                option.value = status;
+                option.textContent = climbStatus[status];
+                statusDropdown.appendChild(option);
+            }
+        }
     }
 
-    // Function to populate the status dropdown
+    // Function to populate the type dropdown
     typeDropdown() {
         const typeDropdown = document.getElementById('typeDropdown');
     
         typeDropdown.innerHTML = '';
     
-        const types = ['BOULDER', 'TOP_ROPE', 'LEAD_CLIMB', 'AUTO_BELAY'];
-
         const placeholderOption = document.createElement('option');
         placeholderOption.value = '';
         placeholderOption.textContent = 'Select a type'; // Placeholder text
         placeholderOption.disabled = true;
-        placeholderOption.selected = true; // Optional: Select this by default
+        placeholderOption.selected = true; 
         typeDropdown.appendChild(placeholderOption);
     
-        types.forEach(type => {
-        const option = document.createElement('option');
-        option.value = type;
-        option.textContent = type;
-        typeDropdown.appendChild(option);
-        });
+        for (const type in routeTypes) {
+            if (routeTypes.hasOwnProperty(type)) {
+                const option = document.createElement('option');
+                option.value = type;
+                option.textContent = routeTypes[type];
+                typeDropdown.appendChild(option);
+            }
+        }
     }
 
     async submit(evt) {

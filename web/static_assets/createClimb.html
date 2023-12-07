@@ -13,7 +13,7 @@
     
     <div id="loginModal" class="modal">
         <div class="modal-content">
-            <p>You must be logged in to record a climb!</p>
+            <p>Log in to record a climb!</p>
         <div id="loginBtn"></div>
         <hr></hr>
         <a href="/" class="button">Go Home</a>
@@ -31,27 +31,39 @@
         <form class="card-content" id="create-route-form">
             <p class="hidden error" id="error-message"> </p>
             <p class="form-field">
-                    
+
+            <div class="form-field">
                 <label for="routeDropdown">Route:</label>
-                <select id="routeDropdown" required class="validated-field"></select>
+                <select id="routeDropdown" class="custom-dropdown"></select>
+            </div>
 
-                <label for="typeDropdown">Type of route:</label>
-                <select id="typeDropdown"></select>
+            <div class="form-field">
+                <label for="typeDropdown">Type:</label>
+                  <select id="typeDropdown" class="custom-dropdown"></select>
+            </div>
 
-                <label for="statusDropdown">Activity to Record:</label>
-                <select id="statusDropdown"></select>
+            <div class="form-field">
+                <label for="statusDropdown">Progress:</label>
+                <select id="statusDropdown" class="custom-dropdown"></select>
+            </div>
 
+            <div>
                 <label>How would you rate this route?:</label>
+            </div>
+            <div>
                 <label>
                     <input type="radio" name="thumbs" value="thumbsUp" id="thumbsUp"> Thumbs Up
-                  </label>
-                  <label>
                     <input type="radio" name="thumbs" value="thumbsDown" id="thumbsDown"> Thumbs Down
-                  </label>
-                  
+                </label>
+            </div>
 
-                <label>OPTIONL: Please enter any climb beta you have to share with others:</label>
+            <div>
+                <label>Optional: Please enter any climb beta you have to share with others:</label>
+            </div>
+            <div>
                 <input type="text" id="notes" placeholder="ex. Big dynamic move at the start...">
+            </div>
+            
             </p>
           
         </form>
