@@ -41,7 +41,7 @@ class Homepage extends BindingClass {
         if (routes == null) {
             return;
         }
-        let routeHtml = '<div class="table-responsive-sm"><table class="table"><tr><th>Route</th><th>Difficulty</th><th>Current Status</th><th>Date Set</th><th>ThumbsUP!</th></tr>';
+        let routeHtml = '<div class="table-responsive-sm"><table class="table"><tr><th>Route</th><th>Difficulty</th><th>Current Status</th><th>Date Set</th><th>ThumbsUP! 👍</th></tr>';
     
         for (const route of routes) {
             routeHtml += `

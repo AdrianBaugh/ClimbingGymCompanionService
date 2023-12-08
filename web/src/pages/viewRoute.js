@@ -86,7 +86,7 @@ class ViewRoute extends BindingClass {
         document.getElementById('type').innerText = getValueFromEnum(route.type, routeTypes);
         document.getElementById('difficulty').innerText = getValueFromEnum(route.difficulty, routeDifficulties);
         document.getElementById('color').innerText = route.color;
-        document.getElementById('rating').innerText = route.rating !== null ? route.rating : 'Not yet Rated!';
+        document.getElementById('rating').innerText = route.rating !== null ? route.rating + '%' : 'Not yet Rated!';
         document.getElementById('date-created').innerText = formatDate(route.dateCreated);
     
         const toggleButton = document.getElementById('toggleButton');
