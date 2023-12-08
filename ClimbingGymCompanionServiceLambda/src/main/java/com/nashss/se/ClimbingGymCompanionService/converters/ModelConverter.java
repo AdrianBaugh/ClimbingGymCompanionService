@@ -32,7 +32,7 @@ public class ModelConverter {
                 .withRating(route.getRating())
                 .withImageName(route.getImageName())
                 .withImageKey(route.getImageKey())
-                .withNotesList(route.getNotesList())
+                .withBetaMap(route.getBetaMap())
                 .build();
 
     }
@@ -63,7 +63,7 @@ public class ModelConverter {
                 .withClimbStatus(climb.getClimbStatus())
                 .withDateTimeClimbed(climb.getDateTimeClimbed())
                 .withThumbsUp(climb.isThumbsUp())
-                .withNotes(climb.getNotes())
+                .withNotes(climb.getPublicBeta())
                 .build();
     }
 

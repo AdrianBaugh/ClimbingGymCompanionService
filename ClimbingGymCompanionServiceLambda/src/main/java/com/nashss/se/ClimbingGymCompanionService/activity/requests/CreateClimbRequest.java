@@ -6,24 +6,30 @@ import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 @JsonDeserialize(builder = CreateClimbRequest.Builder.class)
 public class CreateClimbRequest {
     private final String userId;
+    private final String userName;
     private final String type;
     private final String routeId;
     private final String climbStatus;
     private final Boolean thumbsUp;
-    private final String notes;
+    private final String publicBeta;
 
-    private CreateClimbRequest(String userId, String type, String routeId,
-                              String climbStatus, Boolean thumbsUp, String notes) {
+    private CreateClimbRequest(String userId, String userName, String type, String routeId,
+                              String climbStatus, Boolean thumbsUp, String publicBeta) {
         this.userId = userId;
+        this.userName = userName;
         this.type = type;
         this.routeId = routeId;
         this.climbStatus = climbStatus;
         this.thumbsUp = thumbsUp;
-        this.notes = notes;
+        this.publicBeta = publicBeta;
     }
 
     public String getUserId() {
         return userId;
+    }
+
+    public String getUserName() {
+        return userName;
     }
 
     public String getType() {
@@ -42,19 +48,20 @@ public class CreateClimbRequest {
         return thumbsUp;
     }
 
-    public String getNotes() {
-        return notes;
+    public String getPublicBeta() {
+        return publicBeta;
     }
 
     @Override
     public String toString() {
         return "CreateClimbRequest{" +
                 "userId='" + userId + '\'' +
+                "userName='" + userName + '\'' +
                 ", type='" + type + '\'' +
                 ", routeId='" + routeId + '\'' +
                 ", climbStatus='" + climbStatus + '\'' +
                 ", thumbsUp=" + thumbsUp +
-                ", notes='" + notes + '\'' +
+                ", publicBeta='" + publicBeta + '\'' +
                 '}';
     }
 
@@ -66,14 +73,19 @@ public class CreateClimbRequest {
     @JsonPOJOBuilder
     public static class Builder {
         private String userId;
+        private String userName;
         private String type;
         private String routeId;
         private String climbStatus;
         private Boolean thumbsUp;
-        private String notes;
+        private String publicBeta;
 
         public Builder withUserId(String userId) {
             this.userId = userId;
+            return this;
+        }
+        public Builder withUserName(String userName) {
+            this.userName = userName;
             return this;
         }
 
@@ -97,13 +109,13 @@ public class CreateClimbRequest {
             return this;
         }
 
-        public Builder withNotes(String notes) {
-            this.notes = notes;
+        public Builder withPublicBeta(String publicBeta) {
+            this.publicBeta = publicBeta;
             return this;
         }
 
         public CreateClimbRequest build() {
-            return new CreateClimbRequest(userId, type, routeId, climbStatus, thumbsUp, notes);
+            return new CreateClimbRequest(userId, userName, type, routeId, climbStatus, thumbsUp, publicBeta);
         }
     }
 }

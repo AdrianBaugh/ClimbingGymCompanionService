@@ -28,7 +28,7 @@ public class Climb {
     private String climbStatus;
     private ZonedDateTime dateTimeClimbed;
     private Boolean thumbsUp;
-    private String notes;
+    private String publicBeta;
     @DynamoDBRangeKey(attributeName = "climbId")
     public String getClimbId() {
         return climbId;
@@ -91,13 +91,13 @@ public class Climb {
     public void setThumbsUp(Boolean thumbsUp) {
         this.thumbsUp = thumbsUp;
     }
-    @DynamoDBAttribute(attributeName = "notes")
-    public String getNotes() {
-        return notes;
+    @DynamoDBAttribute(attributeName = "publicBeta")
+    public String getPublicBeta() {
+        return publicBeta;
     }
 
-    public void setNotes(String notes) {
-        this.notes = notes;
+    public void setPublicBeta(String publicBeta) {
+        this.publicBeta = publicBeta;
     }
 
     @Override
@@ -116,12 +116,12 @@ public class Climb {
                 Objects.equals(climbStatus, climb.climbStatus) &&
                 Objects.equals(dateTimeClimbed, climb.dateTimeClimbed) &&
                 Objects.equals(thumbsUp, climb.thumbsUp) &&
-                Objects.equals(notes, climb.notes);
+                Objects.equals(publicBeta, climb.publicBeta);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(climbId, userId, routeId, type, climbStatus, dateTimeClimbed, thumbsUp, notes);
+        return Objects.hash(climbId, userId, routeId, type, climbStatus, dateTimeClimbed, thumbsUp, publicBeta);
     }
 
     @Override
@@ -134,7 +134,7 @@ public class Climb {
                 ", climbStatus='" + climbStatus + '\'' +
                 ", dateTimeClimbed=" + dateTimeClimbed +
                 ", thumbsUp=" + thumbsUp +
-                ", notes='" + notes + '\'' +
+                ", publicBeta='" + publicBeta + '\'' +
                 '}';
     }
 }

@@ -24,11 +24,12 @@ public class CreateClimbLambda
                 return input.fromUserClaims(claims ->
                         CreateClimbRequest.builder()
                                 .withUserId(claims.get("email"))
+                                .withUserName(claims.get("name"))
                                 .withRouteId(unauthenticatedRequest.getRouteId())
                                 .withType(unauthenticatedRequest.getType())
                                 .withClimbStatus(unauthenticatedRequest.getClimbStatus())
                                 .withThumbsUp(unauthenticatedRequest.getThumbsUp())
-                                .withNotes(unauthenticatedRequest.getNotes())
+                                .withPublicBeta(unauthenticatedRequest.getPublicBeta())
                                 .build());
             },
             (request, serviceComponent) ->

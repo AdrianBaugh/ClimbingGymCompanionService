@@ -13,7 +13,9 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -35,7 +37,7 @@ public class    CreateClimbActivityTest {
     private String routeId = "otherId";
     private String notes = "these are the notes";
     private Boolean thumbsUp = true;
-    private List<String> notesList = new ArrayList<>();
+    private Map<String, String> betaMap = new HashMap<>();
     private Route route = new Route();
 
 
@@ -47,11 +49,11 @@ public class    CreateClimbActivityTest {
 
         this.otherClimb = new Climb();
         otherClimb.setRouteId(routeId);
-        otherClimb.setNotes(notes);
+        otherClimb.setPublicBeta(notes);
         otherClimb.setThumbsUp(thumbsUp);
 
         this.route  = new Route();
-        route.setNotesList(notesList);
+        route.setBetaMap(betaMap);
     }
 
     @Test
@@ -86,13 +88,13 @@ public class    CreateClimbActivityTest {
         Climb climb = new Climb();
 
         String routeId = "id";
-        String note = "these are the notes";
+        String publicBeta = "these are the notes";
 
         climb.setRouteId(routeId);
-        climb.setNotes(note);
+        climb.setPublicBeta(publicBeta);
 
         Route route1 = new Route();
-        route1.setNotesList(notesList);
+        route1.setBetaMap(betaMap);
 
         when(routeDao.getRouteById(any(String.class))).thenReturn(route1);
         when(routeDao.saveRoute(route1)).thenReturn(route1);
@@ -100,7 +102,7 @@ public class    CreateClimbActivityTest {
 
         CreateClimbRequest request = CreateClimbRequest.builder()
                 .withRouteId(routeId)
-                .withNotes(note)
+                .withPublicBeta(publicBeta)
                 .build();
 
         // WHEN
