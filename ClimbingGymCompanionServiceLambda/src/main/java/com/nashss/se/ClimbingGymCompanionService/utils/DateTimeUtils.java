@@ -13,6 +13,8 @@ public class DateTimeUtils {
      * @return a time zoned time
      */
     public static ZonedDateTime getDateTime() {
-        return ZonedDateTime.of(LocalDateTime.now(), ZoneId.systemDefault());
+        ZoneId centralTimeZone = ZoneId.of("America/Chicago");
+
+        return ZonedDateTime.of(LocalDateTime.now(), centralTimeZone);
     }
 }

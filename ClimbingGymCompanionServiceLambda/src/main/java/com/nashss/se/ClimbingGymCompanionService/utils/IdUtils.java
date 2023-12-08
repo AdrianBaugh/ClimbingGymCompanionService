@@ -36,7 +36,8 @@ public class IdUtils {
      * @return the key and routeID
      */
     public static String generateRouteId(String location, String color, ZonedDateTime date) {
-        return location + "::" + color + "::" + date;
+        String result = location + "::" + color + "::" + date;
+        return result.substring(0, result.length() - 5);
     }
 
     /**
@@ -45,6 +46,7 @@ public class IdUtils {
      * @return the id
      */
     public static String generateClimbId(ZonedDateTime dateTime) {
-        return  RandomStringUtils.randomAlphanumeric(MAX_ID_LENGTH) + "::" + dateTime;
+        String result = RandomStringUtils.randomAlphanumeric(MAX_ID_LENGTH) + "::" + dateTime;
+        return  result.substring(0, result.length() - 5);
     }
 }
