@@ -137,7 +137,7 @@ class ViewClimb extends BindingClass {
 
             document.getElementById('difficulty').innerText = getValueFromEnum(route.difficulty, routeDifficulties);
             document.getElementById('climb-status').innerText = getValueFromEnum(climb.climbStatus, climbStatus);
-            document.getElementById('type').innerText = getValueFromEnum(climb.type, routeTypes);
+            document.getElementById('type').innerText = getValueFromEnum(climb.type !== 'LEAD_CLIMB' ? route.type : climb.type, routeTypes);
             document.getElementById('rating').innerText = climb.thumbsUp !== null ?
                 (climb.thumbsUp ? '👍 ' : '👎') :
                 'Not Rated!';

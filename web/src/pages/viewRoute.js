@@ -115,7 +115,7 @@ class ViewRoute extends BindingClass {
             tableHeaders.innerHTML = '<th>Username</th><th>Beta</th>';
             notesList.appendChild(tableHeaders);
         
-            for (const [username, note] of  Object.entries(betaMap)) {
+            for (const [note, username] of  Object.entries(betaMap)) {
                 const row = document.createElement('tr');
                 row.innerHTML = `<td>${username}</td><td>${note}</td>`;
                 notesList.appendChild(row);
