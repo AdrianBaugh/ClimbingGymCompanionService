@@ -139,7 +139,7 @@ class ViewClimb extends BindingClass {
             document.getElementById('climb-status').innerText = getValueFromEnum(climb.climbStatus, climbStatus);
             document.getElementById('type').innerText = getValueFromEnum(climb.type, routeTypes);
             document.getElementById('rating').innerText = climb.thumbsUp !== null ?
-                (climb.thumbsUp ? 'Thumbs Up!' : 'Thumbs Down') :
+                (climb.thumbsUp ? '👍 ' : '👎') :
                 'Not Rated!';
             document.getElementById('dateTime-climbed').innerText = formatDateTime(climb.dateTimeClimbed);
             document.getElementById('notes').innerText = (climb.notes === null) ? "No beta recorded." : climb.notes;

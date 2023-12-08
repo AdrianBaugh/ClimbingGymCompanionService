@@ -93,7 +93,7 @@ class ViewRoute extends BindingClass {
         const notesList = document.getElementById('notesList');
         const noBetaMessage = document.getElementById("noBetaMessage");
         const betaLabel = document.getElementById('betaLabel')
-        if (route.notesList == null || route.notesList.length === 0) {
+        if (route.betaMap == null || route.betaMap.size === 0) {
             noBetaMessage.style.display = "block";
           } else {
             betaLabel.style.display = "block";
@@ -104,23 +104,23 @@ class ViewRoute extends BindingClass {
             notesList.classList.toggle('hidden');
 
             if (!notesList.classList.contains('hidden')) {
-                generateTableContent(route.notesList, notesList);
+                generateTableContent(route.betaMap, notesList);
             }
         });
 
-        function generateTableContent(notes, notesList) {
+        function generateTableContent(betaMap, notesList) {
             notesList.innerHTML = '';
-
+        
             const tableHeaders = document.createElement('tr');
-            tableHeaders.innerHTML = '<th>Route Beta</th>';
+            tableHeaders.innerHTML = '<th>Username</th><th>Beta</th>';
             notesList.appendChild(tableHeaders);
-
-            notes.forEach(note => {
+        
+            for (const [username, note] of  Object.entries(betaMap)) {
                 const row = document.createElement('tr');
-                row.innerHTML = `<td>${note}</td>`;
+                row.innerHTML = `<td>${username}</td><td>${note}</td>`;
                 notesList.appendChild(row);
-            });
-        }
+            }
+        }        
     }
 
 /**

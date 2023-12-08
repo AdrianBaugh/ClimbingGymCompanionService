@@ -306,11 +306,11 @@ export default class ClimbClient extends BindingClass {
      * @param routeId 
      * @param climbStatus 
      * @param thumbsUp 
-     * @param notes 
+     * @param publicBeta 
      * @param errorCallback 
      * @returns 
      */
-    async createClimb(routeId, climbStatus, thumbsUp, type, notes, errorCallback) {
+    async createClimb(routeId, climbStatus, thumbsUp, type, publicBeta, errorCallback) {
         try {
             const token = await this.getTokenOrThrow("You must be logged in to add a new climb!");        
             
@@ -319,7 +319,7 @@ export default class ClimbClient extends BindingClass {
                 climbStatus: climbStatus,
                 thumbsUp: thumbsUp,
                 type: type,
-                notes: notes
+                publicBeta: publicBeta
             }, {
                 headers: {
                     Authorization: `Bearer ${token}`
@@ -336,11 +336,11 @@ export default class ClimbClient extends BindingClass {
      * @param climbId 
      * @param climbStatus 
      * @param thumbsUp 
-     * @param notes 
+     * @param publicBeta 
      * @param errorCallback 
      * @returns 
      */
-     async updateClimb(climbId, climbStatus, thumbsUp, type, notes, errorCallback) {
+     async updateClimb(climbId, climbStatus, thumbsUp, type, publicBeta, errorCallback) {
         try {
             const token = await this.getTokenOrThrow("You must be logged in to update a climb!");        
             
@@ -348,7 +348,7 @@ export default class ClimbClient extends BindingClass {
                 climbStatus: climbStatus,
                 thumbsUp: thumbsUp,
                 type: type,
-                notes: notes
+                publicBeta: publicBeta
             }, {
                 headers: {
                     Authorization: `Bearer ${token}`
