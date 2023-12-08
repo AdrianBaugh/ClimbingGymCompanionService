@@ -14,7 +14,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.time.ZonedDateTime;
-import java.util.ArrayList;
+import java.util.HashMap;
 import javax.inject.Inject;
 
 public class CreateRouteActivity {
@@ -61,7 +61,7 @@ public class CreateRouteActivity {
         newRoute.setRating(null);
         newRoute.setImageName(createRouteRequest.getImageName());
         newRoute.setImageKey(createRouteRequest.getImageKey());
-        newRoute.setNotesList(new ArrayList<>());
+        newRoute.setBetaMap(new HashMap<>());
 
         routeDao.saveRoute(newRoute);
 

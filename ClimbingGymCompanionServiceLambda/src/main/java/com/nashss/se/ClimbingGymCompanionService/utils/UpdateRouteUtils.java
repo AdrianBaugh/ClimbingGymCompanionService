@@ -6,6 +6,7 @@ import com.nashss.se.ClimbingGymCompanionService.dynamodb.pojos.Climb;
 import com.nashss.se.ClimbingGymCompanionService.dynamodb.pojos.Route;
 
 import java.util.List;
+import java.util.Map;
 
 public class UpdateRouteUtils {
 
@@ -13,17 +14,18 @@ public class UpdateRouteUtils {
     }
     /**
      * Helper to update the notes list for particular route that was climbed.
-     * @param newNote the newNote
+     * @param newBeta the newNote
      * @param routeId the route to add the newNote to.
      * @param routeDao route table data access object
+     * @param userName users name
      */
-    public static void updateRouteNotes(RouteDao routeDao, String newNote, String routeId) {
+    public static void updateRouteNotes(RouteDao routeDao, String newBeta, String routeId, String userName) {
         Route route = routeDao.getRouteById(routeId);
 
-        List<String> notes = route.getNotesList();
-        notes.add(newNote);
+        Map<String, String> notes = route.getBetaMap();
+        notes.put(userName, newBeta);
 
-        route.setNotesList(notes);
+        route.setBetaMap(notes);
 
         routeDao.saveRoute(route);
     }

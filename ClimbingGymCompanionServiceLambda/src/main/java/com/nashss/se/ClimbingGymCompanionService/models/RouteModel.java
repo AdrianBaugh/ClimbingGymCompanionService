@@ -1,7 +1,7 @@
 package com.nashss.se.ClimbingGymCompanionService.models;
 
 import java.time.ZonedDateTime;
-import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 public class RouteModel {
@@ -16,7 +16,7 @@ public class RouteModel {
     private Integer rating;
     private String imageName;
     private String imageKey;
-    private List<String> notesList;
+    private Map<String, String> betaMap;
 
     /**
      *
@@ -31,12 +31,12 @@ public class RouteModel {
      * @param rating route model metadaata
      * @param imageName route model metadaata
      * @param imageKey route model metadaata
-     * @param notesList route model metadaata
+     * @param betaMap route model metadaata
      */
     public RouteModel(String routeId, String routeStatus, String isArchived, String location,
                       String color, String type, String difficulty, ZonedDateTime dateCreated,
                       Integer rating, String imageName, String imageKey,
-                      List<String> notesList) {
+                      Map<String, String> betaMap) {
         this.routeId = routeId;
         this.routeStatus = routeStatus;
         this.isArchived = isArchived;
@@ -48,7 +48,7 @@ public class RouteModel {
         this.rating = rating;
         this.imageName = imageName;
         this.imageKey = imageKey;
-        this.notesList = notesList;
+        this.betaMap = betaMap;
     }
 
     public String getRouteId() {
@@ -95,8 +95,8 @@ public class RouteModel {
         return imageKey;
     }
 
-    public List<String> getNotesList() {
-        return notesList;
+    public Map<String, String> getBetaMap() {
+        return betaMap;
     }
 
     @Override
@@ -114,14 +114,14 @@ public class RouteModel {
                 Objects.equals(difficulty, that.difficulty) && Objects.equals(dateCreated, that.dateCreated) &&
                 Objects.equals(rating, that.rating) && Objects.equals(imageName, that.imageName) &&
                 Objects.equals(imageKey, that.imageKey) &&
-                Objects.equals(notesList, that.notesList);
+                Objects.equals(betaMap, that.betaMap);
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(routeId, routeStatus, isArchived, location, color, type,
                 difficulty, dateCreated, rating, imageName, imageKey,
-                notesList);
+                betaMap);
     }
 
     //CHECKSTYLE:OFF:Builder
@@ -141,7 +141,7 @@ public class RouteModel {
         private Integer rating;
         private String imageName;
         private String imageKey;
-        private List<String> notesList;
+        private Map<String, String> betaMap;
 
         public Builder withRouteId(String routeId) {
             this.routeId = routeId;
@@ -198,15 +198,15 @@ public class RouteModel {
             return this;
         }
 
-        public Builder withNotesList(List<String> notesLit) {
-            this.notesList = notesLit;
+        public Builder withBetaMap(Map<String, String> betaMap) {
+            this.betaMap = betaMap;
             return this;
         }
 
         public RouteModel build() {
             return new RouteModel(routeId, routeStatus, isArchived, location, color, type,
                     difficulty, dateCreated, rating, imageName, imageKey,
-                    notesList);
+                    betaMap);
         }
     }
 }

@@ -51,7 +51,7 @@ public class UpdateClimbActivity {
         String type = updateClimbRequest.getType();
         String climbStatus = updateClimbRequest.getClimbStatus();
         Boolean thumbsUp = updateClimbRequest.getThumbsUp();
-        String notes = updateClimbRequest.getNotes();
+        String publicBeta = updateClimbRequest.getPublicBeta();
 
         if (type != null) {
             climb.setType(type);
@@ -63,9 +63,9 @@ public class UpdateClimbActivity {
             UpdateRouteUtils.updateRouteRating(climbDao, routeDao, thumbsUp, routeId);
             climb.setThumbsUp(thumbsUp);
         }
-        if (notes != null) {
-            UpdateRouteUtils.updateRouteNotes(routeDao, notes, routeId);
-            climb.setNotes(notes);
+        if (publicBeta != null) {
+            UpdateRouteUtils.updateRouteNotes(routeDao, publicBeta, routeId, updateClimbRequest.getUserName());
+            climb.setPublicBeta(publicBeta);
         }
 
         climbDao.saveClimb(climb);

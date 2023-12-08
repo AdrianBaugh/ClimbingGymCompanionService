@@ -50,7 +50,7 @@ public class CreateClimbActivity {
 
         ZonedDateTime dateTime = DateTimeUtils.getDateTime();
         String routeId = createClimbRequest.getRouteId();
-        String notes = createClimbRequest.getNotes();
+        String notes = createClimbRequest.getPublicBeta();
         Boolean rating = createClimbRequest.getThumbsUp();
 
         Climb newClimb = new Climb();
@@ -67,9 +67,9 @@ public class CreateClimbActivity {
         newClimb.setThumbsUp(rating);
 
         if (notes != null) {
-            UpdateRouteUtils.updateRouteNotes(routeDao, notes, routeId);
+            UpdateRouteUtils.updateRouteNotes(routeDao, notes, routeId, createClimbRequest.getUserName());
         }
-        newClimb.setNotes(notes);
+        newClimb.setPublicBeta(notes);
 
         climbDao.saveClimb(newClimb);
 

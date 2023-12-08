@@ -1,27 +1,25 @@
 package com.nashss.se.ClimbingGymCompanionService.activity;
 
-import com.nashss.se.ClimbingGymCompanionService.activity.requests.CreateClimbRequest;
 import com.nashss.se.ClimbingGymCompanionService.activity.requests.UpdateClimbRequest;
-import com.nashss.se.ClimbingGymCompanionService.activity.results.CreateClimbResult;
 import com.nashss.se.ClimbingGymCompanionService.activity.results.UpdateClimbResult;
 import com.nashss.se.ClimbingGymCompanionService.dynamodb.ClimbDao;
 import com.nashss.se.ClimbingGymCompanionService.dynamodb.RouteDao;
 import com.nashss.se.ClimbingGymCompanionService.dynamodb.pojos.Climb;
 import com.nashss.se.ClimbingGymCompanionService.dynamodb.pojos.Route;
-import com.nashss.se.ClimbingGymCompanionService.metrics.MetricsPublisher;
 import com.nashss.se.ClimbingGymCompanionService.models.ClimbModel;
 
-import com.amazonaws.services.dynamodbv2.xspec.S;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.openMocks;
@@ -32,7 +30,7 @@ class UpdateClimbActivityTest {
     @Mock
     private RouteDao routeDao;
     private UpdateClimbActivity activity;
-    private List<String> notesList = new ArrayList<>();
+    private Map<String, String> betaMap = new HashMap<>();
     String type = "type";
     String userId = "userId";
     String climbId = "climbId";
@@ -87,10 +85,10 @@ class UpdateClimbActivityTest {
         climbWithNotes.setClimbId(climbId);
         climbWithNotes.setRouteId(routeId);
         climbWithNotes.setType(type);
-        climbWithNotes.setNotes(note);
+        climbWithNotes.setPublicBeta(note);
 
         Route route1 = new Route();
-        route1.setNotesList(notesList);
+        route1.setBetaMap(betaMap);
 
         when(climbDao.getClimbById(any(String.class), any(String.class))).thenReturn(climbWithNotes);
 
@@ -99,7 +97,7 @@ class UpdateClimbActivityTest {
         when(climbDao.saveClimb(climbWithNotes)).thenReturn(climbWithNotes);
 
         UpdateClimbRequest request = UpdateClimbRequest.builder()
-                .withNotes(note)
+                .withPublicBeta(note)
                 .withClimbId(climbId)
                 .withUserId(userId)
                 .withType(type)

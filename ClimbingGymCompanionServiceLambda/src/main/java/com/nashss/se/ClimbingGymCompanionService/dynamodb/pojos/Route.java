@@ -1,5 +1,6 @@
 package com.nashss.se.ClimbingGymCompanionService.dynamodb.pojos;
 
+import com.nashss.se.ClimbingGymCompanionService.converters.BetaMapConverter;
 import com.nashss.se.ClimbingGymCompanionService.converters.ZonedDateTimeConverter;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBAttribute;
@@ -9,7 +10,7 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTypeConverted;
 
 import java.time.ZonedDateTime;
-import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 @DynamoDBTable(tableName = "routes")
@@ -26,7 +27,7 @@ public class Route {
     private Integer rating;
     private String imageName;
     private String imageKey;
-    private List<String> notesList;
+    private Map<String, String> betaMap;
 
     @DynamoDBHashKey(attributeName = "routeId")
     public String getRouteId() {
@@ -128,13 +129,14 @@ public class Route {
         this.imageKey = imageKey;
     }
 
-    @DynamoDBAttribute(attributeName = "notesList")
-    public List<String> getNotesList() {
-        return notesList;
+    @DynamoDBAttribute(attributeName = "betaMap")
+    @DynamoDBTypeConverted(converter = BetaMapConverter.class)
+    public Map<String, String> getBetaMap() {
+        return betaMap;
     }
 
-    public void setNotesList(List<String> notesList) {
-        this.notesList = notesList;
+    public void setBetaMap(Map<String, String> betaMap) {
+        this.betaMap = betaMap;
     }
 
     @Override
@@ -151,13 +153,13 @@ public class Route {
                 Objects.equals(color, route.color) && Objects.equals(type, route.type) &&
                 Objects.equals(difficulty, route.difficulty) && Objects.equals(dateCreated, route.dateCreated) &&
                 Objects.equals(rating, route.rating) && Objects.equals(imageName, route.imageName) &&
-                Objects.equals(imageKey, route.imageKey) && Objects.equals(notesList, route.notesList);
+                Objects.equals(imageKey, route.imageKey) && Objects.equals(betaMap, route.betaMap);
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(routeId, routeStatus, isArchived, location, color, type,
-                difficulty, dateCreated, rating, imageName, imageKey, notesList);
+                difficulty, dateCreated, rating, imageName, imageKey, betaMap);
     }
 
     @Override
@@ -174,7 +176,7 @@ public class Route {
                 ", rating=" + rating +
                 ", imageName='" + imageName + '\'' +
                 ", imageKey='" + imageKey + '\'' +
-                ", notesList=" + notesList +
+                ", betaMap=" + betaMap +
                 '}';
     }
 }

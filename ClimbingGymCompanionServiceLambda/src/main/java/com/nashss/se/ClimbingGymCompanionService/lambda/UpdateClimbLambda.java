@@ -21,15 +21,17 @@ public class UpdateClimbLambda
                 UpdateClimbRequest unAuthenticatedRequest = input.fromBody(UpdateClimbRequest.class);
                 UpdateClimbRequest authenticatedRequest = input.fromUserClaims(claims -> UpdateClimbRequest.builder()
                         .withUserId(claims.get("email"))
+                        .withUserName(claims.get("name"))
                         .build());
                 return input.fromPath(path ->
                 UpdateClimbRequest.builder()
                         .withClimbId(path.get("climbId"))
                         .withUserId(authenticatedRequest.getUserId())
+                        .withUserName(authenticatedRequest.getUserName())
                         .withType(unAuthenticatedRequest.getType())
                         .withClimbStatus(unAuthenticatedRequest.getClimbStatus())
                         .withThumbsUp(unAuthenticatedRequest.getThumbsUp())
-                        .withNotes(unAuthenticatedRequest.getNotes())
+                        .withPublicBeta(unAuthenticatedRequest.getPublicBeta())
                         .build());
             },
             (request, serviceComponent) ->

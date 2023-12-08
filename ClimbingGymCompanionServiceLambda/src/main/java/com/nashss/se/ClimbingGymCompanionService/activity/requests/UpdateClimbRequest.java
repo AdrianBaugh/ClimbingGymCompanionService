@@ -7,19 +7,21 @@ import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 public class UpdateClimbRequest {
     private final String climbId;
     private final String userId;
+    private final String userName;
     private final String type;
     private final String climbStatus;
     private final Boolean thumbsUp;
-    private final String notes;
+    private final String publicBeta;
 
-    private UpdateClimbRequest(String climbId, String userId, String type,
-                               String climbStatus, Boolean thumbsUp, String notes) {
+    private UpdateClimbRequest(String climbId, String userId, String userName, String type,
+                               String climbStatus, Boolean thumbsUp, String publicBeta) {
         this.climbId = climbId;
         this.userId = userId;
+        this.userName = userName;
         this.type = type;
         this.climbStatus = climbStatus;
         this.thumbsUp = thumbsUp;
-        this.notes = notes;
+        this.publicBeta = publicBeta;
     }
 
     public String getClimbId() {
@@ -28,6 +30,10 @@ public class UpdateClimbRequest {
 
     public String getUserId() {
         return userId;
+    }
+
+    public String getUserName() {
+        return userName;
     }
 
     public String getType() {
@@ -42,8 +48,8 @@ public class UpdateClimbRequest {
         return thumbsUp;
     }
 
-    public String getNotes() {
-        return notes;
+    public String getPublicBeta() {
+        return publicBeta;
     }
 
     @Override
@@ -51,10 +57,11 @@ public class UpdateClimbRequest {
         return "UpdateClimbRequest{" +
                 "climbId='" + climbId + '\'' +
                 ", userId='" + userId + '\'' +
+                ", userName='" + userName + '\'' +
                 ", type='" + type + '\'' +
                 ", climbStatus='" + climbStatus + '\'' +
                 ", thumbsUp=" + thumbsUp +
-                ", notes='" + notes + '\'' +
+                ", publicBeta='" + publicBeta + '\'' +
                 '}';
     }
 
@@ -67,10 +74,11 @@ public class UpdateClimbRequest {
     public static class Builder {
         private String climbId;
         private String userId;
+        private String userName;
         private String type;
         private String climbStatus;
         private Boolean thumbsUp;
-        private String notes;
+        private String publicBeta;
 
         public Builder withClimbId(String climbId) {
             this.climbId = climbId;
@@ -78,6 +86,10 @@ public class UpdateClimbRequest {
         }
         public Builder withUserId(String userId) {
             this.userId = userId;
+            return this;
+        }
+        public Builder withUserName(String userName) {
+            this.userName = userName;
             return this;
         }
 
@@ -96,13 +108,13 @@ public class UpdateClimbRequest {
             return this;
         }
 
-        public Builder withNotes(String notes) {
-            this.notes = notes;
+        public Builder withPublicBeta(String publicBeta) {
+            this.publicBeta = publicBeta;
             return this;
         }
 
         public UpdateClimbRequest build() {
-            return new UpdateClimbRequest(climbId, userId, type, climbStatus, thumbsUp, notes);
+            return new UpdateClimbRequest(climbId, userId, userName, type, climbStatus, thumbsUp, publicBeta);
         }
     }
 }
