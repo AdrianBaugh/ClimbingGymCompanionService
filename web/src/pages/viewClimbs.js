@@ -27,6 +27,7 @@ class ViewClimb extends BindingClass {
             'typeDropdown',
             'redirectToViewClimb',
             'redirectToViewClimbHistory',
+            //'getWeekNumber',
             'delete'
         ], this);
 
@@ -88,6 +89,7 @@ class ViewClimb extends BindingClass {
         this.statusDropdown();
         this.typeDropdown();
         this.clientLoaded();
+       // this.getWeekNumber();
 
         const openModalButton = document.getElementById('openModalBtn');
         const closeModalButton = document.getElementById('closeModalBtn');
@@ -150,6 +152,12 @@ class ViewClimb extends BindingClass {
         console.log("add climbHistory to page is starting");
         const climbHistory = this.dataStore.get('climbHistory');
         console.log("climbHistory", climbHistory);
+
+        const totalClimbs = document.getElementById('totalClimbs');
+
+        // total climb stats
+        totalClimbs.innerText += ' All Time Total Climbs: ' + climbHistory.length;
+
     
         const climbHistoryElement = document.getElementById('climbHistory');
     
@@ -159,10 +167,11 @@ class ViewClimb extends BindingClass {
             return;
         }
 
+        const climbHistoryByWeek = new Map();
+
         const textHtml = '<h6>Click a Climb below for details:</h6>';
     
         let climbHtml = '<table><tr><th>Route</th><th>Current Status</th><th>Date / Time Climbed</th></tr>';
-    
         for (const climb of climbHistory) {
             let routeId = climb.routeId;
             let location = routeId.split("::")[0];
@@ -174,11 +183,85 @@ class ViewClimb extends BindingClass {
                 <td>${formatDateTime(climb.dateTimeClimbed)}</td>
             </tr>
             `;
+
+            //GRAPH
+            this.updateTotalClimbsPerWeek(climb, climbHistoryByWeek);
+            
         }
         climbHtml += '</table>';
 
         climbHistoryElement.innerHTML = textHtml + climbHtml;
+
+        this.addWeeklyClimbGraphToPage(climbHistoryByWeek);
+        console.log("Graph data: " , climbHistoryByWeek);
     }
+
+    // Method to update climbHistoryByWeek
+    updateTotalClimbsPerWeek(climb, climbHistoryByWeek) {
+        const dateTimeClimbed = new Date(climb.dateTimeClimbed * 1000); // Convert seconds to milliseconds
+        const weekKey = this.getWeekKey(dateTimeClimbed);
+    
+        if (!climbHistoryByWeek.has(weekKey)) {
+            climbHistoryByWeek.set(weekKey, 0);
+        }
+
+        climbHistoryByWeek.set(weekKey, climbHistoryByWeek.get(weekKey) + 1);
+    }
+
+    // Method to add graph to the page
+    addWeeklyClimbGraphToPage(climbHistoryByWeek) {
+        // Prepare data for the line graph
+        const graphData = Array.from(climbHistoryByWeek.entries()).map(([week, totalClimbs]) => ({
+            week,
+            totalClimbs,
+        }));
+    
+        // Sort the data based on week
+        graphData.sort((a, b) => new Date(a.week) - new Date(b.week));
+    
+        // Use only the last 5 weeks of data
+        const lastFiveWeeksData = graphData.slice(-5);
+    
+        const canvas = document.getElementById('climbGraph');
+
+        if (canvas.chart) {
+            canvas.chart.destroy();
+        }
+
+        const context = document.getElementById('climbGraph').getContext('2d');
+        const weeklyClimbGraph = new Chart(context, {
+            type: 'line',
+            data: {
+                labels: lastFiveWeeksData.map(entry => entry.week),
+                datasets: [{
+                    label: 'Total Climbs Last 5 Weeks',
+                    data: lastFiveWeeksData.map(entry => entry.totalClimbs),
+                    fill: false,
+                    borderColor: 'rgb(75, 192, 192)',
+                    tension: 0.1,
+                }],
+            },
+            options: {
+                scales: {
+                    y: {
+                        suggestedMin: 0, // Set the minimum value for the y-axis
+                        suggestedMax: Math.ceil(Math.max(...lastFiveWeeksData.map(entry => entry.totalClimbs)))+1, // Set the maximum value for the y-axis
+                        beginAtZero: true, // Start the y-axis from zero
+                        stepSize: 1, // Set the step size for the y-axis
+                    },
+                },
+            },
+        });
+        canvas.chart = weeklyClimbGraph;
+    }
+
+    getWeekKey(date) {
+        const year = date.getUTCFullYear();
+        const month = date.getUTCMonth() + 1; // Month is 0-indexed
+        const day = date.getUTCDate();
+        return `${year}-${month}-${day}`;
+    }
+
 
     // Function to populate the status dropdown
     statusDropdown() {

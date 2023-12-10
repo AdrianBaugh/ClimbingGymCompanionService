@@ -5,6 +5,7 @@
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script type="text/javascript" src="assets/viewClimbs.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="icon" type="image/x-icon" href="favicon-2.jpeg">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -22,9 +23,12 @@
             <a href="/" class="button">Go Home</a>
             </div>
         </div>
-    
+        <div class="card">
+            <a href="createClimb.html" class="button">RECORD CLIMB</a>
+        </div>
+
         <div id="climb-details" class="card">            
-            <h3>Climb Details:</h3>
+            <h1>Climb Details</h1>
             <hr></hr>
             <p class="detail-header">Location: <span id="route-location">loading...</span></p>
             <p class="detail-header">Difficulty: <span id="difficulty">loading...</span></p>
@@ -80,17 +84,25 @@
             </div>
         </div>
         </div>
+
+        <div class="card">
+            <div>
+            <h1>Climb Stats</h1>
+            <h5 id="totalClimbs"></h5>
+        </div>
+            <div>
+            <canvas id="climbGraph" width="200" height="100"></canvas>
+        </div>
+        </div>
         
        <div class="card">
-        <h1> Your Climb History</h1>
+        <h1>Climb History</h1>
             <div id="climbHistory">
                 <h4>Loading...</h4>
             </div>
         </div>
 
-        <div class="card">
-            <a href="createClimb.html" class="button">RECORD CLIMB</a>
-        </div>
+       
 </body>
 
 </html>
