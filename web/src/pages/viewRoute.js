@@ -17,7 +17,15 @@ import { getValueFromEnum } from '../util/enumUtils.js';
 class ViewRoute extends BindingClass {
     constructor() {
         super();
-        this.bindClassMethods(['clientLoaded', 'mount', 'addRouteToPage', 'statusDropdown', 'submit', 'redirectToViewRoute'], this);
+        this.bindClassMethods([
+            'clientLoaded',
+            'mount',
+            'addRouteToPage',
+            'updateStatusDropdown',
+            'submit',
+            'redirectToViewRoute'],
+            this);
+
         this.dataStore = new DataStore();
         this.dataStore.addChangeListener(this.addRouteToPage);
         this.dataStore.addChangeListener(this.redirectToViewRoute);
@@ -44,7 +52,6 @@ class ViewRoute extends BindingClass {
 
         this.header.addHeaderToPage();
         this.client = new ClimbClient();
-        this.statusDropdown();
         this.clientLoaded();
 
         const openModalButton = document.getElementById('openModalBtn');
@@ -53,6 +60,8 @@ class ViewRoute extends BindingClass {
     
         openModalButton.addEventListener('click', () => {
             routeStatusModal.style.display = 'block';
+            this.updateStatusDropdown();
+
         });
     
         closeModalButton.addEventListener('click', () => {
@@ -115,7 +124,7 @@ class ViewRoute extends BindingClass {
             tableHeaders.innerHTML = '<th>Username</th><th>Beta</th>';
             notesList.appendChild(tableHeaders);
         
-            for (const [username, note] of  Object.entries(betaMap)) {
+            for (const [note, username] of  Object.entries(betaMap)) {
                 const row = document.createElement('tr');
                 row.innerHTML = `<td>${username}</td><td>${note}</td>`;
                 notesList.appendChild(row);
@@ -123,53 +132,60 @@ class ViewRoute extends BindingClass {
         }        
     }
 
-/**
- * Function to display the image on screen or No image is null
- * @param {*} imageKey 
- */
-async displayRouteImage(route) {
-    const routeImageElement = document.getElementById('route-image');
-    if (route.imageKey != null) {
-        const imageUrl = await this.client.getPresignedS3Image(route.imageKey);
-        routeImageElement.src = imageUrl.s3PreSignedUrl;
-        console.log("imageURL: ", imageUrl.s3PreSignedUrl);
-        routeImageElement.alt = route.imageName;
-        const imageLabel = document.getElementById("imageLabel");
-        imageLabel.style.display = "block";
-    } else {
-        const imageCard = document.getElementById('image');
-        const noImageMessage = document.getElementById("noImageMessage");
-        noImageMessage.style.display = "block";
-        routeImageElement.style.display = "none"; // Hide only the image, not the entire card
+    /**
+     * Function to display the image on screen or No image is null
+     * @param {*} imageKey 
+     */
+    async displayRouteImage(route) {
+        const routeImageElement = document.getElementById('route-image');
+        if (route.imageKey != null) {
+            const imageUrl = await this.client.getPresignedS3Image(route.imageKey);
+            routeImageElement.src = imageUrl.s3PreSignedUrl;
+            console.log("imageURL: ", imageUrl.s3PreSignedUrl);
+            routeImageElement.alt = route.imageName;
+            const imageLabel = document.getElementById("imageLabel");
+            imageLabel.style.display = "block";
+        } else {
+            const imageCard = document.getElementById('image');
+            const noImageMessage = document.getElementById("noImageMessage");
+            noImageMessage.style.display = "block";
+            routeImageElement.style.display = "none"; // Hide only the image, not the entire card
+        }
     }
-}
-
-
 
    /**
     * Function to populate the status dropdown
     */
-   statusDropdown() {
-    const statusDropdown = document.getElementById('statusDropdown');
+    updateStatusDropdown() {
+        console.log("Update route status clicked")
+        const route = this.dataStore.get('route');
+        if (route == null) {
+            return;
+        }
 
-    statusDropdown.innerHTML = '';
+        const currRouteStatus = getValueFromEnum(route.routeStatus, routeStatus);
 
-    const placeholderOption = document.createElement('option');
-    placeholderOption.value = '';
-    placeholderOption.textContent = 'Select a status'; // Placeholder text
-    placeholderOption.disabled = true;
-    placeholderOption.selected = true; 
-    statusDropdown.appendChild(placeholderOption);
+        const statusDropdown = document.getElementById('statusDropdown');
 
-    for (const status in routeStatus) {
-        if (routeStatus.hasOwnProperty(status)) {
-            const option = document.createElement('option');
-            option.value = status;
-            option.textContent = routeStatus[status];
-            statusDropdown.appendChild(option);
+        statusDropdown.innerHTML = '';
+
+        // Create an option for the current climb status
+        const currentOption = document.createElement('option');
+        currentOption.value = route.routeStatus;
+        currentOption.textContent = currRouteStatus;
+        currentOption.selected = true;
+        statusDropdown.appendChild(currentOption);
+
+        // Add other options
+        for (const status in routeStatus) {
+            if (routeStatus.hasOwnProperty(status) && status !== route.routeStatus) {
+                const option = document.createElement('option');
+                option.value = status;
+                option.textContent = routeStatus[status];
+                statusDropdown.appendChild(option);
+            }
         }
     }
-}
     
     redirectToViewRoute() {
         const route = this.dataStore.get('route');
@@ -210,9 +226,9 @@ async displayRouteImage(route) {
     
         this.redirectToViewRoute();
         
-        const modal = document.getElementById('myModal')
+        const modal = document.getElementById('routeStatusModal')
         setTimeout(() => {
-            modal.style.display = 'none';
+            modal.style.display = "none";
             updateButton.innerText= origButtonText;
         }, 3000);
     }

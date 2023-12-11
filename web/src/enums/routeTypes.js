@@ -2,7 +2,7 @@
 
 const routeType = {
     BOULDER: 'BOULDER',
-    TOP_ROPE: 'TOP ROPE',
+    TOP_ROPE_LEAD_CLIMB: 'TOP ROPE / LEAD CLIMB',
     LEAD_CLIMB: 'LEAD CLIMB',
     AUTO_BELAY: 'AUTO BELAY',
   };

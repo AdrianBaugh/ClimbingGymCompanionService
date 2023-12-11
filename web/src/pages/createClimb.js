@@ -15,7 +15,7 @@ import { getValueFromEnum } from '../util/enumUtils.js';
 class CreateClimb extends BindingClass {
     constructor() {
         super();
-        this.bindClassMethods(['clientLoaded', 'mount', 'submit', 'redirectToViewClimb', 'routeDropdown', 'statusDropdown', 'typeDropdown'], this);
+        this.bindClassMethods(['clientLoaded', 'mount', 'submit', 'redirectToViewClimb', 'routeDropdown', 'statusDropdown'], this);
         this.dataStore = new DataStore();
         this.dataStore.addChangeListener(this.routeDropdown);
         this.header = new Header(this.dataStore);
@@ -57,7 +57,6 @@ class CreateClimb extends BindingClass {
         this.client = new ClimbClient();
         this.routeDropdown();
         this.statusDropdown();
-        this.typeDropdown();
         this.clientLoaded();
     }
 
@@ -117,29 +116,6 @@ class CreateClimb extends BindingClass {
         }
     }
 
-    // Function to populate the type dropdown
-    typeDropdown() {
-        const typeDropdown = document.getElementById('typeDropdown');
-    
-        typeDropdown.innerHTML = '';
-    
-        const placeholderOption = document.createElement('option');
-        placeholderOption.value = '';
-        placeholderOption.textContent = 'Select a type'; // Placeholder text
-        placeholderOption.disabled = true;
-        placeholderOption.selected = true; 
-        typeDropdown.appendChild(placeholderOption);
-    
-        for (const type in routeTypes) {
-            if (routeTypes.hasOwnProperty(type)) {
-                const option = document.createElement('option');
-                option.value = type;
-                option.textContent = routeTypes[type];
-                typeDropdown.appendChild(option);
-            }
-        }
-    }
-
     async submit(evt) {
         console.log('Submit button clicked');
         evt.preventDefault();
@@ -161,7 +137,10 @@ class CreateClimb extends BindingClass {
         }
 
         const climbStatus = document.getElementById('statusDropdown').value || null;
-        const type = document.getElementById('typeDropdown').value || null;
+        
+        const leadClimbCheckbox = document.getElementById('leadClimbCheckbox');
+        const type = leadClimbCheckbox.checked ? 'LEAD_CLIMB' : null;
+
         const notes = document.getElementById('notes').value || null;
     
         // Get the value of the selected thumbs option

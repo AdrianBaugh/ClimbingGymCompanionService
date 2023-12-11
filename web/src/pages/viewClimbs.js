@@ -23,17 +23,16 @@ class ViewClimb extends BindingClass {
             'addClimbToPage',
             'addClimbHistoryToPage',
             'submit',
-            'statusDropdown',
-            'typeDropdown',
+            'updateStatusDropdown',
+            'updateLeadClimbCheckbox',
             'redirectToViewClimb',
             'redirectToViewClimbHistory',
+            'updateThumbsUpAndDownRadios',
+            'updateClimbNotes',
             'delete'
         ], this);
 
         this.dataStore = new DataStore();
-        this.dataStore.addChangeListener(this.addClimbToPage);
-        this.dataStore.addChangeListener(this.addClimbHistoryToPage);
-        this.dataStore.addChangeListener(this.redirectToViewClimb);
 
         this.header = new Header(this.dataStore);
         console.log("ViewClimb constructor");
@@ -61,17 +60,21 @@ class ViewClimb extends BindingClass {
 
         const climbHistory = await this.client.viewUsersClimbHistory();
         this.dataStore.set('climbHistory', climbHistory);
-        
+        this.addClimbHistoryToPage();
+
+
         // Check if climbId is present and not null
         const urlParams = new URLSearchParams(window.location.search);
         const climbId = urlParams.get('climbId');
         if (climbId !== null) {
             const climb = await this.client.viewClimb(climbId);
             this.dataStore.set('climb', climb);
-                   
+                
             const currentDisplayedRoute = await this.client.viewRoute(climb.routeId);
             this.dataStore.set('currentDisplayedRoute', currentDisplayedRoute);
         }
+        this.addClimbToPage();
+
     }
     
 
@@ -82,11 +85,9 @@ class ViewClimb extends BindingClass {
         document.getElementById('updateClimb').addEventListener('click', this.submit);
         document.getElementById('deleteClimbButton').addEventListener('click', this.delete);
 
-
         this.header.addHeaderToPage();
         this.client = new ClimbClient();
-        this.statusDropdown();
-        this.typeDropdown();
+
         this.clientLoaded();
 
         const openModalButton = document.getElementById('openModalBtn');
@@ -94,6 +95,10 @@ class ViewClimb extends BindingClass {
         const modal = document.getElementById('updateClimbModal');
     
         openModalButton.addEventListener('click', () => {
+            this.updateStatusDropdown();
+            this.updateLeadClimbCheckbox();
+            this.updateThumbsUpAndDownRadios();
+            this.updateClimbNotes();
             modal.style.display = 'block';
         });
     
@@ -137,7 +142,7 @@ class ViewClimb extends BindingClass {
 
             document.getElementById('difficulty').innerText = getValueFromEnum(route.difficulty, routeDifficulties);
             document.getElementById('climb-status').innerText = getValueFromEnum(climb.climbStatus, climbStatus);
-            document.getElementById('type').innerText = getValueFromEnum(climb.type, routeTypes);
+            document.getElementById('type').innerText = getValueFromEnum(climb.type !== 'LEAD_CLIMB' ? route.type : climb.type, routeTypes);
             document.getElementById('rating').innerText = climb.thumbsUp !== null ?
                 (climb.thumbsUp ? '👍 ' : '👎') :
                 'Not Rated!';
@@ -151,6 +156,11 @@ class ViewClimb extends BindingClass {
         const climbHistory = this.dataStore.get('climbHistory');
         console.log("climbHistory", climbHistory);
     
+        const totalClimbs = document.getElementById('totalClimbs');
+        totalClimbs.innerText = '';
+        // total climb stats
+        totalClimbs.innerText += ' All Time Total Climbs: ' + climbHistory.length;
+    
         const climbHistoryElement = document.getElementById('climbHistory');
     
         if (climbHistory == null || climbHistory.length === 0) {
@@ -158,15 +168,16 @@ class ViewClimb extends BindingClass {
             climbHistoryElement.innerHTML = messageHtml;
             return;
         }
-
+    
+        const climbHistoryByWeek = new Map();
+    
         const textHtml = '<h6>Click a Climb below for details:</h6>';
     
         let climbHtml = '<table><tr><th>Route</th><th>Current Status</th><th>Date / Time Climbed</th></tr>';
-    
         for (const climb of climbHistory) {
             let routeId = climb.routeId;
             let location = routeId.split("::")[0];
-            
+    
             climbHtml += `
             <tr onclick="window.location='/viewClimbs.html?climbId=${climb.climbId}'">
                 <td>${getValueFromEnum(location, routeLocations)}</td>
@@ -174,57 +185,94 @@ class ViewClimb extends BindingClass {
                 <td>${formatDateTime(climb.dateTimeClimbed)}</td>
             </tr>
             `;
+    
+            // GRAPH
+           // this.updateTotalClimbsPerWeek(climb, climbHistoryByWeek);
         }
         climbHtml += '</table>';
-
+    
         climbHistoryElement.innerHTML = textHtml + climbHtml;
+    
+        //this.addWeeklyClimbGraphToPage(climbHistoryByWeek);
+        //console.log("Graph data: ", climbHistoryByWeek);
     }
+    
+    
+
 
     // Function to populate the status dropdown
-    statusDropdown() {
+    updateStatusDropdown() {
+        const climb = this.dataStore.get('climb');
+        if (climb == null) {
+            console.log("climb is null for update climb status dropdown");
+            return;
+        }
+
+        const currClimbStatus = getValueFromEnum(climb.climbStatus, climbStatus);
+
         const statusDropdown = document.getElementById('statusDropdown');
-    
+
         statusDropdown.innerHTML = '';
-    
-        const placeholderOption = document.createElement('option');
-        placeholderOption.value = '';
-        placeholderOption.textContent = 'Select a status'; // Placeholder text
-        placeholderOption.disabled = true;
-        placeholderOption.selected = true; 
-        statusDropdown.appendChild(placeholderOption);
-    
-        for (const status in routeStatus) {
-            if (routeStatus.hasOwnProperty(status)) {
+
+        // Create an option for the current climb status
+        const currentOption = document.createElement('option');
+        currentOption.value = climb.climbStatus;
+        currentOption.textContent = currClimbStatus;
+        currentOption.selected = true;
+        statusDropdown.appendChild(currentOption);
+
+        // Add other options
+        for (const status in climbStatus) {
+            if (climbStatus.hasOwnProperty(status) && status !== climb.climbStatus) {
                 const option = document.createElement('option');
                 option.value = status;
-                option.textContent = routeStatus[status];
+                option.textContent = climbStatus[status];
                 statusDropdown.appendChild(option);
             }
         }
     }
 
     // Function to populate the type dropdown
-    typeDropdown() {
-        const typeDropdown = document.getElementById('typeDropdown');
+    updateLeadClimbCheckbox() {
+        const climb = this.dataStore.get('climb');
+        if (climb == null) {
+            console.log("climb is null for updating checkbox");
+            return;
+        }
+
+        const leadClimbCheckbox = document.getElementById('leadClimbCheckbox');
+
+        // Set the default state based on climb type
+        leadClimbCheckbox.checked = climb.type === 'LEAD_CLIMB';
+
+    }
+
+    updateThumbsUpAndDownRadios() {
+        const climb = this.dataStore.get('climb');
     
-        typeDropdown.innerHTML = '';
+        const radioButtons = document.getElementsByName('thumbs');
     
-        const placeholderOption = document.createElement('option');
-        placeholderOption.value = '';
-        placeholderOption.textContent = 'Select a type'; // Placeholder text
-        placeholderOption.disabled = true;
-        placeholderOption.selected = true; 
-        typeDropdown.appendChild(placeholderOption);
-    
-        for (const type in routeTypes) {
-            if (routeTypes.hasOwnProperty(type)) {
-                const option = document.createElement('option');
-                option.value = type;
-                option.textContent = routeTypes[type];
-                typeDropdown.appendChild(option);
-            }
+        for (const radioButton of radioButtons) {
+            const radioButtonValue = radioButton.value;
+            
+            radioButton.checked = (radioButtonValue === 'thumbsUp' && climb.thumbsUp === true) ||
+                                  (radioButtonValue === 'thumbsDown' && climb.thumbsUp === false) ||
+                                  (radioButtonValue !== 'thumbsUp' && radioButtonValue !== 'thumbsDown' && climb.thumbsUp === null);
         }
     }
+
+    updateClimbNotes() {
+        const climb = this.dataStore.get('climb');
+        const notesInput = document.getElementById('updateNotes');
+        console.log(notesInput)
+        if (climb.notes !== null) {
+            notesInput.value = climb.notes;
+        } else {
+            notesInput.value = ''; 
+            notesInput.placeholder = "ex. Big dynamic move at the start..."; // Show the placeholder
+        }
+    }
+    
 
     redirectToViewClimb() {
         const climb = this.dataStore.get('climb');
@@ -256,7 +304,7 @@ class ViewClimb extends BindingClass {
     
         const type = document.getElementById('typeDropdown').value || null;
         const climbStatus = document.getElementById('statusDropdown').value || null;
-        const notes = document.getElementById('notes').value || null;
+        const notes = document.getElementById('updateNotes').value || null;
 
         // Get the value of the selected thumbs option
         const thumbsUpRadioButton = document.getElementById('thumbsUp');
@@ -313,13 +361,14 @@ class ViewClimb extends BindingClass {
     
         if (isConfirmed) {
             try {
+                deleteButton.innerText = 'Deleting...'
                 await this.client.deleteClimb(climb.climbId);
+                
             } catch (error) {
                 errorMessageDisplay.innerText = `Error: ${error.message}`;
                 errorMessageDisplay.classList.remove('hidden');
                 return;
             }
-    
             deleteButton.style.display = 'none';
             openModalBtn.style.display = 'none';
             messageContainer.style.display = 'block';

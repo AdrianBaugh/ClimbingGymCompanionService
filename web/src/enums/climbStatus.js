@@ -2,7 +2,7 @@
 
 const climbStatus = {
     // first attempt completion start to finish
-    COMPLETED_FLASHED: 'COMPLETED FLASED',
+    COMPLETED_FLASHED: 'COMPLETED FLASHED',
     // completion start to finish
     COMPLETED_SENT: 'COMPLETED SENT',
     // completion start to finish but fell off wall in between

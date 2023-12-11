@@ -23,7 +23,7 @@ public class UpdateRouteUtils {
         Route route = routeDao.getRouteById(routeId);
 
         Map<String, String> notes = route.getBetaMap();
-        notes.put(userName, newBeta);
+        notes.put(newBeta, userName);
 
         route.setBetaMap(notes);
 
