@@ -23,11 +23,12 @@ class ViewClimb extends BindingClass {
             'addClimbToPage',
             'addClimbHistoryToPage',
             'submit',
-            'statusDropdown',
-            'typeDropdown',
+            'updateStatusDropdown',
+            'updateLeadClimbCheckbox',
             'redirectToViewClimb',
             'redirectToViewClimbHistory',
-            //'getWeekNumber',
+            'updateThumbsUpAndDownRadios',
+            'updateClimbNotes',
             'delete'
         ], this);
 
@@ -69,9 +70,11 @@ class ViewClimb extends BindingClass {
         if (climbId !== null) {
             const climb = await this.client.viewClimb(climbId);
             this.dataStore.set('climb', climb);
-                   
+                
             const currentDisplayedRoute = await this.client.viewRoute(climb.routeId);
             this.dataStore.set('currentDisplayedRoute', currentDisplayedRoute);
+
+
         }
     }
     
@@ -83,19 +86,20 @@ class ViewClimb extends BindingClass {
         document.getElementById('updateClimb').addEventListener('click', this.submit);
         document.getElementById('deleteClimbButton').addEventListener('click', this.delete);
 
-
         this.header.addHeaderToPage();
         this.client = new ClimbClient();
-        this.statusDropdown();
-        this.typeDropdown();
+
         this.clientLoaded();
-       // this.getWeekNumber();
 
         const openModalButton = document.getElementById('openModalBtn');
         const closeModalButton = document.getElementById('closeModalBtn');
         const modal = document.getElementById('updateClimbModal');
     
         openModalButton.addEventListener('click', () => {
+            this.updateStatusDropdown();
+            this.updateLeadClimbCheckbox();
+            this.updateThumbsUpAndDownRadios();
+            this.updateClimbNotes();
             modal.style.display = 'block';
         });
     
@@ -152,12 +156,11 @@ class ViewClimb extends BindingClass {
         console.log("add climbHistory to page is starting");
         const climbHistory = this.dataStore.get('climbHistory');
         console.log("climbHistory", climbHistory);
-
+    
         const totalClimbs = document.getElementById('totalClimbs');
-
+        totalClimbs.innerText = '';
         // total climb stats
         totalClimbs.innerText += ' All Time Total Climbs: ' + climbHistory.length;
-
     
         const climbHistoryElement = document.getElementById('climbHistory');
     
@@ -166,16 +169,16 @@ class ViewClimb extends BindingClass {
             climbHistoryElement.innerHTML = messageHtml;
             return;
         }
-
+    
         const climbHistoryByWeek = new Map();
-
+    
         const textHtml = '<h6>Click a Climb below for details:</h6>';
     
         let climbHtml = '<table><tr><th>Route</th><th>Current Status</th><th>Date / Time Climbed</th></tr>';
         for (const climb of climbHistory) {
             let routeId = climb.routeId;
             let location = routeId.split("::")[0];
-            
+    
             climbHtml += `
             <tr onclick="window.location='/viewClimbs.html?climbId=${climb.climbId}'">
                 <td>${getValueFromEnum(location, routeLocations)}</td>
@@ -183,131 +186,94 @@ class ViewClimb extends BindingClass {
                 <td>${formatDateTime(climb.dateTimeClimbed)}</td>
             </tr>
             `;
-
-            //GRAPH
-            this.updateTotalClimbsPerWeek(climb, climbHistoryByWeek);
-            
+    
+            // GRAPH
+           // this.updateTotalClimbsPerWeek(climb, climbHistoryByWeek);
         }
         climbHtml += '</table>';
-
+    
         climbHistoryElement.innerHTML = textHtml + climbHtml;
-
-        this.addWeeklyClimbGraphToPage(climbHistoryByWeek);
-        console.log("Graph data: " , climbHistoryByWeek);
-    }
-
-    // Method to update climbHistoryByWeek
-    updateTotalClimbsPerWeek(climb, climbHistoryByWeek) {
-        const dateTimeClimbed = new Date(climb.dateTimeClimbed * 1000); // Convert seconds to milliseconds
-        const weekKey = this.getWeekKey(dateTimeClimbed);
     
-        if (!climbHistoryByWeek.has(weekKey)) {
-            climbHistoryByWeek.set(weekKey, 0);
-        }
-
-        climbHistoryByWeek.set(weekKey, climbHistoryByWeek.get(weekKey) + 1);
+        //this.addWeeklyClimbGraphToPage(climbHistoryByWeek);
+        //console.log("Graph data: ", climbHistoryByWeek);
     }
-
-    // Method to add graph to the page
-    addWeeklyClimbGraphToPage(climbHistoryByWeek) {
-        // Prepare data for the line graph
-        const graphData = Array.from(climbHistoryByWeek.entries()).map(([week, totalClimbs]) => ({
-            week,
-            totalClimbs,
-        }));
     
-        // Sort the data based on week
-        graphData.sort((a, b) => new Date(a.week) - new Date(b.week));
     
-        // Use only the last 5 weeks of data
-        const lastFiveWeeksData = graphData.slice(-5);
-    
-        const canvas = document.getElementById('climbGraph');
-
-        if (canvas.chart) {
-            canvas.chart.destroy();
-        }
-
-        const context = document.getElementById('climbGraph').getContext('2d');
-        const weeklyClimbGraph = new Chart(context, {
-            type: 'line',
-            data: {
-                labels: lastFiveWeeksData.map(entry => entry.week),
-                datasets: [{
-                    label: 'Total Climbs Last 5 Weeks',
-                    data: lastFiveWeeksData.map(entry => entry.totalClimbs),
-                    fill: false,
-                    borderColor: 'rgb(75, 192, 192)',
-                    tension: 0.1,
-                }],
-            },
-            options: {
-                scales: {
-                    y: {
-                        suggestedMin: 0, // Set the minimum value for the y-axis
-                        suggestedMax: Math.ceil(Math.max(...lastFiveWeeksData.map(entry => entry.totalClimbs)))+1, // Set the maximum value for the y-axis
-                        beginAtZero: true, // Start the y-axis from zero
-                        stepSize: 1, // Set the step size for the y-axis
-                    },
-                },
-            },
-        });
-        canvas.chart = weeklyClimbGraph;
-    }
-
-    getWeekKey(date) {
-        const year = date.getUTCFullYear();
-        const month = date.getUTCMonth() + 1; // Month is 0-indexed
-        const day = date.getUTCDate();
-        return `${year}-${month}-${day}`;
-    }
 
 
     // Function to populate the status dropdown
-    statusDropdown() {
+    updateStatusDropdown() {
+        const climb = this.dataStore.get('climb');
+        if (climb == null) {
+            console.log("climb is null for update climb status dropdown");
+            return;
+        }
+
+        const currClimbStatus = getValueFromEnum(climb.climbStatus, climbStatus);
+
         const statusDropdown = document.getElementById('statusDropdown');
-    
+
         statusDropdown.innerHTML = '';
-    
-        const placeholderOption = document.createElement('option');
-        placeholderOption.value = '';
-        placeholderOption.textContent = 'Select a status'; // Placeholder text
-        placeholderOption.disabled = true;
-        placeholderOption.selected = true; 
-        statusDropdown.appendChild(placeholderOption);
-    
-        for (const status in routeStatus) {
-            if (routeStatus.hasOwnProperty(status)) {
+
+        // Create an option for the current climb status
+        const currentOption = document.createElement('option');
+        currentOption.value = climb.climbStatus;
+        currentOption.textContent = currClimbStatus;
+        currentOption.selected = true;
+        statusDropdown.appendChild(currentOption);
+
+        // Add other options
+        for (const status in climbStatus) {
+            if (climbStatus.hasOwnProperty(status) && status !== climb.climbStatus) {
                 const option = document.createElement('option');
                 option.value = status;
-                option.textContent = routeStatus[status];
+                option.textContent = climbStatus[status];
                 statusDropdown.appendChild(option);
             }
         }
     }
 
     // Function to populate the type dropdown
-    typeDropdown() {
-        const typeDropdown = document.getElementById('typeDropdown');
+    updateLeadClimbCheckbox() {
+        const climb = this.dataStore.get('climb');
+        if (climb == null) {
+            console.log("climb is null for updating checkbox");
+            return;
+        }
+
+        const leadClimbCheckbox = document.getElementById('leadClimbCheckbox');
+
+        // Set the default state based on climb type
+        leadClimbCheckbox.checked = climb.type === 'LEAD_CLIMB';
+
+    }
+
+    updateThumbsUpAndDownRadios() {
+        const climb = this.dataStore.get('climb');
     
-        typeDropdown.innerHTML = '';
+        const radioButtons = document.getElementsByName('thumbs');
     
-        const placeholderOption = document.createElement('option');
-        placeholderOption.value = '';
-        placeholderOption.textContent = 'Select a type'; // Placeholder text
-        placeholderOption.disabled = true;
-        placeholderOption.selected = true; 
-        typeDropdown.appendChild(placeholderOption);
-    
-        for (const type in routeTypes) {
-            if (routeTypes.hasOwnProperty(type)) {
-                const option = document.createElement('option');
-                option.value = type;
-                option.textContent = routeTypes[type];
-                typeDropdown.appendChild(option);
-            }
+        for (const radioButton of radioButtons) {
+            const radioButtonValue = radioButton.value;
+            
+            radioButton.checked = (radioButtonValue === 'thumbsUp' && climb.thumbsUp === true) ||
+                                  (radioButtonValue === 'thumbsDown' && climb.thumbsUp === false) ||
+                                  (radioButtonValue !== 'thumbsUp' && radioButtonValue !== 'thumbsDown' && climb.thumbsUp === null);
         }
     }
+
+    updateClimbNotes() {
+        const climb = this.dataStore.get('climb');
+        const notesInput = document.getElementById('updateNotes');
+        console.log(notesInput)
+        if (climb.notes !== null) {
+            notesInput.value = climb.notes;
+        } else {
+            notesInput.value = ''; 
+            notesInput.placeholder = "ex. Big dynamic move at the start..."; // Show the placeholder
+        }
+    }
+    
 
     redirectToViewClimb() {
         const climb = this.dataStore.get('climb');
@@ -339,7 +305,7 @@ class ViewClimb extends BindingClass {
     
         const type = document.getElementById('typeDropdown').value || null;
         const climbStatus = document.getElementById('statusDropdown').value || null;
-        const notes = document.getElementById('notes').value || null;
+        const notes = document.getElementById('updateNotes').value || null;
 
         // Get the value of the selected thumbs option
         const thumbsUpRadioButton = document.getElementById('thumbsUp');
