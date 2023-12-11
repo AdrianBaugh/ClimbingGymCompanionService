@@ -131,6 +131,7 @@ th, td {
 th {
     background-color: var(--primary-color); /* Use primary color for header background */
     color: var(--secondary-color); /* Use secondary color for text color in header */
+    cursor: default;
 }
 
 /* Odd and even row background colors (swapped) */

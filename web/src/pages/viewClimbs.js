@@ -33,9 +33,6 @@ class ViewClimb extends BindingClass {
         ], this);
 
         this.dataStore = new DataStore();
-        this.dataStore.addChangeListener(this.addClimbToPage);
-        this.dataStore.addChangeListener(this.addClimbHistoryToPage);
-        this.dataStore.addChangeListener(this.redirectToViewClimb);
 
         this.header = new Header(this.dataStore);
         console.log("ViewClimb constructor");
@@ -63,7 +60,9 @@ class ViewClimb extends BindingClass {
 
         const climbHistory = await this.client.viewUsersClimbHistory();
         this.dataStore.set('climbHistory', climbHistory);
-        
+        this.addClimbHistoryToPage();
+
+
         // Check if climbId is present and not null
         const urlParams = new URLSearchParams(window.location.search);
         const climbId = urlParams.get('climbId');
@@ -73,9 +72,9 @@ class ViewClimb extends BindingClass {
                 
             const currentDisplayedRoute = await this.client.viewRoute(climb.routeId);
             this.dataStore.set('currentDisplayedRoute', currentDisplayedRoute);
-
-
         }
+        this.addClimbToPage();
+
     }
     
 
@@ -362,13 +361,14 @@ class ViewClimb extends BindingClass {
     
         if (isConfirmed) {
             try {
+                deleteButton.innerText = 'Deleting...'
                 await this.client.deleteClimb(climb.climbId);
+                
             } catch (error) {
                 errorMessageDisplay.innerText = `Error: ${error.message}`;
                 errorMessageDisplay.classList.remove('hidden');
                 return;
             }
-    
             deleteButton.style.display = 'none';
             openModalBtn.style.display = 'none';
             messageContainer.style.display = 'block';
