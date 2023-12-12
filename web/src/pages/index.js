@@ -7,21 +7,32 @@ import routeStatus from "../enums/routeStatus";
 import routeLocations from "../enums/routeLocations";
 import routeDifficulties from "../enums/routeDifficulties";
 import { getValueFromEnum } from '../util/enumUtils.js';
+import LoadingSpinner from "../components/LoadingSpinner.js";
+
 
 
 class Homepage extends BindingClass {
     constructor() {
         super();
 
-        this.bindClassMethods(['clientLoaded','mount', 'addRoutesToPage'], this);
+        this.bindClassMethods([
+            'clientLoaded',
+            'mount',
+            'addRoutesToPage',
+            'showLoader',
+            'hideSimpleLoader'
+        ], this);
         this.dataStore = new DataStore();
         this.dataStore.addChangeListener(this.addRoutesToPage);
         this.header = new Header(this.dataStore);
+        this.loadingSpinner = new LoadingSpinner();
 
         console.log("Homepage constructor");
     }
 
     async clientLoaded() {
+        this.showLoader();
+
         const routes = await this.client.viewAllActiveRoutes();
         this.dataStore.set('routes', routes);
     }
@@ -55,8 +66,16 @@ class Homepage extends BindingClass {
             `;
         }
         routeHtml += '</table></div>';
-    
+        this.hideSimpleLoader();
         document.getElementById('routeList').innerHTML = routeHtml;
+        
+    }
+
+    showLoader() {
+        this.loadingSpinner.showLoadingSpinnerNoMessages();
+    }
+    hideSimpleLoader() {
+        this.loadingSpinner.hideLoadingSpinnerNoMessages();
     }
     
 }

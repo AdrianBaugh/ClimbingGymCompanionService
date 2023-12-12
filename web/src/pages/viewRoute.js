@@ -8,6 +8,7 @@ import routeTypes from "../enums/routeTypes";
 import routeLocations from "../enums/routeLocations";
 import routeDifficulties from "../enums/routeDifficulties";
 import { getValueFromEnum } from '../util/enumUtils.js';
+import LoadingSpinner from "../components/LoadingSpinner.js";
 
 
 
@@ -23,13 +24,19 @@ class ViewRoute extends BindingClass {
             'addRouteToPage',
             'updateStatusDropdown',
             'submit',
-            'redirectToViewRoute'],
-            this);
+            'redirectToViewRoute',
+            'showLoader',
+            'hideLoader',
+            'showSimpleLoader',
+            'hideSimpleLoader'
+        ], this);
 
         this.dataStore = new DataStore();
         this.dataStore.addChangeListener(this.addRouteToPage);
         this.dataStore.addChangeListener(this.redirectToViewRoute);
         this.header = new Header(this.dataStore);
+        this.loadingSpinner = new LoadingSpinner();
+
         console.log("ViewRoute constructor");
     }
 
@@ -37,6 +44,8 @@ class ViewRoute extends BindingClass {
      * Once the client is loaded, get the route metadata.
      */
     async clientLoaded() {
+        this.showLoader("...");
+
         const urlParams = new URLSearchParams(window.location.search);
         const routeId = urlParams.get('routeId');
 
@@ -129,7 +138,8 @@ class ViewRoute extends BindingClass {
                 row.innerHTML = `<td>${username}</td><td>${note}</td>`;
                 notesList.appendChild(row);
             }
-        }        
+        }
+        this.hideLoader();        
     }
 
     /**
@@ -137,6 +147,7 @@ class ViewRoute extends BindingClass {
      * @param {*} imageKey 
      */
     async displayRouteImage(route) {
+        this.showSimpleLoader();
         const routeImageElement = document.getElementById('route-image');
         if (route.imageKey != null) {
             const imageUrl = await this.client.getPresignedS3Image(route.imageKey);
@@ -151,6 +162,7 @@ class ViewRoute extends BindingClass {
             noImageMessage.style.display = "block";
             routeImageElement.style.display = "none"; // Hide only the image, not the entire card
         }
+        this.hideSimpleLoader();
     }
 
    /**
@@ -231,6 +243,20 @@ class ViewRoute extends BindingClass {
             modal.style.display = "none";
             updateButton.innerText= origButtonText;
         }, 3000);
+    }
+
+    showLoader(message) {
+        this.loadingSpinner.showLoadingSpinnerAltMessage(message);
+    }
+    hideLoader(){
+        this.loadingSpinner.hideLoadingSpinner();
+    }
+
+    showSimpleLoader() {
+        this.loadingSpinner.showLoadingSpinnerNoMessages();
+    }
+    hideSimpleLoader() {
+        this.loadingSpinner.hideLoadingSpinnerNoMessages();
     }
 }
 
