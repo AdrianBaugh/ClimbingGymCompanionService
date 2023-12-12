@@ -10,6 +10,7 @@ public class ClimbModel {
     private String type;
     private String climbStatus;
     private ZonedDateTime dateTimeClimbed;
+    private String weekClimbed;
     private Boolean thumbsUp;
     private String notes;
 
@@ -22,16 +23,18 @@ public class ClimbModel {
      * @param climbStatus the climbStatus
      * @param dateTimeClimbed the dateTimeClimbed
      * @param thumbsUp the thumbsUp true or false
+     * @param weekClimbed the week during the year the route was climbed
      * @param notes the notes
      */
     public ClimbModel(String climbId, String userId, String routeId, String type,
-                      String climbStatus, ZonedDateTime dateTimeClimbed, Boolean thumbsUp, String notes) {
+                      String climbStatus, ZonedDateTime dateTimeClimbed, String weekClimbed, Boolean thumbsUp, String notes) {
         this.climbId = climbId;
         this.userId = userId;
         this.routeId = routeId;
         this.type = type;
         this.climbStatus = climbStatus;
         this.dateTimeClimbed = dateTimeClimbed;
+        this.weekClimbed = weekClimbed;
         this.thumbsUp = thumbsUp;
         this.notes = notes;
     }
@@ -62,6 +65,10 @@ public class ClimbModel {
         return dateTimeClimbed;
     }
 
+    public String getWeekClimbed() {
+        return weekClimbed;
+    }
+
     public Boolean getThumbsUp() {
         return thumbsUp;
     }
@@ -72,12 +79,8 @@ public class ClimbModel {
 
     @Override
     public boolean equals(Object other) {
-        if (this == other) {
-            return true;
-        }
-        if (other == null || getClass() != other.getClass()) {
-            return false;
-        }
+        if (this == other) return true;
+        if (other == null || getClass() != other.getClass()) return false;
         ClimbModel that = (ClimbModel) other;
         return Objects.equals(climbId, that.climbId) &&
                 Objects.equals(userId, that.userId) &&
@@ -85,14 +88,17 @@ public class ClimbModel {
                 Objects.equals(type, that.type) &&
                 Objects.equals(climbStatus, that.climbStatus) &&
                 Objects.equals(dateTimeClimbed, that.dateTimeClimbed) &&
+                Objects.equals(weekClimbed, that.weekClimbed) &&
                 Objects.equals(thumbsUp, that.thumbsUp) &&
                 Objects.equals(notes, that.notes);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(climbId, userId, routeId, type, climbStatus, dateTimeClimbed, thumbsUp, notes);
+        return Objects.hash(climbId, userId, routeId, type, climbStatus,
+                dateTimeClimbed, weekClimbed, thumbsUp, notes);
     }
+
     //CHECKSTYLE:OFF:Builder
     public static Builder builder() {
         return new Builder();
@@ -105,6 +111,7 @@ public class ClimbModel {
         private String type;
         private String climbStatus;
         private ZonedDateTime dateTimeClimbed;
+        private String weekClimbed;
         private Boolean thumbsUp;
         private String notes;
 
@@ -138,6 +145,11 @@ public class ClimbModel {
             return this;
         }
 
+        public Builder withWeekClimbed(String weekClimbed) {
+            this.weekClimbed = weekClimbed;
+            return this;
+        }
+
         public Builder withThumbsUp(Boolean thumbsUp) {
             this.thumbsUp = thumbsUp;
             return this;
@@ -149,7 +161,8 @@ public class ClimbModel {
         }
 
         public ClimbModel build() {
-            return new ClimbModel(climbId, userId, routeId, type, climbStatus, dateTimeClimbed, thumbsUp, notes);
+            return new ClimbModel(climbId, userId, routeId, type, climbStatus,
+                    dateTimeClimbed, weekClimbed, thumbsUp, notes);
         }
     }
 }
