@@ -247,7 +247,7 @@ class ViewClimb extends BindingClass {
         // Extract keys and values from the sorted frequency map
         let customLabels = ['4 Weeks Ago', '3 Weeks Ago', '2 Weeks Ago', 'Last Week', 'This Week'];
         let sortedData = Object.values(sortedFrequencyMap);
-        console.log("keys: " , sortedKeys);
+        console.log("Chart keys: " , sortedKeys);
         this.addClimbHistoryGraphToPage(customLabels, sortedData);
     }  
 
