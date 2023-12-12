@@ -77,7 +77,7 @@ class CreateClimb extends BindingClass {
     
         const placeholderOption = document.createElement('option');
         placeholderOption.value = '';
-        placeholderOption.textContent = 'Select a route'; // Placeholder text
+        placeholderOption.textContent = 'Select a route'; 
         placeholderOption.disabled = true;
         placeholderOption.selected = true; 
         dropdown.appendChild(placeholderOption);
@@ -86,7 +86,7 @@ class CreateClimb extends BindingClass {
             if (route.routeStatus === "ACTIVE") {
                 const option = document.createElement('option');
                 option.value = route.routeId;
-                option.textContent = getValueFromEnum(route.location, routeLocations);  // Display route location or another relevant property
+                option.textContent = getValueFromEnum(route.location, routeLocations) + " -- " + getValueFromEnum(route.difficulty, routeDifficulties); 
                 dropdown.appendChild(option);
             }
         });
@@ -101,8 +101,7 @@ class CreateClimb extends BindingClass {
     
         const placeholderOption = document.createElement('option');
         placeholderOption.value = '';
-        placeholderOption.textContent = 'Select a status'; // Placeholder text
-        placeholderOption.disabled = true;
+        placeholderOption.textContent = 'Select a status'; 
         placeholderOption.selected = true; 
         statusDropdown.appendChild(placeholderOption);
     

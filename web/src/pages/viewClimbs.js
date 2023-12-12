@@ -9,6 +9,7 @@ import routeTypes from "../enums/routeTypes";
 import routeLocations from "../enums/routeLocations";
 import routeDifficulties from "../enums/routeDifficulties";
 import { getValueFromEnum } from '../util/enumUtils.js';
+import LoadingSpinner from "../components/LoadingSpinner.js";
 
 
 /**
@@ -29,11 +30,13 @@ class ViewClimb extends BindingClass {
             'redirectToViewClimbHistory',
             'updateThumbsUpAndDownRadios',
             'updateClimbNotes',
+            'showLoader',
+            'hideLoader',
             'delete'
         ], this);
 
         this.dataStore = new DataStore();
-
+        this.loadingSpinner = new LoadingSpinner();
         this.header = new Header(this.dataStore);
         console.log("ViewClimb constructor");
     }
@@ -42,6 +45,7 @@ class ViewClimb extends BindingClass {
      * Once the client is loaded, get the climb metadata.
      */
      async clientLoaded() {
+        
         if (await this.client.authenticator.isUserLoggedIn()) {
             console.log('User is logged in');
         } else {
@@ -60,7 +64,7 @@ class ViewClimb extends BindingClass {
 
 
 
-
+        this.showLoader("...");
         // Check if climbId is present and not null
         const urlParams = new URLSearchParams(window.location.search);
         const climbId = urlParams.get('climbId');
@@ -77,6 +81,7 @@ class ViewClimb extends BindingClass {
         const climbHistory = await this.client.viewUsersClimbHistory();
         this.dataStore.set('climbHistory', climbHistory);
         this.addClimbHistoryToPage();
+        this.hideLoader();
     }
     
 
@@ -160,7 +165,7 @@ class ViewClimb extends BindingClass {
     
        
         const totalClimbs = document.getElementById('totalClimbs');
-        totalClimbs.innerText = (climbHistory ? 'All Time Total Climbs: ' + climbHistory.length : 'No climbs yet!');
+        totalClimbs.innerText = (climbHistory ? 'Total Routes Climbed: ' + climbHistory.length : 'No climbs yet!');
     
         const climbHistoryElement = document.getElementById('climbHistory');
     
@@ -266,10 +271,9 @@ class ViewClimb extends BindingClass {
             data: {
                 labels: labels,
                 datasets: [{
-                    label: 'Total Climbs Per Week',
+                    label: 'Climbs Per Week',
                     data: data,
-                    borderColor: 'rgb(0, 0, 0)',
-                    borderWidth: 1,
+
                     fill: false
                 }]
             },
@@ -476,7 +480,12 @@ class ViewClimb extends BindingClass {
         }
     }
     
-
+    showLoader(message) {
+        this.loadingSpinner.showLoadingSpinner(message);
+    }
+    hideLoader(){
+        this.loadingSpinner.hideLoadingSpinner();
+    }
 }
 
 /**

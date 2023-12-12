@@ -12,11 +12,23 @@
 </head>
 
 <body class="background">
+
     <header class="header" id="header"></header>
+
+    <div id="loading-spinner" class="spinner-container">
+        <div class="spinner"></div>
+        <div id="loading-message" class="fast-appear"></div>
+        <div id="loading-message-sub" class="slow-appear"></div>
+    </div>
+
     <div class="card" id="image">
+
         <label id="imageLabel" style="display: none;"> Route Image: </label> 
         <img id="route-image" alt="" />
         <p id="noImageMessage" style="display: none;">No Image Taken!</p>
+        <div id="loading-spinner-no-message" class="spinner-container-div-only">
+            <div class="spinner"></div>
+        </div>
     </div>
 
 
@@ -48,7 +60,9 @@
 </div>
 <div class="card" id="beta">
     <label id="betaLabel" style="display: none;"> WARNING SPOILERS!</label> 
+    
     <button id="toggleButton" class="button" style="display: none;">SEE ROUTE BETA</button>
+    <hr></hr>
     <table id="notesList" class="hidden"></table>
     <p id="noBetaMessage" style="display: none;">No public beta yet!</p>
   </div>

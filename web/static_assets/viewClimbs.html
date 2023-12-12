@@ -27,6 +27,12 @@
             <a href="createClimb.html" class="button">RECORD CLIMB</a>
         </div>
 
+        <div id="loading-spinner" class="spinner-container">
+            <div class="spinner"></div>
+            <div id="loading-message" class="fast-appear"></div>
+            <div id="loading-message-sub" class="slow-appear"></div>
+        </div>
+
         <div id="climb-details" class="card">            
             <h1>Climb Details</h1>
             <hr></hr>
@@ -86,7 +92,7 @@
         <div class="card">
             <div>
             <h1>Climb Stats</h1>
-            <h5 id="totalClimbs"></h5>
+            <h5 id="totalClimbs">Loadind...</h5>
         </div>
             <div>
             <canvas id="climbGraph" width="200" height="100"></canvas>
