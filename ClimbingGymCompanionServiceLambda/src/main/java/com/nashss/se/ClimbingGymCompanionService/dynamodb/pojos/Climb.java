@@ -27,6 +27,7 @@ public class Climb {
     private String type;
     private String climbStatus;
     private ZonedDateTime dateTimeClimbed;
+    private String weekClimbed;
     private Boolean thumbsUp;
     private String publicBeta;
     @DynamoDBRangeKey(attributeName = "climbId")
@@ -82,6 +83,17 @@ public class Climb {
     public void setDateTimeClimbed(ZonedDateTime dateTimeClimbed) {
         this.dateTimeClimbed = dateTimeClimbed;
     }
+
+    @DynamoDBAttribute(attributeName = "weekClimbed")
+    public String getWeekClimbed() {
+        return weekClimbed;
+    }
+
+    public void setWeekClimbed(String weekClimbed) {
+        this.weekClimbed = weekClimbed;
+    }
+
+
     @DynamoDBAttribute(attributeName = "thumbsUp")
     @DynamoDBTyped(DynamoDBMapperFieldModel.DynamoDBAttributeType.BOOL)
     public Boolean isThumbsUp() {
@@ -102,12 +114,8 @@ public class Climb {
 
     @Override
     public boolean equals(Object other) {
-        if (this == other) {
-            return true;
-        }
-        if (other == null || getClass() != other.getClass()) {
-            return false;
-        }
+        if (this == other) return true;
+        if (other == null || getClass() != other.getClass()) return false;
         Climb climb = (Climb) other;
         return Objects.equals(climbId, climb.climbId) &&
                 Objects.equals(userId, climb.userId) &&
@@ -115,13 +123,15 @@ public class Climb {
                 Objects.equals(type, climb.type) &&
                 Objects.equals(climbStatus, climb.climbStatus) &&
                 Objects.equals(dateTimeClimbed, climb.dateTimeClimbed) &&
+                Objects.equals(weekClimbed, climb.weekClimbed) &&
                 Objects.equals(thumbsUp, climb.thumbsUp) &&
                 Objects.equals(publicBeta, climb.publicBeta);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(climbId, userId, routeId, type, climbStatus, dateTimeClimbed, thumbsUp, publicBeta);
+        return Objects.hash(climbId, userId, routeId, type, climbStatus,
+                dateTimeClimbed, weekClimbed, thumbsUp, publicBeta);
     }
 
     @Override
@@ -133,6 +143,7 @@ public class Climb {
                 ", type='" + type + '\'' +
                 ", climbStatus='" + climbStatus + '\'' +
                 ", dateTimeClimbed=" + dateTimeClimbed +
+                ", weekClimbed='" + weekClimbed + '\'' +
                 ", thumbsUp=" + thumbsUp +
                 ", publicBeta='" + publicBeta + '\'' +
                 '}';

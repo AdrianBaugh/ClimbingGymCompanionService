@@ -60,6 +60,7 @@ public class CreateClimbActivity {
         newClimb.setRouteId(routeId);
         newClimb.setClimbStatus(createClimbRequest.getClimbStatus());
         newClimb.setDateTimeClimbed(dateTime);
+        newClimb.setWeekClimbed(DateTimeUtils.getWeekOfYear());
 
         if (rating != null) {
             UpdateRouteUtils.updateRouteRating(climbDao, routeDao, rating, routeId);

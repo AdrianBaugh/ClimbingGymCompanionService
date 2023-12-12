@@ -58,9 +58,7 @@ class ViewClimb extends BindingClass {
             document.getElementById('loginBtn').appendChild(loginButton);
         }
 
-        const climbHistory = await this.client.viewUsersClimbHistory();
-        this.dataStore.set('climbHistory', climbHistory);
-        this.addClimbHistoryToPage();
+
 
 
         // Check if climbId is present and not null
@@ -75,6 +73,10 @@ class ViewClimb extends BindingClass {
         }
         this.addClimbToPage();
 
+
+        const climbHistory = await this.client.viewUsersClimbHistory();
+        this.dataStore.set('climbHistory', climbHistory);
+        this.addClimbHistoryToPage();
     }
     
 
@@ -156,10 +158,9 @@ class ViewClimb extends BindingClass {
         const climbHistory = this.dataStore.get('climbHistory');
         console.log("climbHistory", climbHistory);
     
+       
         const totalClimbs = document.getElementById('totalClimbs');
-        totalClimbs.innerText = '';
-        // total climb stats
-        totalClimbs.innerText += ' All Time Total Climbs: ' + climbHistory.length;
+        totalClimbs.innerText = (climbHistory ? 'All Time Total Climbs: ' + climbHistory.length : 'No climbs yet!');
     
         const climbHistoryElement = document.getElementById('climbHistory');
     
@@ -169,11 +170,11 @@ class ViewClimb extends BindingClass {
             return;
         }
     
-        const climbHistoryByWeek = new Map();
+        const climbHistoryFrequencyMap = {};
     
         const textHtml = '<h6>Click a Climb below for details:</h6>';
     
-        let climbHtml = '<table><tr><th>Route</th><th>Current Status</th><th>Date / Time Climbed</th></tr>';
+        let climbHtml = '<table><tr><th>Route</th><th>Status</th><th>Date / Time Climbed</th></tr>';
         for (const climb of climbHistory) {
             let routeId = climb.routeId;
             let location = routeId.split("::")[0];
@@ -186,19 +187,110 @@ class ViewClimb extends BindingClass {
             </tr>
             `;
     
-            // GRAPH
-           // this.updateTotalClimbsPerWeek(climb, climbHistoryByWeek);
+            // GRAPH DATA
+            if (climbHistoryFrequencyMap[climb.weekClimbed]) {
+                climbHistoryFrequencyMap[climb.weekClimbed]++;
+            } else {
+                climbHistoryFrequencyMap[climb.weekClimbed] = 1;
+            }
+
+
         }
         climbHtml += '</table>';
     
         climbHistoryElement.innerHTML = textHtml + climbHtml;
-    
-        //this.addWeeklyClimbGraphToPage(climbHistoryByWeek);
-        //console.log("Graph data: ", climbHistoryByWeek);
+
+        // call graph here
+
+        console.log("***********FREQUENCY MAP***********");
+        console.log(climbHistoryFrequencyMap);
+
+        this.dataStore.set('climbHistoryFrequencyMap', climbHistoryFrequencyMap);
+        this.processClimbHistory();
     }
     
-    
+    // Method for handling climb history frequency map, sorting, etc.
+    processClimbHistory() {
+        const climbHistoryFrequencyMap = this.dataStore.get('climbHistoryFrequencyMap');
 
+        // Extract the numeric part after the double colons and convert to numbers
+        const extractNumber = (key) => parseInt(key.split('::')[1]);
+
+        // Find the minimum and maximum week numbers
+        const minWeek = Math.min(...Object.keys(climbHistoryFrequencyMap).map(extractNumber));
+        const maxWeek = Math.max(...Object.keys(climbHistoryFrequencyMap).map(extractNumber));
+
+        // Create a new frequency map with all weeks, filling missing weeks with zero
+        let tempMap = {};
+        for (let weekNumber = maxWeek; weekNumber >= minWeek; weekNumber--) {
+            const key = `2023::${weekNumber}`;
+            tempMap[key] = climbHistoryFrequencyMap[key] || 0;
+        }
+
+        let sortedKeys = Object.keys(tempMap).sort((a, b) => {
+            // Extract the numeric part after the double colons and convert to numbers
+            const numA = parseInt(a.split('::')[1]);
+            const numB = parseInt(b.split('::')[1]);
+
+            return numA - numB;
+        });
+
+        // Take the last 5 keys for most recent data
+        sortedKeys = sortedKeys.slice(-5);
+
+        // Create a new frequency map with sorted keys
+        let sortedFrequencyMap = {};
+        sortedKeys.forEach(key => {
+            sortedFrequencyMap[key] = climbHistoryFrequencyMap[key];
+        });
+
+        // Extract keys and values from the sorted frequency map
+        let customLabels = ['4 Weeks Ago', '3 Weeks Ago', '2 Weeks Ago', 'Last Week', 'This Week'];
+        let sortedData = Object.values(sortedFrequencyMap);
+        console.log("keys: " , sortedKeys);
+        this.addClimbHistoryGraphToPage(customLabels, sortedData);
+    }  
+
+    // Method for displaying the climb history graph
+    addClimbHistoryGraphToPage(labels, data) {
+        const canvas = document.getElementById('climbGraph');
+        const context = canvas.getContext('2d');
+
+        // Check if there is an existing chart
+        if (canvas.chart) {
+            canvas.chart.destroy();
+        }
+
+        let climbHistoryChart = new Chart(context, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Total Climbs Per Week',
+                    data: data,
+                    borderColor: 'rgb(0, 0, 0)',
+                    borderWidth: 1,
+                    fill: false
+                }]
+            },
+            options: {
+                scales: {
+                    x: {
+                        type: 'category',
+                        labels: labels
+                    },
+                    y: {
+                        suggestedMin: 0,
+                        beginAtZero: true,
+                        stepSize: 1,
+                        suggestedMax: Math.max(...data) + 1,
+                    }
+                }
+            }
+        });
+
+        canvas.chart = climbHistoryChart;
+    }
 
     // Function to populate the status dropdown
     updateStatusDropdown() {

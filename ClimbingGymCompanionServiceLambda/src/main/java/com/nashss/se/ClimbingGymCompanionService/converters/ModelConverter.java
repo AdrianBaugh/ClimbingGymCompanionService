@@ -62,6 +62,7 @@ public class ModelConverter {
                 .withRouteId(climb.getRouteId())
                 .withClimbStatus(climb.getClimbStatus())
                 .withDateTimeClimbed(climb.getDateTimeClimbed())
+                .withWeekClimbed(climb.getWeekClimbed())
                 .withThumbsUp(climb.isThumbsUp())
                 .withNotes(climb.getPublicBeta())
                 .build();
