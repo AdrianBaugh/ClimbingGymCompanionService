@@ -161,7 +161,7 @@ class CreateClimb extends BindingClass {
     
         try {
             const climb = await this.client.createClimb(route, climbStatus, thumbsValue, type, notes);
-            this.dataStore.set('climb', climb);
+            await this.dataStore.set('climb', climb);
             console.log('Climb data before redirect:', climb);
 
             // Redirect after setting climb data

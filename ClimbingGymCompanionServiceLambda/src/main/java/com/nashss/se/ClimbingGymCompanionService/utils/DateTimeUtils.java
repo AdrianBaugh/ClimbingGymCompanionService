@@ -14,9 +14,7 @@ public class DateTimeUtils {
      * @return a time zoned time
      */
     public static ZonedDateTime getDateTime() {
-        ZoneId centralTimeZone = ZoneId.of("America/Chicago");
-
-        return ZonedDateTime.of(LocalDateTime.now(), centralTimeZone);
+        return ZonedDateTime.of(LocalDateTime.now(), ZoneId.systemDefault());
     }
 
     /**

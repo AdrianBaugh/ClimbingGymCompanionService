@@ -300,7 +300,6 @@ class ViewClimb extends BindingClass {
     updateStatusDropdown() {
         const climb = this.dataStore.get('climb');
         if (climb == null) {
-            console.log("climb is null for update climb status dropdown");
             return;
         }
 
@@ -331,6 +330,7 @@ class ViewClimb extends BindingClass {
     // Function to populate the type dropdown
     updateLeadClimbCheckbox() {
         const climb = this.dataStore.get('climb');
+
         if (climb == null) {
             console.log("climb is null for updating checkbox");
             return;
@@ -360,7 +360,6 @@ class ViewClimb extends BindingClass {
     updateClimbNotes() {
         const climb = this.dataStore.get('climb');
         const notesInput = document.getElementById('updateNotes');
-        console.log(notesInput)
         if (climb.notes !== null) {
             notesInput.value = climb.notes;
         } else {
@@ -388,6 +387,8 @@ class ViewClimb extends BindingClass {
 
     async submit(evt) {
         const climb = this.dataStore.get('climb');
+        const currRoute = this.dataStore.get('currentDisplayedRoute');
+
         console.log('Submit button clicked');
         evt.preventDefault();
     
@@ -397,17 +398,14 @@ class ViewClimb extends BindingClass {
     
         const updateButton = document.getElementById('updateClimb');
         const origButtonText = updateButton.innerText;
-        updateButton.innerText = 'Loading. . .';
+        updateButton.innerText = 'Updating. . .';
 
-        let type = null;
-    
-        const leadCheckbox = document.getElementById('leadClimbCheckbox').value || null;
-        console.log("LEADCHECKBOX=========== ", leadCheckbox);
-        if (leadCheckbox === "on") {
-            type = 'LEAD_CLIMB';
-        } else {
-            const currRoute = this.dataStore.get('currentDisplayedRoute');
-            type = currRoute.type;
+
+        const leadClimbCheckbox = document.getElementById('leadClimbCheckbox');
+
+        let type = null; 
+        if (leadClimbCheckbox.checked) {
+            type =  'LEAD_CLIMB';
         }
 
         const climbStatus = document.getElementById('statusDropdown').value || null;
@@ -425,11 +423,9 @@ class ViewClimb extends BindingClass {
             thumbsValue = false;
         }
 
-
         try {
             const updatedClimb = await this.client.updateClimb(climb.climbId, climbStatus, thumbsValue, type, notes);
-            this.dataStore.set('climb', updatedClimb);
-            console.log('updatedClimb data before redirect:', updatedClimb);
+            await this.dataStore.set('climb', updatedClimb);
 
         } catch (error) {
             createButton.innerText = origButtonText;
@@ -438,13 +434,14 @@ class ViewClimb extends BindingClass {
         }
 
         // Redirect after updating climb data
-        this.redirectToViewClimb();
+        
         const modal = document.getElementById('updateClimbModal')
 
         setTimeout(() => {
             modal.style.display = 'none';
             updateButton.innerText = origButtonText;
         }, 3000);
+        window.location.reload();
     }
 
     async delete() {

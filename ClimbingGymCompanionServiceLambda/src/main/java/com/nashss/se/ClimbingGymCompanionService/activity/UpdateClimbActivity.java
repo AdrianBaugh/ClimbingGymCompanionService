@@ -48,14 +48,12 @@ public class UpdateClimbActivity {
         Climb climb = climbDao.getClimbById(updateClimbRequest.getClimbId(), updateClimbRequest.getUserId());
         String routeId = climb.getRouteId();
 
-        String type = updateClimbRequest.getType();
         String climbStatus = updateClimbRequest.getClimbStatus();
         Boolean thumbsUp = updateClimbRequest.getThumbsUp();
         String publicBeta = updateClimbRequest.getPublicBeta();
 
-        if (type != null) {
-            climb.setType(type);
-        }
+        climb.setType(updateClimbRequest.getType());
+
         if (climbStatus != null) {
             climb.setClimbStatus(climbStatus);
         }

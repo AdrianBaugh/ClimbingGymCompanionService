@@ -212,7 +212,6 @@ class ViewRoute extends BindingClass {
             }
         }
     }
-    
 
     async submit(evt) {
         console.log('Submit button clicked');
@@ -236,14 +235,13 @@ class ViewRoute extends BindingClass {
         });
     
         this.dataStore.set('route', updatedRoute);
-    
-        this.redirectToViewRoute();
         
         const modal = document.getElementById('routeStatusModal')
         setTimeout(() => {
             modal.style.display = "none";
             updateButton.innerText= origButtonText;
         }, 3000);
+        window.location.reload();
     }
 
     showLoader(message) {
