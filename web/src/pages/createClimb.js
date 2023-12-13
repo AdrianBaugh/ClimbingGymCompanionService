@@ -3,11 +3,11 @@ import Header from "../components/header";
 import BindingClass from "../util/bindingClass";
 import DataStore from "../util/DataStore";
 import climbStatus from "../enums/climbStatus";
-import routeStatus from "../enums/routeStatus";
-import routeTypes from "../enums/routeTypes";
 import routeLocations from "../enums/routeLocations";
 import routeDifficulties from "../enums/routeDifficulties";
 import { getValueFromEnum } from '../util/enumUtils.js';
+import LoadingSpinner from "../components/LoadingSpinner.js";
+
 
 /**
  * Logic needed for the create climb page of the website.
@@ -19,6 +19,8 @@ class CreateClimb extends BindingClass {
         this.dataStore = new DataStore();
         this.dataStore.addChangeListener(this.routeDropdown);
         this.header = new Header(this.dataStore);
+        this.loadingSpinner = new LoadingSpinner();
+
         console.log("CreateClimb constructor");
     }
 
@@ -86,7 +88,7 @@ class CreateClimb extends BindingClass {
             if (route.routeStatus === "ACTIVE") {
                 const option = document.createElement('option');
                 option.value = route.routeId;
-                option.textContent = getValueFromEnum(route.location, routeLocations) + " -- " + getValueFromEnum(route.difficulty, routeDifficulties); 
+                option.textContent = getValueFromEnum(route.location, routeLocations) + " | " + getValueFromEnum(route.difficulty, routeDifficulties); 
                 dropdown.appendChild(option);
             }
         });
@@ -101,7 +103,7 @@ class CreateClimb extends BindingClass {
     
         const placeholderOption = document.createElement('option');
         placeholderOption.value = '';
-        placeholderOption.textContent = 'Select a status'; 
+        placeholderOption.textContent = 'Select progress'; 
         placeholderOption.selected = true; 
         statusDropdown.appendChild(placeholderOption);
     
@@ -116,6 +118,8 @@ class CreateClimb extends BindingClass {
     }
 
     async submit(evt) {
+        this.showLoader();
+
         console.log('Submit button clicked');
         evt.preventDefault();
     
@@ -125,10 +129,11 @@ class CreateClimb extends BindingClass {
     
         const createButton = document.getElementById('create');
         const origButtonText = createButton.innerText;
-        createButton.innerText = 'Loading. . .';
+        createButton.innerText = 'Submitting. . .';
     
         const route = document.getElementById('routeDropdown').value;
         if (route === '' ) {
+            this.hideLoader();
             createButton.innerText = origButtonText;
             errorMessageDisplay.innerText = 'Please select a route.';
             errorMessageDisplay.classList.remove('hidden');
@@ -162,10 +167,12 @@ class CreateClimb extends BindingClass {
             // Redirect after setting climb data
             this.redirectToViewClimb();
         } catch (error) {
+            this.hideLoader();
             createButton.innerText = origButtonText;
             errorMessageDisplay.innerText = `Error: ${error.message}`;
             errorMessageDisplay.classList.remove('hidden');
         }
+        
     }
     
   
@@ -176,6 +183,13 @@ class CreateClimb extends BindingClass {
             console.log("Redirecting to viewClimbs.html");
             window.location.href = `/viewClimbs.html?climbId=${climb.climbId}`;
         }
+    }
+
+    showLoader(message) {
+        this.loadingSpinner.showLoadingSpinnerNoMessages(message);
+    }
+    hideLoader(){
+        this.loadingSpinner.hideLoadingSpinnerNoMessages();
     }
 }
 

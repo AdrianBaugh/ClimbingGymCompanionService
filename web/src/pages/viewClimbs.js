@@ -387,6 +387,7 @@ class ViewClimb extends BindingClass {
     }
 
     async submit(evt) {
+        const climb = this.dataStore.get('climb');
         console.log('Submit button clicked');
         evt.preventDefault();
     
@@ -397,8 +398,17 @@ class ViewClimb extends BindingClass {
         const updateButton = document.getElementById('updateClimb');
         const origButtonText = updateButton.innerText;
         updateButton.innerText = 'Loading. . .';
+
+        let type = null;
     
-        const type = document.getElementById('typeDropdown').value || null;
+        const leadCheckbox = document.getElementById('leadClimbCheckbox').value || null;
+        console.log("LEADCHECKBOX=========== ", leadCheckbox);
+        if (leadCheckbox === "on") {
+            type = 'LEAD_CLIMB';
+        } else {
+            type = climb.type;
+        }
+
         const climbStatus = document.getElementById('statusDropdown').value || null;
         const notes = document.getElementById('updateNotes').value || null;
 
@@ -415,7 +425,6 @@ class ViewClimb extends BindingClass {
         }
 
 
-        const climb = this.dataStore.get('climb');
         try {
             const updatedClimb = await this.client.updateClimb(climb.climbId, climbStatus, thumbsValue, type, notes);
             this.dataStore.set('climb', updatedClimb);

@@ -10,7 +10,7 @@ export default class LoadingSpinner {
     // Function to show the loading spinner w/ alt message
     showLoadingSpinnerAltMessage(message = "") {
         document.getElementById("loading-message").innerText = message;
-        document.getElementById("loading-message-sub").innerText = "Gimmie a sec, gathering ropes!";
+        document.getElementById("loading-message-sub").innerText = "One sec, gathering ropes!";
         document.getElementById('loading-spinner').style.display = 'flex';
     }
 

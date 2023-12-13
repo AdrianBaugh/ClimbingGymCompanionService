@@ -110,8 +110,11 @@ class ViewRoute extends BindingClass {
         const toggleButton = document.getElementById('toggleButton');
         const notesList = document.getElementById('notesList');
         const noBetaMessage = document.getElementById("noBetaMessage");
-        const betaLabel = document.getElementById('betaLabel')
-        if (route.betaMap == null || route.betaMap.size === 0) {
+        const betaLabel = document.getElementById('betaLabel');
+
+        const betaMapList = route.betaMap;
+
+        if (betaMapList === null || Object.entries(betaMapList).length === 0) {
             noBetaMessage.style.display = "block";
           } else {
             betaLabel.style.display = "block";
@@ -122,7 +125,7 @@ class ViewRoute extends BindingClass {
             notesList.classList.toggle('hidden');
 
             if (!notesList.classList.contains('hidden')) {
-                generateTableContent(route.betaMap, notesList);
+                generateTableContent(betaMapList, notesList);
             }
         });
 
@@ -206,8 +209,6 @@ class ViewRoute extends BindingClass {
             if (!currentUrl.searchParams.has('routeId')) {
                 console.log("Redirecting to viewRoute.html");
                 window.location.href = `/viewRoute.html?routeId=${route.routeId}`;
-                
-
             }
         }
     }
