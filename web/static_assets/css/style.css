@@ -378,7 +378,7 @@ img {
   
   .slow-appear {
     opacity: 0;
-    animation: slowAppear 6s ease-in-out forwards;
+    animation: slowAppear 4.5s ease-in-out forwards;
   }
   @keyframes fastAppear {
     0% {

@@ -8,6 +8,8 @@ import routeStatus from "../enums/routeStatus";
 import routeTypes from "../enums/routeTypes";
 import routeLocations from "../enums/routeLocations";
 import routeDifficulties from "../enums/routeDifficulties";
+import LoadingSpinner from "../components/LoadingSpinner.js";
+
 
 
 /**
@@ -22,6 +24,8 @@ class CreateRoute extends BindingClass {
         this.dataStore = new DataStore();
         this.dataStore.addChangeListener(this.redirectToViewRoute);
         this.header = new Header(this.dataStore);
+        this.loadingSpinner = new LoadingSpinner();
+
         console.log("CreateRoute constructor");
     }
 
@@ -177,6 +181,8 @@ class CreateRoute extends BindingClass {
     }
     
     async submit(evt) {
+        this.showLoader();
+
         console.log('Submit button clicked');
         evt.preventDefault();
     
@@ -186,10 +192,11 @@ class CreateRoute extends BindingClass {
     
         const createButton = document.getElementById('create');
         const origButtonText = createButton.innerText;
-        createButton.innerText = 'Loading. . .';
+        createButton.innerText = 'Submitting. . .';
     
         const location = document.getElementById('locationDropdown').value;
         if (location === '' ) {
+            this.hideLoader();
             createButton.innerText = origButtonText;
             errorMessageDisplay.innerText = 'Please select a route.';
             errorMessageDisplay.classList.remove('hidden');
@@ -197,6 +204,7 @@ class CreateRoute extends BindingClass {
         }
         const color = document.getElementById('colorDropdown').value;
         if (color === '' ) {
+            this.hideLoader();
             createButton.innerText = origButtonText;
             errorMessageDisplay.innerText = 'Please select a route color.';
             errorMessageDisplay.classList.remove('hidden');
@@ -225,6 +233,7 @@ class CreateRoute extends BindingClass {
 
             }
         } catch (error) {
+            this.hideLoader();
             createButton.innerText = origButtonText;
             errorMessageDisplay.innerText = `Error: ${error.message}`;
             errorMessageDisplay.classList.remove('hidden');
@@ -266,6 +275,13 @@ class CreateRoute extends BindingClass {
             console.log("Redirecting to viewRoute.html");
             window.location.href = `/viewRoute.html?routeId=${route.routeId}`;
         }
+    }
+
+    showLoader(message) {
+        this.loadingSpinner.showLoadingSpinnerNoMessages(message);
+    }
+    hideLoader(){
+        this.loadingSpinner.hideLoadingSpinnerNoMessages();
     }
 }
 
