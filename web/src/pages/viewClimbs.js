@@ -406,7 +406,8 @@ class ViewClimb extends BindingClass {
         if (leadCheckbox === "on") {
             type = 'LEAD_CLIMB';
         } else {
-            type = climb.type;
+            const currRoute = this.dataStore.get('currentDisplayedRoute');
+            type = currRoute.type;
         }
 
         const climbStatus = document.getElementById('statusDropdown').value || null;
