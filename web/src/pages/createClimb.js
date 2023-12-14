@@ -15,7 +15,14 @@ import LoadingSpinner from "../components/LoadingSpinner.js";
 class CreateClimb extends BindingClass {
     constructor() {
         super();
-        this.bindClassMethods(['clientLoaded', 'mount', 'submit', 'redirectToViewClimb', 'routeDropdown', 'statusDropdown'], this);
+        this.bindClassMethods([
+            'clientLoaded',
+            'mount',
+            'submit',
+            'redirectToViewClimb',
+            'routeDropdown',
+            'statusDropdown'],
+            this);
         this.dataStore = new DataStore();
         this.dataStore.addChangeListener(this.routeDropdown);
         this.header = new Header(this.dataStore);
@@ -35,17 +42,17 @@ class CreateClimb extends BindingClass {
             console.log('User is logged in');
         } else {
             console.log('/////////User is not logged in////////');
-    
+
             document.getElementById("loginModal").style.display = "block";
-    
+
             const loginButton = document.createElement('div');
             loginButton.textContent = 'Login';
-            loginButton.classList.add('button'); 
-    
+            loginButton.classList.add('button');
+
             loginButton.addEventListener('click', async () => {
                 await this.client.login();
             });
-                document.getElementById('loginBtn').appendChild(loginButton);
+            document.getElementById('loginBtn').appendChild(loginButton);
         }
     }
 
@@ -68,45 +75,45 @@ class CreateClimb extends BindingClass {
 
     routeDropdown() {
         const routes = this.dataStore.get('routes');
-    
+
         if (routes == null) {
             return;
         }
-    
+
         const dropdown = document.getElementById('routeDropdown');
-    
+
         dropdown.innerHTML = '';
-    
+
         const placeholderOption = document.createElement('option');
         placeholderOption.value = '';
-        placeholderOption.textContent = 'Select a route'; 
+        placeholderOption.textContent = 'Select a route';
         placeholderOption.disabled = true;
-        placeholderOption.selected = true; 
+        placeholderOption.selected = true;
         dropdown.appendChild(placeholderOption);
-    
+
         routes.forEach(route => {
             if (route.routeStatus === "ACTIVE") {
                 const option = document.createElement('option');
                 option.value = route.routeId;
-                option.textContent = getValueFromEnum(route.location, routeLocations) + " | " + getValueFromEnum(route.difficulty, routeDifficulties); 
+                option.textContent = getValueFromEnum(route.location, routeLocations) + " | " + getValueFromEnum(route.difficulty, routeDifficulties);
                 dropdown.appendChild(option);
             }
         });
     }
-    
+
 
     // Function to populate the status dropdown
     statusDropdown() {
         const statusDropdown = document.getElementById('statusDropdown');
-    
+
         statusDropdown.innerHTML = '';
-    
+
         const placeholderOption = document.createElement('option');
         placeholderOption.value = '';
-        placeholderOption.textContent = 'Select progress'; 
-        placeholderOption.selected = true; 
+        placeholderOption.textContent = 'Select progress';
+        placeholderOption.selected = true;
         statusDropdown.appendChild(placeholderOption);
-    
+
         for (const status in climbStatus) {
             if (climbStatus.hasOwnProperty(status)) {
                 const option = document.createElement('option');
@@ -122,17 +129,17 @@ class CreateClimb extends BindingClass {
 
         console.log('Submit button clicked');
         evt.preventDefault();
-    
+
         const errorMessageDisplay = document.getElementById('error-message');
         errorMessageDisplay.innerText = '';
         errorMessageDisplay.classList.add('hidden');
-    
+
         const createButton = document.getElementById('create');
         const origButtonText = createButton.innerText;
         createButton.innerText = 'Submitting. . .';
-    
+
         const route = document.getElementById('routeDropdown').value;
-        if (route === '' ) {
+        if (route === '') {
             this.hideLoader();
             createButton.innerText = origButtonText;
             errorMessageDisplay.innerText = 'Please select a route.';
@@ -141,24 +148,24 @@ class CreateClimb extends BindingClass {
         }
 
         const climbStatus = document.getElementById('statusDropdown').value || null;
-        
+
         const leadClimbCheckbox = document.getElementById('leadClimbCheckbox');
         const type = leadClimbCheckbox.checked ? 'LEAD_CLIMB' : null;
 
         const notes = document.getElementById('notes').value || null;
-    
+
         // Get the value of the selected thumbs option
         const thumbsUpRadioButton = document.getElementById('thumbsUp');
         const thumbsDownRadioButton = document.getElementById('thumbsDown');
-        
+
         let thumbsValue = null;
-    
+
         if (thumbsUpRadioButton.checked) {
             thumbsValue = true;
         } else if (thumbsDownRadioButton.checked) {
             thumbsValue = false;
         }
-    
+
         try {
             const climb = await this.client.createClimb(route, climbStatus, thumbsValue, type, notes);
             await this.dataStore.set('climb', climb);
@@ -172,10 +179,10 @@ class CreateClimb extends BindingClass {
             errorMessageDisplay.innerText = `Error: ${error.message}`;
             errorMessageDisplay.classList.remove('hidden');
         }
-        
+
     }
-    
-  
+
+
     redirectToViewClimb() {
         const climb = this.dataStore.get('climb');
         console.log('Climb data:', climb);
@@ -188,7 +195,7 @@ class CreateClimb extends BindingClass {
     showLoader(message) {
         this.loadingSpinner.showLoadingSpinnerNoMessages(message);
     }
-    hideLoader(){
+    hideLoader() {
         this.loadingSpinner.hideLoadingSpinnerNoMessages();
     }
 }

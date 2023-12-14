@@ -41,21 +41,21 @@ class ViewClimb extends BindingClass {
         console.log("ViewClimb constructor");
     }
 
-     /**
-     * Once the client is loaded, get the climb metadata.
-     */
-     async clientLoaded() {
-        
+    /**
+    * Once the client is loaded, get the climb metadata.
+    */
+    async clientLoaded() {
+
         if (await this.client.authenticator.isUserLoggedIn()) {
             console.log('User is logged in');
         } else {
             console.log('/////////User is not logged in////////');
             document.getElementById("loginModal").style.display = "block";
-    
+
             const loginButton = document.createElement('div');
             loginButton.textContent = 'Login';
             loginButton.classList.add('button');
-    
+
             loginButton.addEventListener('click', async () => {
                 await this.client.login();
             });
@@ -71,7 +71,7 @@ class ViewClimb extends BindingClass {
         if (climbId !== null) {
             const climb = await this.client.viewClimb(climbId);
             this.dataStore.set('climb', climb);
-                
+
             const currentDisplayedRoute = await this.client.viewRoute(climb.routeId);
             this.dataStore.set('currentDisplayedRoute', currentDisplayedRoute);
         }
@@ -83,7 +83,7 @@ class ViewClimb extends BindingClass {
         this.addClimbHistoryToPage();
         this.hideLoader();
     }
-    
+
 
     /**
      * Add the header to the page and load the ClimbClient.
@@ -100,7 +100,7 @@ class ViewClimb extends BindingClass {
         const openModalButton = document.getElementById('openModalBtn');
         const closeModalButton = document.getElementById('closeModalBtn');
         const modal = document.getElementById('updateClimbModal');
-    
+
         openModalButton.addEventListener('click', () => {
             this.updateStatusDropdown();
             this.updateLeadClimbCheckbox();
@@ -108,11 +108,11 @@ class ViewClimb extends BindingClass {
             this.updateClimbNotes();
             modal.style.display = 'block';
         });
-    
+
         closeModalButton.addEventListener('click', () => {
             modal.style.display = 'none';
         });
-    
+
         // Close the modal if the user clicks outside of it
         window.addEventListener('click', (event) => {
             if (event.target === modal) {
@@ -130,12 +130,12 @@ class ViewClimb extends BindingClass {
         } else {
             console.log('Adding current climb details to page ', climb)
             const route = this.dataStore.get('currentDisplayedRoute');
-            if (route == null ) {
+            if (route == null) {
                 return;
             }
-        
+
             document.getElementById('climb-details').style.display = 'block';
-        
+
             const routeLocationElement = document.getElementById('route-location');
             routeLocationElement.innerText = getValueFromEnum(route.location, routeLocations);
 
@@ -162,28 +162,28 @@ class ViewClimb extends BindingClass {
         console.log("add climbHistory to page is starting");
         const climbHistory = this.dataStore.get('climbHistory');
         console.log("climbHistory", climbHistory);
-    
-       
+
+
         const totalClimbs = document.getElementById('totalClimbs');
         totalClimbs.innerText = (climbHistory ? 'Total Routes Climbed: ' + climbHistory.length : 'No climbs yet!');
-    
+
         const climbHistoryElement = document.getElementById('climbHistory');
-    
+
         if (climbHistory == null || climbHistory.length === 0) {
             const messageHtml = '<p>You don\'t have any climbs yet! <a href="createClimb.html" class="button">Create a Climb</a></p>';
             climbHistoryElement.innerHTML = messageHtml;
             return;
         }
-    
+
         const climbHistoryFrequencyMap = {};
-    
+
         const textHtml = '<h6>Click a Climb below for details:</h6>';
-    
+
         let climbHtml = '<table><tr><th>Route</th><th>Status</th><th>Date / Time Climbed</th></tr>';
         for (const climb of climbHistory) {
             let routeId = climb.routeId;
             let location = routeId.split("::")[0];
-    
+
             climbHtml += `
             <tr onclick="window.location='/viewClimbs.html?climbId=${climb.climbId}'">
                 <td>${getValueFromEnum(location, routeLocations)}</td>
@@ -191,7 +191,7 @@ class ViewClimb extends BindingClass {
                 <td>${formatDateTime(climb.dateTimeClimbed)}</td>
             </tr>
             `;
-    
+
             // GRAPH DATA
             if (climbHistoryFrequencyMap[climb.weekClimbed]) {
                 climbHistoryFrequencyMap[climb.weekClimbed]++;
@@ -202,7 +202,7 @@ class ViewClimb extends BindingClass {
 
         }
         climbHtml += '</table>';
-    
+
         climbHistoryElement.innerHTML = textHtml + climbHtml;
 
         // call graph here
@@ -213,7 +213,7 @@ class ViewClimb extends BindingClass {
         this.dataStore.set('climbHistoryFrequencyMap', climbHistoryFrequencyMap);
         this.processClimbHistory();
     }
-    
+
     // Method for handling climb history frequency map, sorting, etc.
     processClimbHistory() {
         const climbHistoryFrequencyMap = this.dataStore.get('climbHistoryFrequencyMap');
@@ -252,9 +252,9 @@ class ViewClimb extends BindingClass {
         // Extract keys and values from the sorted frequency map
         let customLabels = ['4 Weeks Ago', '3 Weeks Ago', '2 Weeks Ago', 'Last Week', 'This Week'];
         let sortedData = Object.values(sortedFrequencyMap);
-        console.log("Chart keys: " , sortedKeys);
+        console.log("Chart keys: ", sortedKeys);
         this.addClimbHistoryGraphToPage(customLabels, sortedData);
-    }  
+    }
 
     // Method for displaying the climb history graph
     addClimbHistoryGraphToPage(labels, data) {
@@ -345,15 +345,15 @@ class ViewClimb extends BindingClass {
 
     updateThumbsUpAndDownRadios() {
         const climb = this.dataStore.get('climb');
-    
+
         const radioButtons = document.getElementsByName('thumbs');
-    
+
         for (const radioButton of radioButtons) {
             const radioButtonValue = radioButton.value;
-            
+
             radioButton.checked = (radioButtonValue === 'thumbsUp' && climb.thumbsUp === true) ||
-                                  (radioButtonValue === 'thumbsDown' && climb.thumbsUp === false) ||
-                                  (radioButtonValue !== 'thumbsUp' && radioButtonValue !== 'thumbsDown' && climb.thumbsUp === null);
+                (radioButtonValue === 'thumbsDown' && climb.thumbsUp === false) ||
+                (radioButtonValue !== 'thumbsUp' && radioButtonValue !== 'thumbsDown' && climb.thumbsUp === null);
         }
     }
 
@@ -363,19 +363,19 @@ class ViewClimb extends BindingClass {
         if (climb.notes !== null) {
             notesInput.value = climb.notes;
         } else {
-            notesInput.value = ''; 
+            notesInput.value = '';
             notesInput.placeholder = "ex. Big dynamic move at the start..."; // Show the placeholder
         }
     }
-    
+
 
     redirectToViewClimb() {
         const climb = this.dataStore.get('climb');
         if (climb != null) {
             const currentUrl = new URL(window.location.href);
             if (!currentUrl.searchParams.has('climbId')) {
-            console.log("Redirecting to viewClimbs.html");
-            window.location.href = `/viewClimbs.html?climbId=${climb.climbId}`;
+                console.log("Redirecting to viewClimbs.html");
+                window.location.href = `/viewClimbs.html?climbId=${climb.climbId}`;
             }
         }
     }
@@ -391,11 +391,11 @@ class ViewClimb extends BindingClass {
 
         console.log('Submit button clicked');
         evt.preventDefault();
-    
+
         const errorMessageDisplay = document.getElementById('error-message');
         errorMessageDisplay.innerText = '';
         errorMessageDisplay.classList.add('hidden');
-    
+
         const updateButton = document.getElementById('updateClimb');
         const origButtonText = updateButton.innerText;
         updateButton.innerText = 'Updating. . .';
@@ -403,9 +403,9 @@ class ViewClimb extends BindingClass {
 
         const leadClimbCheckbox = document.getElementById('leadClimbCheckbox');
 
-        let type = null; 
+        let type = null;
         if (leadClimbCheckbox.checked) {
-            type =  'LEAD_CLIMB';
+            type = 'LEAD_CLIMB';
         }
 
         const climbStatus = document.getElementById('statusDropdown').value || null;
@@ -414,9 +414,9 @@ class ViewClimb extends BindingClass {
         // Get the value of the selected thumbs option
         const thumbsUpRadioButton = document.getElementById('thumbsUp');
         const thumbsDownRadioButton = document.getElementById('thumbsDown');
-        
+
         let thumbsValue = null;
-    
+
         if (thumbsUpRadioButton.checked) {
             thumbsValue = true;
         } else if (thumbsDownRadioButton.checked) {
@@ -434,7 +434,7 @@ class ViewClimb extends BindingClass {
         }
 
         // Redirect after updating climb data
-        
+
         const modal = document.getElementById('updateClimbModal')
 
         setTimeout(() => {
@@ -452,7 +452,7 @@ class ViewClimb extends BindingClass {
         const errorMessageDisplay = document.getElementById('error-message');
         errorMessageDisplay.innerText = '';
         errorMessageDisplay.classList.add('hidden');
-    
+
         // Display a confirmation dialog
         const { isConfirmed } = await Swal.fire({
             title: 'Are you sure?',
@@ -461,12 +461,12 @@ class ViewClimb extends BindingClass {
             showCancelButton: true,
             confirmButtonText: 'DELETE'
         });
-    
+
         if (isConfirmed) {
             try {
                 deleteButton.innerText = 'Deleting...'
                 await this.client.deleteClimb(climb.climbId);
-                
+
             } catch (error) {
                 errorMessageDisplay.innerText = `Error: ${error.message}`;
                 errorMessageDisplay.classList.remove('hidden');
@@ -476,7 +476,7 @@ class ViewClimb extends BindingClass {
             openModalBtn.style.display = 'none';
             messageContainer.style.display = 'block';
             deleteMessage.textContent = 'This climb has been deleted!';
-            
+
             // Redirect after a delay (if needed)
             setTimeout(() => {
                 this.redirectToViewClimbHistory();
@@ -486,11 +486,11 @@ class ViewClimb extends BindingClass {
             console.log('Delete operation canceled');
         }
     }
-    
+
     showLoader(message) {
         this.loadingSpinner.showLoadingSpinner(message);
     }
-    hideLoader(){
+    hideLoader() {
         this.loadingSpinner.hideLoadingSpinner();
     }
 }

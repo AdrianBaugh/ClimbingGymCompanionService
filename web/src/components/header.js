@@ -33,7 +33,7 @@ export default class Header extends BindingClass {
 
     createSiteTitle() {
         const logo = document.createElement('img');
-        logo.src = 'LOGO.png';
+        logo.src = 'photos/LOGO.png';
         logo.width = 130;
         logo.height = 65;
        

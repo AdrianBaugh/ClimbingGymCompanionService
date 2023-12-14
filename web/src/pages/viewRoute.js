@@ -67,18 +67,18 @@ class ViewRoute extends BindingClass {
         const openModalButton = document.getElementById('openModalBtn');
         const closeModalButton = document.getElementById('closeModalBtn');
         const routeStatusModal = document.getElementById('routeStatusModal');
-    
+
         openModalButton.addEventListener('click', () => {
             routeStatusModal.style.display = 'block';
             this.checkUserLoggedIn();
             this.updateStatusDropdown();
 
         });
-    
+
         closeModalButton.addEventListener('click', () => {
             routeStatusModal.style.display = 'none';
         });
-    
+
         // Close the modal if the user clicks outside of it
         window.addEventListener('click', (event) => {
             if (event.target === routeStatusModal) {
@@ -108,7 +108,7 @@ class ViewRoute extends BindingClass {
         document.getElementById('color').innerText = route.color;
         document.getElementById('rating').innerText = route.rating !== null ? route.rating + '%' : 'Not yet Rated!';
         document.getElementById('date-created').innerText = formatDate(route.dateCreated);
-    
+
         const toggleButton = document.getElementById('toggleButton');
         const notesList = document.getElementById('notesList');
         const noBetaMessage = document.getElementById("noBetaMessage");
@@ -118,10 +118,10 @@ class ViewRoute extends BindingClass {
 
         if (betaMapList === null || Object.entries(betaMapList).length === 0) {
             noBetaMessage.style.display = "block";
-          } else {
+        } else {
             betaLabel.style.display = "block";
             toggleButton.style.display = "block";
-          }
+        }
 
         toggleButton.addEventListener('click', function () {
             notesList.classList.toggle('hidden');
@@ -133,18 +133,18 @@ class ViewRoute extends BindingClass {
 
         function generateTableContent(betaMap, notesList) {
             notesList.innerHTML = '';
-        
+
             const tableHeaders = document.createElement('tr');
             tableHeaders.innerHTML = '<th>Username</th><th>Beta</th>';
             notesList.appendChild(tableHeaders);
-        
-            for (const [note, username] of  Object.entries(betaMap)) {
+
+            for (const [note, username] of Object.entries(betaMap)) {
                 const row = document.createElement('tr');
                 row.innerHTML = `<td>${username}</td><td>${note}</td>`;
                 notesList.appendChild(row);
             }
         }
-        this.hideLoader();        
+        this.hideLoader();
     }
 
     /**
@@ -170,9 +170,9 @@ class ViewRoute extends BindingClass {
         this.hideSimpleLoader();
     }
 
-   /**
-    * Function to populate the status dropdown
-    */
+    /**
+     * Function to populate the status dropdown
+     */
     updateStatusDropdown() {
         console.log("Update route status clicked")
         const route = this.dataStore.get('route');
@@ -203,7 +203,7 @@ class ViewRoute extends BindingClass {
             }
         }
     }
-    
+
     redirectToViewRoute() {
         const route = this.dataStore.get('route');
         if (route != null) {
@@ -218,15 +218,15 @@ class ViewRoute extends BindingClass {
     async submit(evt) {
         console.log('Submit button clicked');
         evt.preventDefault();
-    
+
         const errorMessageDisplay = document.getElementById('error-message');
         errorMessageDisplay.innerText = '';
         errorMessageDisplay.classList.add('hidden');
-    
+
         const updateButton = document.getElementById('updateStatus');
         const origButtonText = updateButton.innerText;
         updateButton.innerText = 'Loading. . .';
-    
+
         const routeStatus = document.getElementById('statusDropdown').value;
 
         const route = this.dataStore.get('route');
@@ -235,13 +235,13 @@ class ViewRoute extends BindingClass {
             errorMessageDisplay.innerText = `Error: ${error.message}`;
             errorMessageDisplay.classList.remove('hidden');
         });
-    
+
         this.dataStore.set('route', updatedRoute);
-        
+
         const modal = document.getElementById('routeStatusModal')
         setTimeout(() => {
             modal.style.display = "none";
-            updateButton.innerText= origButtonText;
+            updateButton.innerText = origButtonText;
         }, 3000);
         window.location.reload();
     }
@@ -249,7 +249,7 @@ class ViewRoute extends BindingClass {
     showLoader(message) {
         this.loadingSpinner.showLoadingSpinnerAltMessage(message);
     }
-    hideLoader(){
+    hideLoader() {
         this.loadingSpinner.hideLoadingSpinner();
     }
 
@@ -267,15 +267,15 @@ class ViewRoute extends BindingClass {
             /////////User is not logged in////////
             document.getElementById('routeStatusModal').style.display = "none";
             document.getElementById("loginModal").style.display = "block";
-    
+
             const loginButton = document.createElement('div');
             loginButton.textContent = 'Login';
-            loginButton.classList.add('button'); 
-    
+            loginButton.classList.add('button');
+
             loginButton.addEventListener('click', async () => {
                 await this.client.login();
             });
-                document.getElementById('loginBtn').appendChild(loginButton);
+            document.getElementById('loginBtn').appendChild(loginButton);
         }
     }
 }
