@@ -28,7 +28,8 @@ class ViewRoute extends BindingClass {
             'showLoader',
             'hideLoader',
             'showSimpleLoader',
-            'hideSimpleLoader'
+            'hideSimpleLoader',
+            'checkUserLoggedIn'
         ], this);
 
         this.dataStore = new DataStore();
@@ -69,6 +70,7 @@ class ViewRoute extends BindingClass {
     
         openModalButton.addEventListener('click', () => {
             routeStatusModal.style.display = 'block';
+            this.checkUserLoggedIn();
             this.updateStatusDropdown();
 
         });
@@ -256,6 +258,25 @@ class ViewRoute extends BindingClass {
     }
     hideSimpleLoader() {
         this.loadingSpinner.hideLoadingSpinnerNoMessages();
+    }
+
+    async checkUserLoggedIn() {
+        if (await this.client.authenticator.isUserLoggedIn()) {
+            // User is logged in
+        } else {
+            /////////User is not logged in////////
+            document.getElementById('routeStatusModal').style.display = "none";
+            document.getElementById("loginModal").style.display = "block";
+    
+            const loginButton = document.createElement('div');
+            loginButton.textContent = 'Login';
+            loginButton.classList.add('button'); 
+    
+            loginButton.addEventListener('click', async () => {
+                await this.client.login();
+            });
+                document.getElementById('loginBtn').appendChild(loginButton);
+        }
     }
 }
 

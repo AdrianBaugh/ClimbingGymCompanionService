@@ -1,6 +1,7 @@
 // routeDifficulties.js
 
 const routeDifficulties = {
+    TBD: 'TBD',
     BOULDER_VB: 'VB',
     BOULDER_V0_V1: 'V0 - V1',
     BOULDER_V2_V3: 'V2 - V3',
