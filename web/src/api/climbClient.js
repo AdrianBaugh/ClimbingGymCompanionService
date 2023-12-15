@@ -9,7 +9,11 @@ export default class ClimbClient extends BindingClass {
     constructor(props = {}) {
         super();
 
-        const methodsToBind = ['clientLoaded', 'getIdentity', 'login', 'logout'];
+        const methodsToBind = [
+            'clientLoaded',
+            'getIdentity',
+            'login',
+            'logout'];
         this.bindClassMethods(methodsToBind, this);
 
         this.authenticator = new Authenticator();;
@@ -91,12 +95,8 @@ export default class ClimbClient extends BindingClass {
     */
     async viewAllActiveRoutes(errorCallback) {
         try {
-            console.log("Attempting to get all active routes in climbClient.js");  
-
             const archivedStatus = "FALSE"
             const response = await this.axiosClient.get(`routes?isArchived=${archivedStatus}`);
-
-            console.log("routeResponse: ", response);  
 
             return response.data.routeList;
         } catch (error) {
@@ -112,10 +112,7 @@ export default class ClimbClient extends BindingClass {
      */
     async viewRoute(routeId, errorCallback) {
         try {
-            console.log("Attempting to get info for routeId: ", routeId);  
-
             const response = await this.axiosClient.get(`routes/${routeId}`);
-            console.log("routeResponse: ", response);  
 
             return response.data.route;
         } catch (error) {
@@ -131,15 +128,13 @@ export default class ClimbClient extends BindingClass {
      */
     async viewClimb(climbId, errorCallback) {
         try {
-            console.log("Attempting to get info for climbId: ", climbId);  
             const token = await this.getTokenOrThrow("You must be logged in to view your climbs!");
 
             const response = await this.axiosClient.get(`climbs/${climbId}`, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
-            });  
-            console.log("climbResponse: ", response);
+            });
 
             return response.data.climb;
         } catch (error) {
@@ -154,22 +149,20 @@ export default class ClimbClient extends BindingClass {
      */
     async viewUsersClimbHistory(errorCallback) {
         try {
-            console.log("Attempting to get the climb history");  
             const token = await this.getTokenOrThrow("You must be logged in to view your climbs!");
 
             const response = await this.axiosClient.get(`climbsByUser`, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
-            });  
-            console.log("climbsByUserResponse: ", response);  
+            });
 
             return response.data.climbList;
         } catch (error) {
             this.handleError(error, errorCallback)
         }
     }
-    
+
 
     /**
     * Create a new route by the current user.
@@ -186,17 +179,16 @@ export default class ClimbClient extends BindingClass {
         try {
 
             const token = await this.getTokenOrThrow("You must be logged in to create a route!");
-    
+
             let imageName = null;
             let imageType = null;
-    
+
             if (routeImageFile) {
                 // The S3 object info for the uploaded image
                 imageName = routeImageFile.name;
                 imageType = routeImageFile.type;
             }
-            console.log("Attempting to send the route to the backend with: ", location, color, routeStatus, type, difficulty, imageName, imageType, imageKey );  
-            
+
             const response = await this.axiosClient.post(`routes`, {
                 location: location,
                 color: color,
@@ -211,7 +203,6 @@ export default class ClimbClient extends BindingClass {
                     Authorization: `Bearer ${token}`
                 }
             });
-            console.log("Success sending the route to the backend", response);  
             return response.data.route;
         } catch (error) {
             this.handleError(error, errorCallback);
@@ -230,32 +221,30 @@ export default class ClimbClient extends BindingClass {
                     'Content-Type': 'application/json'
                 }
             });
-            console.log("Response data:" , response.data)
             return response.data;
         } catch (error) {
             this.handleError(error, errorCallback);
         }
     }
 
-        /**
-     * 
-     * @param {*} imageKey 
-     * @param {*} errorCallback 
-     * @returns 
-     */
-        async getPresignedS3Image(imageKey, errorCallback) {
-            try {
-                const response = await this.axiosClient.get(`/s3download/${imageKey}`, {
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
-                });
-                console.log("Response data:" , response.data)
-                return response.data;
-            } catch (error) {
-                this.handleError(error, errorCallback);
-            }
+    /**
+ * 
+ * @param {*} imageKey 
+ * @param {*} errorCallback 
+ * @returns 
+ */
+    async getPresignedS3Image(imageKey, errorCallback) {
+        try {
+            const response = await this.axiosClient.get(`/s3download/${imageKey}`, {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+            return response.data;
+        } catch (error) {
+            this.handleError(error, errorCallback);
         }
+    }
     /**
      * 
      * @param {*} s3PresignedUrl 
@@ -272,7 +261,6 @@ export default class ClimbClient extends BindingClass {
             });
             return response;
         } catch (error) {
-            console.error(error)
             this.handleError(error, errorCallback);
         }
     }
@@ -284,10 +272,10 @@ export default class ClimbClient extends BindingClass {
     * @param errorCallback (Optional) A function to execute if the call fails.
     * @returns The route that has been updated.
     */
-     async updateRouteStatus(routeId, routeStatus, errorCallback) {
+    async updateRouteStatus(routeId, routeStatus, errorCallback) {
         try {
             const token = await this.getTokenOrThrow("You must be logged in to update a route!");
-                       
+
             const response = await this.axiosClient.put(`routes/${routeId}`, {
                 routeStatus: routeStatus
             }, {
@@ -312,8 +300,8 @@ export default class ClimbClient extends BindingClass {
      */
     async createClimb(routeId, climbStatus, thumbsUp, type, publicBeta, errorCallback) {
         try {
-            const token = await this.getTokenOrThrow("You must be logged in to add a new climb!");        
-            
+            const token = await this.getTokenOrThrow("You must be logged in to add a new climb!");
+
             const response = await this.axiosClient.post(`climbs`, {
                 routeId: routeId,
                 climbStatus: climbStatus,
@@ -331,19 +319,19 @@ export default class ClimbClient extends BindingClass {
         }
     }
 
-     /**
-     * 
-     * @param climbId 
-     * @param climbStatus 
-     * @param thumbsUp 
-     * @param publicBeta 
-     * @param errorCallback 
-     * @returns 
-     */
-     async updateClimb(climbId, climbStatus, thumbsUp, type, publicBeta, errorCallback) {
+    /**
+    * 
+    * @param climbId 
+    * @param climbStatus 
+    * @param thumbsUp 
+    * @param publicBeta 
+    * @param errorCallback 
+    * @returns 
+    */
+    async updateClimb(climbId, climbStatus, thumbsUp, type, publicBeta, errorCallback) {
         try {
-            const token = await this.getTokenOrThrow("You must be logged in to update a climb!");        
-            
+            const token = await this.getTokenOrThrow("You must be logged in to update a climb!");
+
             const response = await this.axiosClient.put(`climbs/${climbId}`, {
                 climbStatus: climbStatus,
                 thumbsUp: thumbsUp,
@@ -361,17 +349,16 @@ export default class ClimbClient extends BindingClass {
     }
 
 
-     /**
-     * 
-     * @param climbId 
-     * @param errorCallback 
-     * @returns 
-     */
-     async deleteClimb(climbId, errorCallback) {
+    /**
+    * 
+    * @param climbId 
+    * @param errorCallback 
+    * @returns 
+    */
+    async deleteClimb(climbId, errorCallback) {
         try {
-            console.log('ClimbId to be deleted: ', climbId)
-            const token = await this.getTokenOrThrow("You must be logged in to delete a climb!");        
-            
+            const token = await this.getTokenOrThrow("You must be logged in to delete a climb!");
+
             const response = await this.axiosClient.delete(`climbs/${climbId}`, {
                 headers: {
                     Authorization: `Bearer ${token}`

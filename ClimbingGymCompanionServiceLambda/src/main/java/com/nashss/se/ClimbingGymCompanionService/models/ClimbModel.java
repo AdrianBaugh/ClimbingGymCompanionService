@@ -27,7 +27,8 @@ public class ClimbModel {
      * @param notes the notes
      */
     public ClimbModel(String climbId, String userId, String routeId, String type,
-                      String climbStatus, ZonedDateTime dateTimeClimbed, String weekClimbed, Boolean thumbsUp, String notes) {
+                      String climbStatus, ZonedDateTime dateTimeClimbed,
+                      String weekClimbed, Boolean thumbsUp, String notes) {
         this.climbId = climbId;
         this.userId = userId;
         this.routeId = routeId;
@@ -79,8 +80,12 @@ public class ClimbModel {
 
     @Override
     public boolean equals(Object other) {
-        if (this == other) return true;
-        if (other == null || getClass() != other.getClass()) return false;
+        if (this == other) {
+            return true;
+        }
+        if (other == null || getClass() != other.getClass()) {
+            return false;
+        }
         ClimbModel that = (ClimbModel) other;
         return Objects.equals(climbId, that.climbId) &&
                 Objects.equals(userId, that.userId) &&

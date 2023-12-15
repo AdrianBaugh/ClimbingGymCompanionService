@@ -11,7 +11,7 @@
     background-color: #8A8C8F;
     margin: 0;
     counter-reset: section;
-    font-family: "Helvetica Neue",Helvetica,sans-serif;
+    font-family: "Helvetica Neue", Helvetica, sans-serif;
 }
 
 .header {
@@ -27,12 +27,13 @@
     background-color: var(--primary-color);
     color: var(--secondary-color);
     padding: 4px 4px;
-    
+
 }
 
 .background {
-    margin-top: 75px; /* add some margin to the top of the main content */
-  }
+    margin-top: 75px;
+    /* add some margin to the top of the main content */
+}
 
 .button {
     background-color: var(--primary-color);
@@ -43,10 +44,11 @@
     font-weight: bold;
     text-decoration: none;
     cursor: pointer;
-    border-radius: 4px; /* You can adjust the value to control the roundness */
-  }
-  
-  .button-delete {
+    border-radius: 4px;
+    /* You can adjust the value to control the roundness */
+}
+
+.button-delete {
     background-color: var(--error-color);
     border: none;
     color: var(--secondary-color);
@@ -55,8 +57,9 @@
     font-weight: bold;
     text-decoration: none;
     cursor: pointer;
-    border-radius: 4px; /* You can adjust the value to control the roundness */
-  }
+    border-radius: 4px;
+    /* You can adjust the value to control the roundness */
+}
 
 .button-group {
     display: flex;
@@ -85,7 +88,8 @@
 }
 
 .card span {
-    font-weight: normal; /* remove bold style for spans */
+    font-weight: normal;
+    /* remove bold style for spans */
 }
 
 .error {
@@ -97,6 +101,7 @@
 .validated-field:invalid {
     outline: 2px solid var(--error-color);
 }
+
 .validated-field:focus:invalid {
     color: var(--error-color);
 }
@@ -129,33 +134,42 @@ table {
     margin-bottom: 20px;
 }
 
-th, td {
+th,
+td {
     padding: 10px;
     text-align: center;
-    border-bottom: 1px solid var(--secondary-color); /* Use secondary color for border */
+    border-bottom: 1px solid var(--secondary-color);
+    /* Use secondary color for border */
 }
 
 /* Header row background color */
 th {
-    background-color: var(--primary-color); /* Use primary color for header background */
-    color: var(--secondary-color); /* color for text header */
+    background-color: var(--primary-color);
+    /* Use primary color for header background */
+    color: var(--secondary-color);
+    /* color for text header */
     cursor: default;
 }
 
 /* Odd and even row background colors (swapped) */
 tr:nth-child(even) {
-    background-color: var(--secondary-color); /* Use secondary color for even row background */
+    background-color: var(--secondary-color);
+    /* Use secondary color for even row background */
 }
 
 tr:nth-child(odd) {
-    background-color: var(--tertiary-color); /* Use tertiary color for odd row background */
-    color: var(--secondary-color); /* Use secondary color for text color on odd rows */
+    background-color: var(--tertiary-color);
+    /* Use tertiary color for odd row background */
+    color: var(--secondary-color);
+    /* Use secondary color for text color on odd rows */
 }
 
 /* Hover effect on rows */
 tr:hover {
-    background-color: var(--quaternary-color); /* Use tertiary color for hover effect background */
-    color: var(--primary-color); /* Use secondary color for text color on hover */
+    background-color: var(--quaternary-color);
+    /* Use tertiary color for hover effect background */
+    color: var(--primary-color);
+    /* Use secondary color for text color on hover */
     cursor: pointer;
 }
 
@@ -164,20 +178,20 @@ tr:hover {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-  }
-  
-  .flex-item {
-    flex: 1 0 200px; 
+}
+
+.flex-item {
+    flex: 1 0 200px;
     margin: 10px;
-  }
-  
-  .flex-item img {
+}
+
+.flex-item img {
     max-width: 70%;
     height: auto;
     display: block;
-  }
+}
 
-  .modal {
+.modal {
     display: none;
     position: fixed;
     top: 0;
@@ -208,12 +222,14 @@ tr:hover {
 }
 
 .form-field label {
-    margin-bottom: 10px; /* Adjust as needed */
+    margin-bottom: 10px;
+    /* Adjust as needed */
 }
 
 .form-field input,
 .form-field select {
-    margin-bottom: 16px; /* Adjust as needed */
+    margin-bottom: 16px;
+    /* Adjust as needed */
 }
 
 .close {
@@ -235,15 +251,15 @@ tr:hover {
 }
 
 .swal2-title {
-    font-size: 1.8rem; 
+    font-size: 1.8rem;
 }
 
 .swal2-content {
-    font-size: 1.6rem; 
+    font-size: 1.6rem;
 }
 
 .swal2-popup .swal2-confirm {
-    font-size: 1.4rem; 
+    font-size: 1.4rem;
     background-color: var(--error-color);
 }
 
@@ -267,14 +283,14 @@ img {
 .container img {
     max-width: 100%;
     max-height: 100%;
-     object-fit: contain;
+    object-fit: contain;
 }
 
 .centered {
     color: white;
     font-size: 7vw;
     position: absolute;
-    top:20%;
+    top: 20%;
     left: 50%;
     transform: translate(-50%, -50%);
 }
@@ -283,15 +299,17 @@ img {
     color: white;
     font-size: 4vw;
     position: absolute;
-    top:55%;
+    top: 55%;
     left: 50%;
     transform: translate(-50%, -50%);
 }
 
-  .custom-dropdown {
+.custom-dropdown {
     width: 200px;
-    max-height: 20%; /* Set a fixed height for the dropdown */
-    overflow-y: auto; /* Enable vertical scrolling */
+    max-height: 20%;
+    /* Set a fixed height for the dropdown */
+    overflow-y: auto;
+    /* Enable vertical scrolling */
     padding: 10px;
     font-size: 16px;
     text-align: center;
@@ -300,28 +318,29 @@ img {
     border-radius: 4px;
     background-color: #fff;
     /* Add more styling as needed */
-  }
-  
-  /* Style the dropdown arrow */
-  .custom-dropdown::after {
-    content: '\25BC'; /* Unicode character for down arrow */
+}
+
+/* Style the dropdown arrow */
+.custom-dropdown::after {
+    content: '\25BC';
+    /* Unicode character for down arrow */
     position: absolute;
     top: 50%;
     right: 10px;
     transform: translateY(-50%);
-  }
-  
-  /* Style the options within the dropdown */
-  .custom-dropdown option {
+}
+
+/* Style the options within the dropdown */
+.custom-dropdown option {
     background-color: #fff;
     color: #333;
     /* Add more styling as needed */
-  }
+}
 
 
-  /* loading icon */
+/* loading icon */
 
-  .spinner-container {
+.spinner-container {
     position: fixed;
     top: 0;
     left: 0;
@@ -337,8 +356,9 @@ img {
     display: none;
 }
 
-.spinner-container > div {
-    padding: 10px; /* Adjust the padding value as needed */
+.spinner-container>div {
+    padding: 10px;
+    /* Adjust the padding value as needed */
 }
 
 .spinner-container-div-only {
@@ -356,8 +376,10 @@ img {
 }
 
 .spinner-container-div-only div {
-    padding: 10px; /* Adjust the padding value as needed */
+    padding: 10px;
+    /* Adjust the padding value as needed */
 }
+
 .spinner {
     border: 8px solid #f3f3f3;
     border-top: 8px solid #000000;
@@ -366,65 +388,78 @@ img {
     height: 50px;
     animation: spin 1s linear infinite;
 }
+
 @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
 }
 
 .fast-appear {
     opacity: 0;
     animation: fastAppear 1.5s ease-in-out forwards;
-  }
-  
-  .slow-appear {
+}
+
+.slow-appear {
     opacity: 0;
     animation: slowAppear 4.5s ease-in-out forwards;
-  }
-  @keyframes fastAppear {
+}
+
+@keyframes fastAppear {
     0% {
-      opacity: 0;
+        opacity: 0;
     }
+
     90% {
-      opacity: 0;
+        opacity: 0;
     }
+
     100% {
-      opacity: 1;
+        opacity: 1;
     }
-  }
-  
-  @keyframes slowAppear {
+}
+
+@keyframes slowAppear {
     0% {
-      opacity: 0;
+        opacity: 0;
     }
+
     90% {
-      opacity: 0;
+        opacity: 0;
     }
+
     100% {
-      opacity: 1;
+        opacity: 1;
     }
-  }
-  
-  /* Custom styles for small screens */
+}
+
+/* Custom styles for small screens */
 @media (max-width: 767px) {
     body {
-      font-size: 10px; /* Adjust font size for smaller screens */
-    
+        font-size: 10px;
+        /* Adjust font size for smaller screens */
+
     }
+
     .swal2-popup {
-        font-size: 1rem; 
-       
+        font-size: 1rem;
+
     }
 
     .swal2-title {
-        font-size: 1.5rem; 
+        font-size: 1.5rem;
     }
 
     .swal2-content {
-        font-size: 1.3rem; 
+        font-size: 1.3rem;
     }
 
     .swal2-popup .swal2-confirm {
-        font-size: 1.2rem; 
+        font-size: 1.2rem;
     }
 
     .table-container {
@@ -434,4 +469,4 @@ img {
         align-items: center;
     }
 
-  }
+}

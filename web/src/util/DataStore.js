@@ -39,7 +39,7 @@ export default class DataStore extends BindingClass {
     setState(newState) {
         // ... is the spread operator. This allows us to pull out all of the keys and values of the existing state and
         // the new state and combine them into one new object.
-        this.state = {...this.state, ...newState};
+        this.state = { ...this.state, ...newState };
         this.listeners.forEach(listener => listener());
     }
 
