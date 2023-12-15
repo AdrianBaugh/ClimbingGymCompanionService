@@ -38,7 +38,6 @@ class ViewRoute extends BindingClass {
         this.header = new Header(this.dataStore);
         this.loadingSpinner = new LoadingSpinner();
 
-        console.log("ViewRoute constructor");
     }
 
     /**
@@ -157,7 +156,6 @@ class ViewRoute extends BindingClass {
         if (route.imageKey != null) {
             const imageUrl = await this.client.getPresignedS3Image(route.imageKey);
             routeImageElement.src = imageUrl.s3PreSignedUrl;
-            console.log("imageURL: ", imageUrl.s3PreSignedUrl);
             routeImageElement.alt = route.imageName;
             const imageLabel = document.getElementById("imageLabel");
             imageLabel.style.display = "block";
@@ -174,7 +172,6 @@ class ViewRoute extends BindingClass {
      * Function to populate the status dropdown
      */
     updateStatusDropdown() {
-        console.log("Update route status clicked")
         const route = this.dataStore.get('route');
         if (route == null) {
             return;
@@ -209,14 +206,12 @@ class ViewRoute extends BindingClass {
         if (route != null) {
             const currentUrl = new URL(window.location.href);
             if (!currentUrl.searchParams.has('routeId')) {
-                console.log("Redirecting to viewRoute.html");
                 window.location.href = `/viewRoute.html?routeId=${route.routeId}`;
             }
         }
     }
 
     async submit(evt) {
-        console.log('Submit button clicked');
         evt.preventDefault();
 
         const errorMessageDisplay = document.getElementById('error-message');

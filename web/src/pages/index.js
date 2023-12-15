@@ -27,7 +27,6 @@ class Homepage extends BindingClass {
         this.header = new Header(this.dataStore);
         this.loadingSpinner = new LoadingSpinner();
 
-        console.log("Homepage constructor");
     }
 
     async clientLoaded() {
@@ -45,9 +44,7 @@ class Homepage extends BindingClass {
     }
 
     addRoutesToPage() {
-        console.log("add routes to page is starting");
         const routes = this.dataStore.get('routes');
-        console.log("routes", routes);
 
         if (routes == null) {
             return;

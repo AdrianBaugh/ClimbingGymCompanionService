@@ -28,7 +28,6 @@ class CreateClimb extends BindingClass {
         this.header = new Header(this.dataStore);
         this.loadingSpinner = new LoadingSpinner();
 
-        console.log("CreateClimb constructor");
     }
 
     /**
@@ -39,9 +38,9 @@ class CreateClimb extends BindingClass {
         this.dataStore.set('routes', routes);
 
         if (await this.client.authenticator.isUserLoggedIn()) {
-            console.log('User is logged in');
+            // User is logged in
         } else {
-            console.log('/////////User is not logged in////////');
+            /////////User is not logged in////////
 
             document.getElementById("loginModal").style.display = "block";
 
@@ -127,7 +126,6 @@ class CreateClimb extends BindingClass {
     async submit(evt) {
         this.showLoader();
 
-        console.log('Submit button clicked');
         evt.preventDefault();
 
         const errorMessageDisplay = document.getElementById('error-message');
@@ -169,7 +167,6 @@ class CreateClimb extends BindingClass {
         try {
             const climb = await this.client.createClimb(route, climbStatus, thumbsValue, type, notes);
             await this.dataStore.set('climb', climb);
-            console.log('Climb data before redirect:', climb);
 
             // Redirect after setting climb data
             this.redirectToViewClimb();
@@ -185,9 +182,7 @@ class CreateClimb extends BindingClass {
 
     redirectToViewClimb() {
         const climb = this.dataStore.get('climb');
-        console.log('Climb data:', climb);
         if (climb != null) {
-            console.log("Redirecting to viewClimbs.html");
             window.location.href = `/viewClimbs.html?climbId=${climb.climbId}`;
         }
     }
