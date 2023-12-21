@@ -4,6 +4,7 @@ import com.nashss.se.ClimbingGymCompanionService.activity.requests.CreateClimbRe
 import com.nashss.se.ClimbingGymCompanionService.activity.results.CreateClimbResult;
 import com.nashss.se.ClimbingGymCompanionService.dynamodb.ClimbDao;
 import com.nashss.se.ClimbingGymCompanionService.dynamodb.RouteDao;
+import com.nashss.se.ClimbingGymCompanionService.dynamodb.UserInfoDao;
 import com.nashss.se.ClimbingGymCompanionService.dynamodb.pojos.Climb;
 import com.nashss.se.ClimbingGymCompanionService.dynamodb.pojos.Route;
 import com.nashss.se.ClimbingGymCompanionService.models.ClimbModel;
@@ -31,6 +32,8 @@ public class    CreateClimbActivityTest {
     private ClimbDao climbDao;
     @Mock
     private RouteDao routeDao;
+    @Mock
+    private UserInfoDao userInfoDao;
     private CreateClimbActivity createClimbActivity;
 
     private Climb otherClimb;
@@ -45,7 +48,7 @@ public class    CreateClimbActivityTest {
     @BeforeEach
     void setUp() {
         openMocks(this);
-        createClimbActivity = new CreateClimbActivity(climbDao, routeDao);
+        createClimbActivity = new CreateClimbActivity(climbDao, routeDao, userInfoDao);
 
         this.otherClimb = new Climb();
         otherClimb.setRouteId(routeId);
