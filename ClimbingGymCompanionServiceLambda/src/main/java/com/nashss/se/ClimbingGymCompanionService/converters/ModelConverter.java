@@ -2,8 +2,10 @@ package com.nashss.se.ClimbingGymCompanionService.converters;
 
 import com.nashss.se.ClimbingGymCompanionService.dynamodb.pojos.Climb;
 import com.nashss.se.ClimbingGymCompanionService.dynamodb.pojos.Route;
+import com.nashss.se.ClimbingGymCompanionService.dynamodb.pojos.UserInfo;
 import com.nashss.se.ClimbingGymCompanionService.models.ClimbModel;
 import com.nashss.se.ClimbingGymCompanionService.models.RouteModel;
+import com.nashss.se.ClimbingGymCompanionService.models.UserInfoModel;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -78,5 +80,24 @@ public class ModelConverter {
         return climbList.stream()
                 .map(climb -> toClimbModel(climb))
                 .collect(Collectors.toList());
+    }
+
+    /**
+     *
+     * @param userInfo to convert to model
+     * @return userInfoModel
+     */
+    public UserInfoModel toUserInfoModel(UserInfo userInfo) {
+        return UserInfoModel.builder()
+                .withUserId(userInfo.getUserId())
+                .withRecentWeeklyClimbsFrequencyMap(userInfo.getRecentWeeklyClimbsFrequencyMap())
+                .withDifficultyFrequencyMap(userInfo.getDifficultyFrequencyMap())
+                .withWeeklyDifficultyFrequencyMap(userInfo.getWeeklyDifficultyFrequencyMap())
+                .withPercentFlashedSentMap(userInfo.getPercentFlashedSentMap())
+                .withTotalCompletedClimbs(userInfo.getTotalCompletedClimbs())
+                .withStat6(userInfo.getStat6())
+                .withStat7(userInfo.getStat7())
+                .withStat8(userInfo.getStat8())
+                .build();
     }
 }

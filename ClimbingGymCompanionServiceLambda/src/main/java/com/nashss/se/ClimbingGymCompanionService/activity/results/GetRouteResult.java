@@ -30,6 +30,6 @@ public class GetRouteResult {
             this.route = route;
             return this;
         }
-        public GetRouteResult build() { return new GetRouteResult(route);}
+        public GetRouteResult build() { return new GetRouteResult(route); }
     }
 }

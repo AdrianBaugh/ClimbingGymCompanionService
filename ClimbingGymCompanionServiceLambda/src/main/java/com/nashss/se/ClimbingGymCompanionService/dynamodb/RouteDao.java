@@ -24,9 +24,9 @@ public class RouteDao {
     private final Logger log = LogManager.getLogger();
 
     /**
-     * Instantiates a ReservationDao object.
+     * Instantiates a RouteDao object.
      *
-     * @param dynamoDbMapper   the {@link DynamoDBMapper} used to interact with the pets table
+     * @param dynamoDbMapper   the {@link DynamoDBMapper} used to interact with the routes table
      * @param metricsPublisher the {@link MetricsPublisher} used to record metrics.
      */
     @Inject

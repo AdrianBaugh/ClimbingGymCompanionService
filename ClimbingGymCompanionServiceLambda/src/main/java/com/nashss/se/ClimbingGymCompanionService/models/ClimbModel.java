@@ -26,7 +26,7 @@ public class ClimbModel {
      * @param weekClimbed the week during the year the route was climbed
      * @param notes the notes
      */
-    public ClimbModel(String climbId, String userId, String routeId, String type,
+    private ClimbModel(String climbId, String userId, String routeId, String type,
                       String climbStatus, ZonedDateTime dateTimeClimbed,
                       String weekClimbed, Boolean thumbsUp, String notes) {
         this.climbId = climbId;

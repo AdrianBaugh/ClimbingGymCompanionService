@@ -33,7 +33,7 @@ public class RouteModel {
      * @param imageKey route model metadaata
      * @param betaMap route model metadaata
      */
-    public RouteModel(String routeId, String routeStatus, String isArchived, String location,
+    private RouteModel(String routeId, String routeStatus, String isArchived, String location,
                       String color, String type, String difficulty, ZonedDateTime dateCreated,
                       Integer rating, String imageName, String imageKey,
                       Map<String, String> betaMap) {
