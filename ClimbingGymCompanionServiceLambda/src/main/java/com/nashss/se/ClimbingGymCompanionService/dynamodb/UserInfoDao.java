@@ -46,7 +46,7 @@ public class UserInfoDao {
      *  @param userInfo The userInfo to save.
      *  @return The userInfo object that was saved.
      */
-    public UserInfo saveRoute(UserInfo userInfo) {
+    public UserInfo saveUserInfo(UserInfo userInfo) {
         this.dynamoDbMapper.save(userInfo);
         return userInfo;
     }

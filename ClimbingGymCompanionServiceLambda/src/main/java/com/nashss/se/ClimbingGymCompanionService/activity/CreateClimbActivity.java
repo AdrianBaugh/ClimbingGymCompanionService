@@ -11,6 +11,7 @@ import com.nashss.se.ClimbingGymCompanionService.models.ClimbModel;
 import com.nashss.se.ClimbingGymCompanionService.utils.DateTimeUtils;
 import com.nashss.se.ClimbingGymCompanionService.utils.IdUtils;
 import com.nashss.se.ClimbingGymCompanionService.utils.UpdateRouteUtils;
+import com.nashss.se.ClimbingGymCompanionService.utils.UpdateUserInfoUtils;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -77,7 +78,7 @@ public class CreateClimbActivity {
         newClimb.setPublicBeta(notes);
 
         climbDao.saveClimb(newClimb);
-        UpdateUserInfoUtils.updateUserInfo(newClimb);
+        UpdateUserInfoUtils.updateUserInfo(userInfoDao, newClimb);
 
         ClimbModel climbModel = new ModelConverter().toClimbModel(newClimb);
 

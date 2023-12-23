@@ -5,42 +5,53 @@ import com.nashss.se.ClimbingGymCompanionService.dynamodb.pojos.Climb;
 import com.nashss.se.ClimbingGymCompanionService.dynamodb.pojos.UserInfo;
 
 import java.time.LocalDate;
-import java.util.Collections;
-import java.util.Iterator;
+import java.util.HashMap;
 import java.util.Map;
-import java.util.NavigableSet;
+import java.util.NavigableMap;
 import java.util.TreeMap;
 
 public class UpdateUserInfoUtils {
+
+    private static final Integer NUMBER_OF_RECENT_WEEKS = 5;
     private UpdateUserInfoUtils() {
     }
 
-    public static void updateWeeklyClimbFrequencyMap(UserInfoDao userInfoDao, Climb climb) {
+    public static void updateUserInfo(UserInfoDao userInfoDao, Climb climb) {
+        UserInfo userInfo;
+        try {
+            userInfo = userInfoDao.getUserInfoById(climb.getUserId());
+        } catch (RuntimeException e) {
+            userInfo = new UserInfo();
+            userInfo.setUserId(climb.getUserId());
+            userInfo.setRecentWeeklyClimbsFrequencyMap(new TreeMap<>());
+            userInfo.setDifficultyFrequencyMap(new HashMap<>());
+            userInfo.setWeeklyDifficultyFrequencyMap(new TreeMap<>());
+            userInfo.setPercentFlashedSentMap(new HashMap<>());
+            userInfo.setTotalCompletedClimbs(0);
+        }
+
+        //call each update stat method
+        userInfo.setRecentWeeklyClimbsFrequencyMap(updateWeeklyClimbFrequencyMap(userInfo, climb));
+
+        userInfoDao.saveUserInfo(userInfo);
+    }
+
+    private static Map<String, Integer> updateWeeklyClimbFrequencyMap(UserInfo userInfo, Climb climb) {
         //get the map
-        UserInfo userInfo = userInfoDao.getUserInfoById(climb.getUserId());
         Map<String, Integer> currMap = userInfo.getRecentWeeklyClimbsFrequencyMap();
 
         String yearWeek = climb.getWeekClimbed();
 
-        if (currMap == null) {
-            currMap = new TreeMap<>();
-        }
-
-        incrementFrequency(currMap, yearWeek);
+        currMap.put(yearWeek, currMap.getOrDefault(yearWeek, 0) + 1);
 
         int currentYear = Integer.parseInt(yearWeek.split("::")[0]);
         int endYear = LocalDate.now().getYear();
 
-        // Fill in missing weeks with a value of 0
         fillMissingWeeks(currMap, currentYear, endYear);
 
-        Map<String, Integer> recentDataMap = getMostRecentData(currMap, 5);
+        Map<String, Integer> recentDataMap = getMostRecentData(currMap);
 
-    }
-
-    // Helper method to increment the frequency for a given YearWeek
-    private static void incrementFrequency(Map<String, Integer> map, String yearWeek) {
-        map.put(yearWeek, map.getOrDefault(yearWeek, 0) + 1);
+        return recentDataMap;
     }
 
     // Helper method to fill in missing weeks with a value of 0
@@ -59,17 +70,16 @@ public class UpdateUserInfoUtils {
         }
     }
 
-    // Helper method to get the final TreeMap containing the most recent entries
-    private static Map<String, Integer> getMostRecentData(Map<String, Integer> map, int numEntries) {
-        TreeMap<String, Integer> result = new TreeMap<>(Collections.reverseOrder());
-        NavigableSet<String> descendingKeys = map.descendingKeySet();
-        Iterator<String> iterator = descendingKeys.iterator();
+    /**
+     * Helper method to get the final TreeMap containing the most recent entries
+     * @param map The map to extract the recent data from
+     * @return the map of recent data
+     */
+    private static Map<String, Integer> getMostRecentData(Map<String, Integer> map) {
+        NavigableMap<String, Integer> descendingMap = new TreeMap<>(map).descendingMap();
 
-        for (int i = 0; i < numEntries && iterator.hasNext(); i++) {
-            Map.Entry<String, Integer> entry = iterator.next();
-            result.put(entry.getKey(), entry.getValue());
-        }
-
-        return result;
+        return new TreeMap<>(descendingMap).entrySet().stream()
+                .limit(NUMBER_OF_RECENT_WEEKS)
+                .collect(TreeMap::new, (m, e) -> m.put(e.getKey(), e.getValue()), Map::putAll);
     }
 }
