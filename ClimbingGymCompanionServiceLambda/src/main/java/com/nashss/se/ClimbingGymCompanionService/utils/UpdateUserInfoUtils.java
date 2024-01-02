@@ -1,8 +1,11 @@
 package com.nashss.se.ClimbingGymCompanionService.utils;
 
+import com.nashss.se.ClimbingGymCompanionService.dynamodb.RouteDao;
 import com.nashss.se.ClimbingGymCompanionService.dynamodb.UserInfoDao;
 import com.nashss.se.ClimbingGymCompanionService.dynamodb.pojos.Climb;
+import com.nashss.se.ClimbingGymCompanionService.dynamodb.pojos.Route;
 import com.nashss.se.ClimbingGymCompanionService.dynamodb.pojos.UserInfo;
+import com.nashss.se.ClimbingGymCompanionService.enums.ClimbStatus;
 
 import java.time.LocalDate;
 import java.util.HashMap;
@@ -16,8 +19,9 @@ public class UpdateUserInfoUtils {
     private UpdateUserInfoUtils() {
     }
 
-    public static void updateUserInfo(UserInfoDao userInfoDao, Climb climb) {
+    public static void updateUserInfo(UserInfoDao userInfoDao, RouteDao routeDao, Climb climb) {
         UserInfo userInfo;
+        Route route = routeDao.getRouteById(climb.getRouteId());
         try {
             userInfo = userInfoDao.getUserInfoById(climb.getUserId());
         } catch (RuntimeException e) {
@@ -31,9 +35,54 @@ public class UpdateUserInfoUtils {
         }
 
         //call each update stat method
+        // recent weekly climb frequency map
         userInfo.setRecentWeeklyClimbsFrequencyMap(updateWeeklyClimbFrequencyMap(userInfo, climb));
 
+        // total climbs by difficulty frequency map
+        userInfo.setDifficultyFrequencyMap(updateDifficultyFrequencyMap(route, userInfo, climb));
+
+        // recent weekly climb frequency map
+        userInfo.setWeeklyDifficultyFrequencyMap(updateRecentWeeklyDifficultyMap(route, userInfo, climb));
         userInfoDao.saveUserInfo(userInfo);
+    }
+
+    private static Map<String, Map<String, Integer>> updateRecentWeeklyDifficultyMap(Route route, UserInfo userInfo, Climb climb) {
+        Map<String, Map<String, Integer>> fullMap = userInfo.getWeeklyDifficultyFrequencyMap();
+        String currYearWeek = climb.getWeekClimbed();
+
+        Map<String, Integer> currMap = fullMap.getOrDefault(currYearWeek, new HashMap<>());
+
+        currMap.put(route.getDifficulty(), currMap.getOrDefault(route.getDifficulty(), 0) + 1);
+
+        fullMap.put(currYearWeek, currMap);
+        //fill missing weeks
+
+        //get most recent
+
+        return fullMap;
+    }
+
+    /**
+     * Updates the total count for each climb of a specific difficulty.
+     * @param route to access route's difficulty
+     * @param userInfo the userInfo object to update
+     * @param climb the current climb data
+     * @return the frequency difficulty map
+     */
+    private static Map<String, Integer> updateDifficultyFrequencyMap(
+            Route route, UserInfo userInfo, Climb climb) {
+
+        Map<String, Integer> currMap = userInfo.getDifficultyFrequencyMap();
+
+        String status = climb.getClimbStatus();
+
+        if (status.contains("COMPLETED")) {
+            String difficulty = route.getDifficulty();
+
+            currMap.put(difficulty, currMap.getOrDefault(difficulty, 0) + 1);
+        }
+
+        return currMap;
     }
 
     private static Map<String, Integer> updateWeeklyClimbFrequencyMap(UserInfo userInfo, Climb climb) {
@@ -80,6 +129,6 @@ public class UpdateUserInfoUtils {
 
         return new TreeMap<>(descendingMap).entrySet().stream()
                 .limit(NUMBER_OF_RECENT_WEEKS)
-                .collect(TreeMap::new, (m, e) -> m.put(e.getKey(), e.getValue()), Map::putAll);
+                .collect(TreeMap::new, (key, value) -> key.put(value.getKey(), value.getValue()), Map::putAll);
     }
 }

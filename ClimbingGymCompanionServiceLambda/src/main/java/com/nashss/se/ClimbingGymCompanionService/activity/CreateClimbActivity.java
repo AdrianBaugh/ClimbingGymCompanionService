@@ -78,7 +78,7 @@ public class CreateClimbActivity {
         newClimb.setPublicBeta(notes);
 
         climbDao.saveClimb(newClimb);
-        UpdateUserInfoUtils.updateUserInfo(userInfoDao, newClimb);
+        UpdateUserInfoUtils.updateUserInfo(userInfoDao, routeDao, newClimb);
 
         ClimbModel climbModel = new ModelConverter().toClimbModel(newClimb);
 
