@@ -8,6 +8,7 @@ import com.nashss.se.ClimbingGymCompanionService.dynamodb.pojos.UserInfo;
 import com.nashss.se.ClimbingGymCompanionService.enums.ClimbStatus;
 
 import java.time.LocalDate;
+import java.time.Year;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.NavigableMap;
@@ -41,21 +42,24 @@ public class UpdateUserInfoUtils {
         // total climbs by difficulty frequency map
         userInfo.setDifficultyFrequencyMap(updateDifficultyFrequencyMap(route, userInfo, climb));
 
-        // recent weekly climb frequency map
-        userInfo.setWeeklyDifficultyFrequencyMap(updateRecentWeeklyDifficultyMap(route, userInfo, climb));
+        // weekly climb frequency map
+        userInfo.setWeeklyDifficultyFrequencyMap(updateWeeklyDifficultyMap(route, userInfo, climb));
         userInfoDao.saveUserInfo(userInfo);
     }
 
-    private static Map<String, Map<String, Integer>> updateRecentWeeklyDifficultyMap(Route route, UserInfo userInfo, Climb climb) {
+    private static Map<String, Map<String, Integer>>  updateWeeklyDifficultyMap(
+            Route route, UserInfo userInfo, Climb climb) {
+
         Map<String, Map<String, Integer>> fullMap = userInfo.getWeeklyDifficultyFrequencyMap();
         String currYearWeek = climb.getWeekClimbed();
+        String difficulty = route.getDifficulty();
 
         Map<String, Integer> currMap = fullMap.getOrDefault(currYearWeek, new HashMap<>());
 
-        currMap.put(route.getDifficulty(), currMap.getOrDefault(route.getDifficulty(), 0) + 1);
+        currMap.put(difficulty, currMap.getOrDefault(difficulty, 0) + 1);
 
         fullMap.put(currYearWeek, currMap);
-        //fill missing weeks
+        //fill missing weeks maybe with the earliest week as start and then up to the current week as end
 
         //get most recent
 
@@ -63,14 +67,13 @@ public class UpdateUserInfoUtils {
     }
 
     /**
-     * Updates the total count for each climb of a specific difficulty.
+     * Updates the all time total count for each completed climb of a specific difficulty.
      * @param route to access route's difficulty
      * @param userInfo the userInfo object to update
      * @param climb the current climb data
      * @return the frequency difficulty map
      */
-    private static Map<String, Integer> updateDifficultyFrequencyMap(
-            Route route, UserInfo userInfo, Climb climb) {
+    private static Map<String, Integer> updateDifficultyFrequencyMap(Route route, UserInfo userInfo, Climb climb) {
 
         Map<String, Integer> currMap = userInfo.getDifficultyFrequencyMap();
 
@@ -85,6 +88,12 @@ public class UpdateUserInfoUtils {
         return currMap;
     }
 
+    /**
+     * Updates the total climbs per week fr the last 5 weeks
+     * @param userInfo to update
+     * @param climb to get metadata from
+     * @return the frequency map
+     */
     private static Map<String, Integer> updateWeeklyClimbFrequencyMap(UserInfo userInfo, Climb climb) {
         //get the map
         Map<String, Integer> currMap = userInfo.getRecentWeeklyClimbsFrequencyMap();
@@ -94,9 +103,11 @@ public class UpdateUserInfoUtils {
         currMap.put(yearWeek, currMap.getOrDefault(yearWeek, 0) + 1);
 
         int currentYear = Integer.parseInt(yearWeek.split("::")[0]);
-        int endYear = LocalDate.now().getYear();
+        // need to verify this returns the first element in the treemap
+        int firstYear = Integer.parseInt(String.valueOf(currMap.keySet().stream().findFirst()));
+        //int endYear = LocalDate.now().getYear();
 
-        fillMissingWeeks(currMap, currentYear, endYear);
+        fillMissingWeeks(currMap, firstYear, currentYear);
 
         Map<String, Integer> recentDataMap = getMostRecentData(currMap);
 
