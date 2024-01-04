@@ -5,10 +5,7 @@ import com.nashss.se.ClimbingGymCompanionService.dynamodb.UserInfoDao;
 import com.nashss.se.ClimbingGymCompanionService.dynamodb.pojos.Climb;
 import com.nashss.se.ClimbingGymCompanionService.dynamodb.pojos.Route;
 import com.nashss.se.ClimbingGymCompanionService.dynamodb.pojos.UserInfo;
-import com.nashss.se.ClimbingGymCompanionService.enums.ClimbStatus;
 
-import java.time.LocalDate;
-import java.time.Year;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.NavigableMap;
@@ -96,7 +93,7 @@ public class UpdateUserInfoUtils {
      */
     private static Map<String, Integer> updateWeeklyClimbFrequencyMap(UserInfo userInfo, Climb climb) {
         //get the map
-        Map<String, Integer> currMap = userInfo.getRecentWeeklyClimbsFrequencyMap();
+        TreeMap<String, Integer> currMap = new TreeMap<>(userInfo.getRecentWeeklyClimbsFrequencyMap());
 
         String yearWeek = climb.getWeekClimbed();
 
@@ -104,7 +101,7 @@ public class UpdateUserInfoUtils {
 
         int currentYear = Integer.parseInt(yearWeek.split("::")[0]);
         // need to verify this returns the first element in the treemap
-        int firstYear = Integer.parseInt(String.valueOf(currMap.keySet().stream().findFirst()));
+        int firstYear = currMap.firstEntry().getValue();
         //int endYear = LocalDate.now().getYear();
 
         fillMissingWeeks(currMap, firstYear, currentYear);

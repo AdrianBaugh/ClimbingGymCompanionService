@@ -77,7 +77,11 @@ class ViewClimb extends BindingClass {
 
 
         const climbHistory = await this.client.viewUsersClimbHistory();
+        const userInfo = await this.client.getUserInfo();
+
         this.dataStore.set('climbHistory', climbHistory);
+        this.dataStore.set('userInfo', userInfo);
+
         this.addClimbHistoryToPage();
         this.hideLoader();
     }
@@ -202,6 +206,12 @@ class ViewClimb extends BindingClass {
         // CALL PROCESS GRAPH WITH DATASET
         this.dataStore.set('climbHistoryFrequencyMap', climbHistoryFrequencyMap);
         this.processClimbHistory();
+
+
+        // backend frequency map data test
+        //***************************************************************************************** */
+        const userInfo = this.dataStore.get('userInfo');
+        console.warn('USER INFO: ', userInfo);
     }
 
     /* 

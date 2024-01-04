@@ -120,6 +120,24 @@ export default class ClimbClient extends BindingClass {
         }
     }
 
+
+    async getUserInfo(errorCallback) {
+        try {
+            const token = await this.getTokenOrThrow("You must be logged in to view your climbs!");
+
+            const response = await this.axiosClient.get(`userInfo}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+
+            return response.data.userInfo;
+        } catch (error) {
+            this.handleError(error, errorCallback)
+        }
+    }
+
+
     /** 
      * Gets the climb for the given ID.
      * @param id Unique identifier for a climb
