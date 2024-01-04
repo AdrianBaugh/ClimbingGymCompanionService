@@ -125,13 +125,13 @@ export default class ClimbClient extends BindingClass {
         try {
             const token = await this.getTokenOrThrow("You must be logged in to view your climbs!");
 
-            const response = await this.axiosClient.get(`userInfo}`, {
+            const response = await this.axiosClient.get(`userInfo`, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
             });
-
-            return response.data.userInfo;
+            console.error('USERINFO LAMBDA RESPONSE: ', response)
+            return response.data.userInfoModel;
         } catch (error) {
             this.handleError(error, errorCallback)
         }

@@ -83,6 +83,10 @@ public class CreateClimbActivity {
 
         ClimbModel climbModel = new ModelConverter().toClimbModel(newClimb);
 
+        // D E L E T E
+        // ********************************************
+        updateRequest(createClimbRequest);
+        // ********************************************
         return CreateClimbResult.builder()
                 .withClimb(climbModel)
                 .build();

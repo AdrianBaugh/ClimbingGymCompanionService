@@ -6,6 +6,7 @@ import com.nashss.se.ClimbingGymCompanionService.dynamodb.pojos.Climb;
 import com.nashss.se.ClimbingGymCompanionService.dynamodb.pojos.Route;
 import com.nashss.se.ClimbingGymCompanionService.dynamodb.pojos.UserInfo;
 
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.NavigableMap;
@@ -104,7 +105,7 @@ public class UpdateUserInfoUtils {
         int firstYear = currMap.firstEntry().getValue();
         //int endYear = LocalDate.now().getYear();
 
-        fillMissingWeeks(currMap, firstYear, currentYear);
+        fillMissingWeeks(currMap, firstYear);
 
         Map<String, Integer> recentDataMap = getMostRecentData(currMap);
 
@@ -112,13 +113,14 @@ public class UpdateUserInfoUtils {
     }
 
     // Helper method to fill in missing weeks with a value of 0
-    private static void fillMissingWeeks(Map<String, Integer> map, int startYear, int endYear) {
-        int startWeek = 1;
-        int endWeek = 52;
+    private static void fillMissingWeeks(Map<String, Integer> map, int startYear) {
+        Calendar calendar = Calendar.getInstance();
+        int currentYear = calendar.get(Calendar.YEAR);
+        int currentWeek = calendar.get(Calendar.WEEK_OF_YEAR);
 
-        for (int year = startYear; year <= endYear; year++) {
-            int maxWeek = (year == endYear) ? endWeek : 52;
-            int minWeek = (year == startYear) ? startWeek : 1;
+        for (int year = startYear; year <= currentYear; year++) {
+            int maxWeek = (year == currentYear) ? currentWeek : 52;
+            int minWeek = (year == startYear) ? calendar.getActualMinimum(Calendar.WEEK_OF_YEAR) : 1;
 
             for (int week = minWeek; week <= maxWeek; week++) {
                 String yearWeek = String.format("%04d::%02d", year, week);
