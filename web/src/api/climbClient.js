@@ -130,7 +130,6 @@ export default class ClimbClient extends BindingClass {
                     Authorization: `Bearer ${token}`
                 }
             });
-            console.error('USERINFO LAMBDA RESPONSE: ', response)
             return response.data.userInfoModel;
         } catch (error) {
             this.handleError(error, errorCallback)

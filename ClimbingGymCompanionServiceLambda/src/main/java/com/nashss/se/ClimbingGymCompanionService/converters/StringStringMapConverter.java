@@ -12,28 +12,28 @@ public class StringStringMapConverter implements DynamoDBTypeConverter<String, M
     /**
      * Turns an object of type T into an object of type S.
      *
-     * @param StringStringMap to be converted
+     * @param stringStringMap to be converted
      */
     @Override
-    public String convert(Map<String, String> StringStringMap) {
+    public String convert(Map<String, String> stringStringMap) {
         try {
-            return objectMapper.writeValueAsString(StringStringMap);
+            return objectMapper.writeValueAsString(stringStringMap);
         } catch (JsonProcessingException e) {
-            throw new RuntimeException("Trouble converting StringStringMap to a JsonString" , e);
+            throw new RuntimeException("Trouble converting stringStringMap to a JsonString" , e);
         }
     }
 
     /**
      * Turns an object of type S into an object of type T.
      *
-     * @param StringStringMapJsonString to be unconverted
+     * @param stringStringMapJsonString to be unconverted
      */
     @Override
-    public Map<String, String> unconvert(String StringStringMapJsonString) {
+    public Map<String, String> unconvert(String stringStringMapJsonString) {
         try {
-            return objectMapper.readValue(StringStringMapJsonString, Map.class);
+            return objectMapper.readValue(stringStringMapJsonString, Map.class);
         } catch (JsonProcessingException e) {
-            throw new RuntimeException("Trouble un-converting StringStringMapJsonString to a HashMap" , e);
+            throw new RuntimeException("Trouble un-converting stringStringMapJsonString to a HashMap" , e);
         }
     }
 }

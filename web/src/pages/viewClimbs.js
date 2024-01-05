@@ -161,9 +161,16 @@ class ViewClimb extends BindingClass {
 
     async addClimbHistoryToPage() {
         const climbHistory = this.dataStore.get('climbHistory');
+        const userInfo = this.dataStore.get('userInfo');
 
-        const totalClimbs = document.getElementById('totalClimbs');
-        totalClimbs.innerText = (climbHistory ? 'Total Routes Climbed: ' + climbHistory.length : 'No climbs yet!');
+
+        const totalClimbsAttempted = document.getElementById('totalClimbsAttempted');
+        totalClimbsAttempted.innerText = (climbHistory ? 'Total Routes Attempted: ' + climbHistory.length : 'No climbs yet!');
+
+        const totalClimbsCompleted = document.getElementById('totalClimbsCompleted');
+        totalClimbsCompleted.innerText = (climbHistory ? 'Total Routes Completed: ' + userInfo.totalCompletedClimbs : 'No climbs yet!');
+
+        
 
         const climbHistoryElement = document.getElementById('climbHistory');
 
@@ -190,80 +197,33 @@ class ViewClimb extends BindingClass {
             </tr>
             `;
 
-            // POPULATE GRAPH DATA
-            if (climbHistoryFrequencyMap[climb.weekClimbed]) {
-                climbHistoryFrequencyMap[climb.weekClimbed]++;
-            } else {
-                climbHistoryFrequencyMap[climb.weekClimbed] = 1;
-            }
-
-
         }
         climbHtml += '</table>';
 
         climbHistoryElement.innerHTML = textHtml + climbHtml;
 
-        // CALL PROCESS GRAPH WITH DATASET
-        this.dataStore.set('climbHistoryFrequencyMap', climbHistoryFrequencyMap);
+        // CALL PROCESS Climb History GRAPH 
         this.processClimbHistory();
-
-
-        // backend frequency map data test
-        //***************************************************************************************** */
-        const userInfo = this.dataStore.get('userInfo');
-        console.warn('USER INFO: ', userInfo);
     }
 
     /* 
     * Method for handling climb history frequency map, sorting, populaing missing data, etc.
     */
     processClimbHistory() {
-        const climbHistoryFrequencyMap = this.dataStore.get('climbHistoryFrequencyMap');
-    
-        const weekNumber = (key) => parseInt(key.split('::')[1]);
-    
-        const currentMinWeek = Math.min(...Object.keys(climbHistoryFrequencyMap).map(weekNumber));
-        const currentMaxWeek = Math.max(...Object.keys(climbHistoryFrequencyMap).map(weekNumber));
-    
-        let minWeek = currentMinWeek;
-        let maxWeek = currentMaxWeek;
-    
-        // Check if the difference between min and max is less than 4 weeks
-        if (maxWeek - minWeek < 4) {
-            // Adjust the min value to be 4 less than the max value
-            minWeek = Math.max(currentMaxWeek - 4, 1); // Ensure the min is at least 1
-        }
-    
-        // Create a new frequency map with all weeks, filling missing weeks with zero
-        let tempMap = {};
-        for (let weekNumber = maxWeek; weekNumber >= minWeek; weekNumber--) {
-            const key = `2023::${weekNumber}`;
-            tempMap[key] = climbHistoryFrequencyMap[key] || 0;
-        }
-        
-        // sort the data beased on week number(keys)
-        let sortedKeys = Object.keys(tempMap).sort((a, b) => {
-            const numA = parseInt(a.split('::')[1]);
-            const numB = parseInt(b.split('::')[1]);
-    
-            return numA - numB;
-        });
-    
-        // Take the last 5 keys(weeks) of recent data
-        sortedKeys = sortedKeys.slice(-5);
-    
-        // Create a new frequency map with sorted keys and explicitly set the value to 0 for new keys
-        let sortedFrequencyMap = {};
-        sortedKeys.forEach(key => {
-            sortedFrequencyMap[key] = tempMap[key] || 0;
-        });
-    
+        const userInfo = this.dataStore.get('userInfo');
+        console.error(userInfo);
+
+        let recentClimbHistoryMap = userInfo.recentWeeklyClimbsFrequencyMap;
+        let climbDifficultyMap = userInfo.difficultyFrequencyMap;
+
         let customLabels = ['4 Weeks Ago', '3 Weeks Ago', '2 Weeks Ago', 'Last Week', 'This Week'];
-        let sortedData = Object.values(sortedFrequencyMap);
+        let sortedData = Object.values(recentClimbHistoryMap);
     
-        console.log("FULL PROCESSED 5 WEEK HISTORY MAP: " ,sortedFrequencyMap);
+        console.log("FULL PROCESSED 5 WEEK HISTORY MAP: " ,recentClimbHistoryMap);
 
         this.addClimbHistoryGraphToPage(customLabels, sortedData);
+
+        this.addClimbDifficultyGraphToPage(climbDifficultyMap);
     }
     
 
@@ -305,6 +265,60 @@ class ViewClimb extends BindingClass {
 
         canvas.chart = climbHistoryChart;
     }
+
+    addClimbDifficultyGraphToPage(map) {
+        const canvas = document.getElementById('difficultyGraph');
+        const context = canvas.getContext('2d');
+    
+        let data = Object.entries(map).map(([category, frequency]) => ({
+            x: getValueFromEnum(category, routeDifficulties), // Format the label
+            y: frequency
+        }));    
+        if (canvas.chart) {
+            canvas.chart.destroy();
+        }
+    
+        // Generate unique colors dynamically based on the number of bars
+        const barColors = Array.from({ length: data.length }, (_, index) => getRandomColor(index));
+    
+        function getRandomColor(index) {
+            const hue = (index * 137.5) % 360; 
+            return `hsla(${hue}, 70%, 50%, 0.7)`;
+        }
+    
+        let climbHistoryChart = new Chart(context, {
+            type: 'bar',
+            data: {
+                datasets: [{
+                    label: 'Difficulties Completed',
+                    data: data,
+                    backgroundColor: barColors,
+                    fill: false
+                }]
+            },
+            options: {
+                scales: {
+                    x: {
+                        type: 'category',
+                    },
+                    y: {
+                        suggestedMin: 0,
+                        beginAtZero: true,
+                        stepSize: 1,
+                        suggestedMax: Math.max(...data.map(entry => entry.y)) + 1,
+                        ticks: {
+                            precision: 0, 
+                        }
+                    }
+                }
+            }
+            
+        });
+    
+        canvas.chart = climbHistoryChart;
+    }
+    
+    
 
     updateStatusDropdown() {
         const climb = this.dataStore.get('climb');

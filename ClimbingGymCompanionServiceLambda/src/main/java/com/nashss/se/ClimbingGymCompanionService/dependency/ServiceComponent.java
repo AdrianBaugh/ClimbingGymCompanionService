@@ -1,10 +1,18 @@
 package com.nashss.se.ClimbingGymCompanionService.dependency;
 
-import com.nashss.se.ClimbingGymCompanionService.activity.*;
-import com.nashss.se.ClimbingGymCompanionService.activity.requests.GetUserInfoRequest;
+import com.nashss.se.ClimbingGymCompanionService.activity.CreateClimbActivity;
+import com.nashss.se.ClimbingGymCompanionService.activity.CreateRouteActivity;
+import com.nashss.se.ClimbingGymCompanionService.activity.DeleteClimbActivity;
+import com.nashss.se.ClimbingGymCompanionService.activity.GetAllActiveRoutesActivity;
+import com.nashss.se.ClimbingGymCompanionService.activity.GetClimbActivity;
+import com.nashss.se.ClimbingGymCompanionService.activity.GetPresignedS3ImageActivity;
+import com.nashss.se.ClimbingGymCompanionService.activity.GetRouteActivity;
+import com.nashss.se.ClimbingGymCompanionService.activity.GetS3PreSignedUrlActivity;
+import com.nashss.se.ClimbingGymCompanionService.activity.GetUserInfoActivity;
+import com.nashss.se.ClimbingGymCompanionService.activity.GetUsersClimbHistoryActivity;
+import com.nashss.se.ClimbingGymCompanionService.activity.UpdateClimbActivity;
+import com.nashss.se.ClimbingGymCompanionService.activity.UpdateRouteStatusActivity;
 
-import com.amazonaws.services.dynamodbv2.model.Get;
-import com.amazonaws.services.lambda.runtime.RequestHandler;
 import dagger.Component;
 
 import javax.inject.Singleton;

@@ -6,7 +6,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.Map;
 
-public class WeeklyDifficultyFrequencyMapMapConverter implements DynamoDBTypeConverter<String, Map<String, Map<String, Integer>>> {
+public class WeeklyDifficultyFrequencyMapMapConverter
+        implements DynamoDBTypeConverter<String, Map<String, Map<String, Integer>>> {
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
     /**

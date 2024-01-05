@@ -24,6 +24,9 @@ public class DateTimeUtils {
     public static String getWeekOfYear() {
         Calendar now = Calendar.getInstance();
         int year = now.getWeekYear();
-        return year + "::" + String.valueOf(now.get(Calendar.WEEK_OF_YEAR));
+        int week = now.get(Calendar.WEEK_OF_YEAR);
+
+        return String.format("%04d::%02d", year, week);
+//        return year + "::" + String.valueOf(now.get(Calendar.WEEK_OF_YEAR));
     }
 }

@@ -12,14 +12,14 @@ public class StringIntegerMapConverter implements DynamoDBTypeConverter<String, 
     /**
      * Turns an object of type T into an object of type S.
      *
-     * @param StringIntegerMap to be converted
+     * @param stringIntegerMap to be converted
      */
     @Override
-    public String convert(Map<String, Integer> StringIntegerMap) {
+    public String convert(Map<String, Integer> stringIntegerMap) {
         try {
-            return objectMapper.writeValueAsString(StringIntegerMap);
+            return objectMapper.writeValueAsString(stringIntegerMap);
         } catch (JsonProcessingException e) {
-            throw new RuntimeException("Trouble converting StringIntegerMap to a JsonString" , e);
+            throw new RuntimeException("Trouble converting stringIntegerMap to a JsonString" , e);
 
         }
     }
@@ -27,14 +27,14 @@ public class StringIntegerMapConverter implements DynamoDBTypeConverter<String, 
     /**
      * Turns an object of type S into an object of type T.
      *
-     * @param StringIntegerMapJsonString to be unconverted
+     * @param stringIntegerMapJsonString to be unconverted
      */
     @Override
-    public Map<String, Integer> unconvert(String StringIntegerMapJsonString) {
+    public Map<String, Integer> unconvert(String stringIntegerMapJsonString) {
         try {
-            return objectMapper.readValue(StringIntegerMapJsonString, Map.class);
+            return objectMapper.readValue(stringIntegerMapJsonString, Map.class);
         } catch (JsonProcessingException e) {
-            throw new RuntimeException("Trouble un-converting StringIntegerMapJsonString to a HashMap" , e);
+            throw new RuntimeException("Trouble un-converting stringIntegerMapJsonString to a HashMap" , e);
         }
     }
 }
