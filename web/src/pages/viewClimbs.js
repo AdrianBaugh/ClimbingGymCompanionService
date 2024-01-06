@@ -290,7 +290,7 @@ class ViewClimb extends BindingClass {
             type: 'bar',
             data: {
                 datasets: [{
-                    label: 'Difficulties Completed',
+                    label: 'Total Difficulties Completed',
                     data: data,
                     backgroundColor: barColors,
                     fill: false

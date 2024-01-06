@@ -17,7 +17,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.time.ZonedDateTime;
-import java.util.List;
 import javax.inject.Inject;
 
 public class CreateClimbActivity {
@@ -83,27 +82,8 @@ public class CreateClimbActivity {
 
         ClimbModel climbModel = new ModelConverter().toClimbModel(newClimb);
 
-        // D E L E T E
-        // ********************************************
-        updateRequest(createClimbRequest);
-        // ********************************************
         return CreateClimbResult.builder()
                 .withClimb(climbModel)
                 .build();
-    }
-
-
-    // D E L E T E
-    // ********************************************
-    // delete below after it is run to populate userinfo object with ld data all new data will be filled for
-    // each new user and their climbs
-    // ********************************************
-
-    private void updateRequest(CreateClimbRequest request) {
-        List<Climb> climbs = climbDao.getAllUsersClimbs(request.getUserId());
-
-        for (Climb c : climbs) {
-            UpdateUserInfoUtils.updateUserInfo(userInfoDao, routeDao, c);
-        }
     }
 }

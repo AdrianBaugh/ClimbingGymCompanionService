@@ -35,7 +35,7 @@ public class UpdateUserInfoUtils {
             userInfo.setUserId(climb.getUserId());
             userInfo.setTotalCompletedClimbs(0);
             userInfo.setRecentWeeklyClimbsFrequencyMap(new TreeMap<>());
-            userInfo.setDifficultyFrequencyMap(new HashMap<>());
+            userInfo.setDifficultyFrequencyMap(new TreeMap<>());
             userInfo.setWeeklyDifficultyFrequencyMap(new TreeMap<>());
             userInfo.setPercentFlashedSentMap(new HashMap<>());
         }
@@ -50,7 +50,7 @@ public class UpdateUserInfoUtils {
         // total climbs by difficulty frequency map
         userInfo.setDifficultyFrequencyMap(updateDifficultyFrequencyMap(route, userInfo, climb));
 
-        // weekly climb frequency map
+        // weekly climb difficulty frequency map
         userInfo.setWeeklyDifficultyFrequencyMap(updateWeeklyDifficultyMap(route, userInfo, climb));
 
         userInfoDao.saveUserInfo(userInfo);
