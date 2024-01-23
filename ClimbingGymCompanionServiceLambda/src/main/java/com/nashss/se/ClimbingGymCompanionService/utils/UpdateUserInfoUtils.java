@@ -154,6 +154,12 @@ public class UpdateUserInfoUtils {
                 .collect(TreeMap::new, (key, value) -> key.put(value.getKey(), value.getValue()), Map::putAll);
     }
 
+    /**
+     * Helper to update the total completed climbs stat.
+     * @param userInfo obj to update.
+     * @param climb to check completed status and update with.
+     * @return the updated count
+     */
     private static Integer updateTotalCompletedClimbs(UserInfo userInfo, Climb climb) {
         Integer count = userInfo.getTotalCompletedClimbs();
 
