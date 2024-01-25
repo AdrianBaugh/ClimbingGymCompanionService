@@ -12,7 +12,11 @@ import com.nashss.se.ClimbingGymCompanionService.utils.UpdateUserInfoUtils;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import org.powermock.api.mockito.PowerMockito;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -23,14 +27,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.openMocks;
 
-import org.mockito.Mockito;
-import org.powermock.api.mockito.PowerMockito;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-
+@RunWith(PowerMockRunner.class)
 @PrepareForTest(UpdateUserInfoUtils.class)
 public class CreateClimbActivityTest {
 
@@ -40,7 +42,6 @@ public class CreateClimbActivityTest {
     private RouteDao routeDao;
     @Mock
     private UserInfoDao userInfoDao;
-
     private CreateClimbActivity createClimbActivity;
 
     private Climb otherClimb;
@@ -56,7 +57,6 @@ public class CreateClimbActivityTest {
     void setUp() {
         openMocks(this);
         createClimbActivity = new CreateClimbActivity(climbDao, routeDao, userInfoDao);
-
         this.otherClimb = new Climb();
         otherClimb.setRouteId(routeId);
         otherClimb.setPublicBeta(notes);
