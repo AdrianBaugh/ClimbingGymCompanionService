@@ -8,6 +8,7 @@ import com.nashss.se.ClimbingGymCompanionService.activity.GetClimbActivity;
 import com.nashss.se.ClimbingGymCompanionService.activity.GetPresignedS3ImageActivity;
 import com.nashss.se.ClimbingGymCompanionService.activity.GetRouteActivity;
 import com.nashss.se.ClimbingGymCompanionService.activity.GetS3PreSignedUrlActivity;
+import com.nashss.se.ClimbingGymCompanionService.activity.GetUserInfoActivity;
 import com.nashss.se.ClimbingGymCompanionService.activity.GetUsersClimbHistoryActivity;
 import com.nashss.se.ClimbingGymCompanionService.activity.UpdateClimbActivity;
 import com.nashss.se.ClimbingGymCompanionService.activity.UpdateRouteStatusActivity;
@@ -87,5 +88,11 @@ public interface ServiceComponent {
      * @return GetPresignedS3ImageActivity
      */
     GetPresignedS3ImageActivity provideGetPresignedS3ImageActivity();
+
+    /**
+     *
+     * @return GetUserInfoActivity
+     */
+    GetUserInfoActivity provideGetUserInfoActivity();
 }
 

@@ -1,6 +1,6 @@
 package com.nashss.se.ClimbingGymCompanionService.dynamodb.pojos;
 
-import com.nashss.se.ClimbingGymCompanionService.converters.BetaMapConverter;
+import com.nashss.se.ClimbingGymCompanionService.converters.StringStringMapConverter;
 import com.nashss.se.ClimbingGymCompanionService.converters.ZonedDateTimeConverter;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBAttribute;
@@ -130,7 +130,7 @@ public class Route {
     }
 
     @DynamoDBAttribute(attributeName = "betaMap")
-    @DynamoDBTypeConverted(converter = BetaMapConverter.class)
+    @DynamoDBTypeConverted(converter = StringStringMapConverter.class)
     public Map<String, String> getBetaMap() {
         return betaMap;
     }

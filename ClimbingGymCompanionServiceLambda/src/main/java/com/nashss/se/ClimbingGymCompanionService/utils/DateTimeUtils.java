@@ -19,11 +19,13 @@ public class DateTimeUtils {
 
     /**
      *
-     * @return week number for climb stats
+     * @return year and week number for climb stats
      */
     public static String getWeekOfYear() {
         Calendar now = Calendar.getInstance();
         int year = now.getWeekYear();
-        return year + "::" + String.valueOf(now.get(Calendar.WEEK_OF_YEAR));
+        int week = now.get(Calendar.WEEK_OF_YEAR);
+
+        return String.format("%04d::%02d", year, week);
     }
 }

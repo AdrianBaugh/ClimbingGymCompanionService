@@ -5,11 +5,13 @@ import com.nashss.se.ClimbingGymCompanionService.activity.results.CreateClimbRes
 import com.nashss.se.ClimbingGymCompanionService.converters.ModelConverter;
 import com.nashss.se.ClimbingGymCompanionService.dynamodb.ClimbDao;
 import com.nashss.se.ClimbingGymCompanionService.dynamodb.RouteDao;
+import com.nashss.se.ClimbingGymCompanionService.dynamodb.UserInfoDao;
 import com.nashss.se.ClimbingGymCompanionService.dynamodb.pojos.Climb;
 import com.nashss.se.ClimbingGymCompanionService.models.ClimbModel;
 import com.nashss.se.ClimbingGymCompanionService.utils.DateTimeUtils;
 import com.nashss.se.ClimbingGymCompanionService.utils.IdUtils;
 import com.nashss.se.ClimbingGymCompanionService.utils.UpdateRouteUtils;
+import com.nashss.se.ClimbingGymCompanionService.utils.UpdateUserInfoUtils;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -21,17 +23,20 @@ public class CreateClimbActivity {
     private final Logger log = LogManager.getLogger();
     private final ClimbDao climbDao;
     private final RouteDao routeDao;
+    private final UserInfoDao userInfoDao;
 
     /**
      * Instantiates a new CreateClimbActivity object.
      *
      * @param climbDao to access the climbs table.
      * @param routeDao to access routes table.
+     * @param userInfoDao to access userInfo table.
      */
     @Inject
-    public CreateClimbActivity(ClimbDao climbDao, RouteDao routeDao) {
+    public CreateClimbActivity(ClimbDao climbDao, RouteDao routeDao, UserInfoDao userInfoDao) {
         this.climbDao = climbDao;
         this.routeDao = routeDao;
+        this.userInfoDao = userInfoDao;
     }
 
     /**
@@ -73,6 +78,7 @@ public class CreateClimbActivity {
         newClimb.setPublicBeta(notes);
 
         climbDao.saveClimb(newClimb);
+        UpdateUserInfoUtils.updateUserInfo(userInfoDao, routeDao, newClimb);
 
         ClimbModel climbModel = new ModelConverter().toClimbModel(newClimb);
 
