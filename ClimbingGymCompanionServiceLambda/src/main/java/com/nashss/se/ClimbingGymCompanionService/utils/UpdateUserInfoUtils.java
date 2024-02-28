@@ -58,6 +58,13 @@ public class UpdateUserInfoUtils {
 
     // I N C O M P L E T E
     // *********************************************************
+    /**
+     * Updates the map to keep track of the difficulties climbed per week
+     * @param route to access route's difficulty
+     * @param userInfo the userInfo object to update
+     * @param climb the current climb data
+     * @return the weekly difficulty frequency map
+     */
     private static Map<String, Map<String, Integer>>  updateWeeklyDifficultyMap(
             Route route, UserInfo userInfo, Climb climb) {
 
@@ -72,13 +79,13 @@ public class UpdateUserInfoUtils {
         fullMap.put(currYearWeek, currMap);
         //fill missing weeks maybe with the earliest week as start and then up to the current week as end
 
-        //get most recent DATA?
+        //get most recent DATA(last 5 weeks only)?
 
         return fullMap;
     }
 
     /**
-     * Updates the all time total count for each completed climb of a specific difficulty.
+     * Updates the all-time total count for each completed climb of a specific difficulty.
      * @param route to access route's difficulty
      * @param userInfo the userInfo object to update
      * @param climb the current climb data
@@ -122,7 +129,11 @@ public class UpdateUserInfoUtils {
         return getMostRecentData(currMap);
     }
 
-    // Helper method to fill in missing weeks with a value of 0
+    /**
+     * Helper method to fill in missing weeks with a value of 0
+     * @param map to add fill missing weeks in
+     * @param startYear the year to begin adding the missing week data
+     */
     private static void fillMissingWeeks(Map<String, Integer> map, int startYear) {
 
         Calendar calendar = Calendar.getInstance();
