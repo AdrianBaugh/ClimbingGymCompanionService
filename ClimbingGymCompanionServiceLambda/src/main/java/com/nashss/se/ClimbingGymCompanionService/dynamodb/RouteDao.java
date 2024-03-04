@@ -61,6 +61,31 @@ public class RouteDao {
     }
 
     /**
+     *
+     * @param isArchived is the archived status to return
+     * @return list of nonArchived routes
+     */
+    public List<Route> getAllArchivedRoutes(String isArchived) {
+        log.info("Entered RouteDao getAllActiveRoutes() ");
+
+        if (isArchived == null || !isArchived.equals(ArchivedStatus.TRUE.name())) {
+            throw new ArchivedStatusNotFoundException("Archived status: " + isArchived +
+                    " does not match criteria of TRUE or FALSE");
+        }
+
+        Map<String, AttributeValue> expressionAttributeValues = new HashMap<>();
+        expressionAttributeValues.put(":archivedValue", new AttributeValue().withS(isArchived));
+
+        DynamoDBQueryExpression<Route> queryExpression = new DynamoDBQueryExpression<Route>()
+                .withIndexName("RoutesByArchivedIndex")
+                .withConsistentRead(false)
+                .withKeyConditionExpression("isArchived = :archivedValue")
+                .withExpressionAttributeValues(expressionAttributeValues);
+
+        return dynamoDbMapper.query(Route.class, queryExpression);
+    }
+
+    /**
      * Retrieves a Route by its IDs.
      *
      * @param routeId The ID of the route to retrieve.
