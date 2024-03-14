@@ -104,6 +104,22 @@ export default class ClimbClient extends BindingClass {
         }
     }
 
+        /*
+    * Gets all the routes for the archived status.
+    * @param errorCallback (Optional) A function to execute if the call fails.
+    * @returns The route's metadata.
+    */
+        async viewAllArchivedRoutes(errorCallback) {
+            try {
+                const archivedStatus = "TRUE"
+                const response = await this.axiosClient.get(`archivedRoutes?isArchived=${archivedStatus}`);
+    
+                return response.data.routeList;
+            } catch (error) {
+                this.handleError(error, errorCallback)
+            }
+        }
+
     /*
      * Gets the route for the given ID.
      * @param id Unique identifier for a route
