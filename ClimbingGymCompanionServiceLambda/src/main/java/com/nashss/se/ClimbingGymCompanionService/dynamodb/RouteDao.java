@@ -36,6 +36,7 @@ public class RouteDao {
     }
 
     /**
+     * Routes that are currently set and available in the gym.
      *
      * @param isArchived is the archived status to return
      * @return list of nonArchived routes
@@ -61,7 +62,8 @@ public class RouteDao {
     }
 
     /**
-     *
+     * Routes that have been previously set that are now taken down and archived.
+     * 
      * @param isArchived is the archived status to return
      * @return list of archived routes
      */
@@ -86,7 +88,7 @@ public class RouteDao {
     }
 
     /**
-     * Retrieves a Route by its IDs.
+     * Retrieves a Route by its ID.
      *
      * @param routeId The ID of the route to retrieve.
      * @return The Route object if found, or throws exception if not found.
